@@ -2,22 +2,22 @@ import { HttpService, Injectable } from '@nestjs/common';
 import { SummonerDTO } from '@waffle-charm/api-interfaces';
 import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { ConfigService } from '../../providers/config.service';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class SummonerService {
   private headers;
   constructor(
-    private readonly config: ConfigService,
-    private http: HttpService
+    private configService: ConfigService,
+    private httpService: HttpService
   ) {
     this.headers = {
-      'X-Riot-Token': this.config.getConfig().riotGamesApiKey,
+      'X-Riot-Token': this.configService.get<string>('RIOT_GAMES_API_KEY'),
     };
   }
 
   getByName(summonerName: string): Observable<SummonerDTO> {
-    return this.http
+    return this.httpService
       .get<SummonerDTO>(
         `https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/${summonerName}`,
         {

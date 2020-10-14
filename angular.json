@@ -255,7 +255,8 @@
         "serve": {
           "builder": "@nrwl/web:dev-server",
           "options": {
-            "buildTarget": "crow-storm:build"
+            "buildTarget": "crow-storm:build",
+            "proxyConfig": "apps/crow-storm/proxy.conf.json"
           },
           "configurations": {
             "production": {

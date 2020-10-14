@@ -1,8 +1,8 @@
 import { HttpService, Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { SummonerDTO } from '@waffle-charm/api-interfaces';
 import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class SummonerService {
@@ -25,8 +25,7 @@ export class SummonerService {
         }
       )
       .pipe(
-        map((resp) => resp.data),
-        catchError((error) => of(error))
+        map((resp) => resp.data)
       );
   }
 }

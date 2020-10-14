@@ -3,12 +3,16 @@ import { Controller, Get, Param } from '@nestjs/common';
 import { Config, Message, SummonerDTO } from '@waffle-charm/api-interfaces';
 
 import { AppService } from './app.service';
-import { ConfigService } from './providers/config.service';
+import { ConfigService } from '@nestjs/config';
 import { SummonerService } from './services/summoner/summoner.service';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService, private readonly config: ConfigService, private readonly summoner: SummonerService) {}
+  constructor(
+    private readonly appService: AppService,
+    private readonly configService: ConfigService,
+    private readonly summoner: SummonerService
+  ) {}
 
   @Get('hello')
   getData(): Message {
@@ -17,7 +21,9 @@ export class AppController {
 
   @Get('config')
   getConfig(): Config {
-    return this.config.getConfig();
+    return {
+      riotGamesApiKey: this.configService.get<string>('RIOT_GAMES_API_KEY'),
+    };
   }
 
   @Get('summoner/:name')

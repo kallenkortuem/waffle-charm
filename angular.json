@@ -25,7 +25,10 @@
               "apps/wild-hunt/src/favicon.ico",
               "apps/wild-hunt/src/assets"
             ],
-            "styles": ["apps/wild-hunt/src/styles.scss"],
+            "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
+              "apps/wild-hunt/src/styles.scss"
+            ],
             "scripts": []
           },
           "configurations": {
@@ -84,7 +87,10 @@
               "apps/wild-hunt/tsconfig.app.json",
               "apps/wild-hunt/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**", "!apps/wild-hunt/**/*"]
+            "exclude": [
+              "**/node_modules/**",
+              "!apps/wild-hunt/**/*"
+            ]
           }
         },
         "test": {
@@ -117,8 +123,13 @@
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": ["apps/wild-hunt-e2e/tsconfig.e2e.json"],
-            "exclude": ["**/node_modules/**", "!apps/wild-hunt-e2e/**/*"]
+            "tsConfig": [
+              "apps/wild-hunt-e2e/tsconfig.e2e.json"
+            ],
+            "exclude": [
+              "**/node_modules/**",
+              "!apps/wild-hunt-e2e/**/*"
+            ]
           }
         }
       }
@@ -136,7 +147,9 @@
             "outputPath": "dist/apps/api",
             "main": "apps/api/src/main.ts",
             "tsConfig": "apps/api/tsconfig.app.json",
-            "assets": ["apps/api/src/assets"]
+            "assets": [
+              "apps/api/src/assets"
+            ]
           },
           "configurations": {
             "production": {
@@ -165,7 +178,10 @@
               "apps/api/tsconfig.app.json",
               "apps/api/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**", "!apps/api/**/*"]
+            "exclude": [
+              "**/node_modules/**",
+              "!apps/api/**/*"
+            ]
           }
         },
         "test": {
@@ -190,7 +206,10 @@
               "libs/api-interfaces/tsconfig.lib.json",
               "libs/api-interfaces/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**", "!libs/api-interfaces/**/*"]
+            "exclude": [
+              "**/node_modules/**",
+              "!libs/api-interfaces/**/*"
+            ]
           }
         },
         "test": {

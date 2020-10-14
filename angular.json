@@ -87,10 +87,7 @@
               "apps/wild-hunt/tsconfig.app.json",
               "apps/wild-hunt/tsconfig.spec.json"
             ],
-            "exclude": [
-              "**/node_modules/**",
-              "!apps/wild-hunt/**/*"
-            ]
+            "exclude": ["**/node_modules/**", "!apps/wild-hunt/**/*"]
           }
         },
         "test": {
@@ -123,13 +120,8 @@
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": [
-              "apps/wild-hunt-e2e/tsconfig.e2e.json"
-            ],
-            "exclude": [
-              "**/node_modules/**",
-              "!apps/wild-hunt-e2e/**/*"
-            ]
+            "tsConfig": ["apps/wild-hunt-e2e/tsconfig.e2e.json"],
+            "exclude": ["**/node_modules/**", "!apps/wild-hunt-e2e/**/*"]
           }
         }
       }
@@ -147,9 +139,7 @@
             "outputPath": "dist/apps/api",
             "main": "apps/api/src/main.ts",
             "tsConfig": "apps/api/tsconfig.app.json",
-            "assets": [
-              "apps/api/src/assets"
-            ]
+            "assets": ["apps/api/src/assets"]
           },
           "configurations": {
             "production": {
@@ -178,10 +168,7 @@
               "apps/api/tsconfig.app.json",
               "apps/api/tsconfig.spec.json"
             ],
-            "exclude": [
-              "**/node_modules/**",
-              "!apps/api/**/*"
-            ]
+            "exclude": ["**/node_modules/**", "!apps/api/**/*"]
           }
         },
         "test": {
@@ -206,10 +193,7 @@
               "libs/api-interfaces/tsconfig.lib.json",
               "libs/api-interfaces/tsconfig.spec.json"
             ],
-            "exclude": [
-              "**/node_modules/**",
-              "!libs/api-interfaces/**/*"
-            ]
+            "exclude": ["**/node_modules/**", "!libs/api-interfaces/**/*"]
           }
         },
         "test": {
@@ -217,6 +201,112 @@
           "options": {
             "jestConfig": "libs/api-interfaces/jest.config.js",
             "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "crow-storm": {
+      "root": "apps/crow-storm",
+      "sourceRoot": "apps/crow-storm/src",
+      "projectType": "application",
+      "schematics": {},
+      "architect": {
+        "build": {
+          "builder": "@nrwl/web:build",
+          "options": {
+            "outputPath": "dist/apps/crow-storm",
+            "index": "apps/crow-storm/src/index.html",
+            "main": "apps/crow-storm/src/main.tsx",
+            "polyfills": "apps/crow-storm/src/polyfills.ts",
+            "tsConfig": "apps/crow-storm/tsconfig.app.json",
+            "assets": [
+              "apps/crow-storm/src/favicon.ico",
+              "apps/crow-storm/src/assets"
+            ],
+            "styles": ["apps/crow-storm/src/styles.scss"],
+            "scripts": [],
+            "webpackConfig": "@nrwl/react/plugins/webpack"
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/crow-storm/src/environments/environment.ts",
+                  "with": "apps/crow-storm/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@nrwl/web:dev-server",
+          "options": {
+            "buildTarget": "crow-storm:build"
+          },
+          "configurations": {
+            "production": {
+              "buildTarget": "crow-storm:build:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:lint",
+          "options": {
+            "linter": "eslint",
+            "tsConfig": [
+              "apps/crow-storm/tsconfig.app.json",
+              "apps/crow-storm/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!apps/crow-storm/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "apps/crow-storm/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "crow-storm-e2e": {
+      "root": "apps/crow-storm-e2e",
+      "sourceRoot": "apps/crow-storm-e2e/src",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/crow-storm-e2e/cypress.json",
+            "tsConfig": "apps/crow-storm-e2e/tsconfig.e2e.json",
+            "devServerTarget": "crow-storm:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "crow-storm:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:lint",
+          "options": {
+            "linter": "eslint",
+            "tsConfig": ["apps/crow-storm-e2e/tsconfig.e2e.json"],
+            "exclude": ["**/node_modules/**", "!apps/crow-storm-e2e/**/*"]
           }
         }
       }
@@ -269,7 +359,16 @@
     },
     "@nrwl/react": {
       "application": {
+        "style": "scss",
+        "linter": "eslint",
         "babel": true
+      },
+      "component": {
+        "style": "scss"
+      },
+      "library": {
+        "style": "scss",
+        "linter": "eslint"
       }
     }
   },

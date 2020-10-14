@@ -1,17 +1,13 @@
-import { Controller, Get, Param } from '@nestjs/common';
-
-import { Config, Message, SummonerDTO } from '@waffle-charm/api-interfaces';
-
-import { AppService } from './app.service';
+import { Controller, Get } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { SummonerService } from './services/summoner/summoner.service';
+import { Config, Message } from '@waffle-charm/api-interfaces';
+import { AppService } from './app.service';
 
 @Controller()
 export class AppController {
   constructor(
     private readonly appService: AppService,
-    private readonly configService: ConfigService,
-    private readonly summoner: SummonerService
+    private readonly configService: ConfigService
   ) {}
 
   @Get('hello')
@@ -24,10 +20,5 @@ export class AppController {
     return {
       riotGamesApiKey: this.configService.get<string>('RIOT_GAMES_API_KEY'),
     };
-  }
-
-  @Get('summoner/:name')
-  getSummoner(@Param('name') name: string): Promise<SummonerDTO> {
-    return this.summoner.getByName(name).toPromise();
   }
 }

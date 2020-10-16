@@ -1,15 +1,13 @@
-import { Test, TestingModule } from '@nestjs/testing';
+import { instance, mock } from 'ts-mockito';
 import { MatchController } from './match.controller';
+import { MatchService } from './match.service';
 
 describe('MatchController', () => {
   let controller: MatchController;
+  const summonerService = mock(MatchService);
 
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      controllers: [MatchController],
-    }).compile();
-
-    controller = module.get<MatchController>(MatchController);
+  beforeEach(() => {
+    controller = new MatchController(instance(summonerService));
   });
 
   it('should be defined', () => {

@@ -36,3 +36,24 @@ export interface SummonerDTO {
    */
   summonerLevel: number;
 }
+
+export interface MatchReferenceDto {
+  gameId: number;
+  role: string;
+  season: number;
+  platformId: string;
+  champion: number;
+  queue: number;
+  lane: string;
+  timestamp: number;
+}
+
+export interface MatchlistDto {
+  startIndex: number;
+  /**
+   * There is a known issue that this field doesn't correctly return the total number of games that match the parameters of the request. Please paginate using beginIndex until you reach the end of a player's matchlist.
+   */
+  totalGames: number;
+  endIndex: number;
+  matches: MatchReferenceDto[];
+}

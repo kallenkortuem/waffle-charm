@@ -1,20 +1,16 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Config, Message, SummonerDTO } from '@waffle-charm/api-interfaces';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { Config, SummonerDTO } from '@waffle-charm/api-interfaces';
 import { ReplaySubject } from 'rxjs';
-import { map, pluck } from 'rxjs/operators';
 
 @Component({
   selector: 'waffle-charm-root',
   template: `
-    <div style="text-align: center;">
+    <div>
       <h1>Welcome to wild-hunt!</h1>
       <img
         width="450"
-        [src]="
-          (summonerIcon$ | async) ||
-          'https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png'
-        "
+        src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png"
       />
     </div>
     <mat-form-field>
@@ -31,28 +27,13 @@ import { map, pluck } from 'rxjs/operators';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent implements OnInit {
-  hello$ = new ReplaySubject<Message>(1);
   config$ = new ReplaySubject<Config>(1);
   summoner$ = new ReplaySubject<SummonerDTO>(1);
-  summonerIcon$ = this.summoner$.pipe(
-    map((summoner) => summoner?.profileIconId),
-    map(
-      (id) =>
-        `http://ddragon.leagueoflegends.com/cdn/10.21.1/img/profileicon/${id}.png`
-    )
-  );
 
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
-    this.getHello();
     this.getConfig();
-  }
-
-  getHello(): void {
-    this.http
-      .get<Message>('/api/hello')
-      .subscribe((value) => this.hello$.next(value));
   }
 
   getConfig(): void {

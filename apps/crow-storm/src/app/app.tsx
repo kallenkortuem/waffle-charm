@@ -10,13 +10,16 @@ export const App = () => {
   const [summoner, setSummoner] = useState({});
   const [summonerName, setSummonerName] = useState('');
 
-  function getSummoner(): void {
+  function getSummoner(e: React.FormEvent<HTMLFormElement>): void {
+    e.preventDefault();
     fetch(`/api/summoner/${summonerName}`)
       .then((_) => _.json())
       .then((value) => {
         setSummoner(value);
       });
   }
+
+  
 
   return (
     <div id="wrapper">
@@ -28,11 +31,13 @@ export const App = () => {
           alt=""
         />
       </div>
-      <input
-        type="text"
-        onChange={(event) => setSummonerName(event.target.value)}
-      />
-      <button onClick={getSummoner}>Search</button>
+      <form onSubmit={getSummoner}>
+        <input
+          type="text"
+          onChange={(event) => setSummonerName(event.target.value)}
+        />
+        <button type="submit">Search</button>
+      </form>
       <pre>Summoner: {JSON.stringify(summoner, null, 4)}</pre>
       <pre>Config: </pre>
 

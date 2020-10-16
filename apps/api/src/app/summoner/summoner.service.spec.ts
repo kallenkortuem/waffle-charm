@@ -3,9 +3,8 @@ import { ConfigService } from '@nestjs/config';
 import { of } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { anything, instance, mock, when } from 'ts-mockito';
+import { createAxiosResponse } from '../testing/utils';
 import { SummonerService } from './summoner.service';
-
-const createAxiosResponse = (data: any): any => ({ data });
 
 describe('SummonerService', () => {
   let service: SummonerService;

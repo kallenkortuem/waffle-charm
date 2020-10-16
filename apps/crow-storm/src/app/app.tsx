@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import { ReactComponent as Logo } from './logo.svg';
-import star from './star.svg';
 
 import { Route, Link } from 'react-router-dom';
 
@@ -18,8 +16,6 @@ export const App = () => {
         setSummoner(value);
       });
   }
-
-  
 
   return (
     <div id="wrapper">

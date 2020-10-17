@@ -8,7 +8,7 @@ import {
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatchlistDto, SummonerDTO } from '@waffle-charm/api-interfaces';
 import { ReplaySubject, Subject } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { takeUntil, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'waffle-charm-root',
@@ -49,6 +49,7 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.summoner$
       .pipe(
+        takeUntil(this.destroy$),
         tap(({ accountId }) => {
           this.getMatches(accountId);
         })

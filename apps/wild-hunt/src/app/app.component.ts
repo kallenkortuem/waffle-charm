@@ -21,7 +21,6 @@ import { ReplaySubject } from 'rxjs';
       Search
     </button>
     <pre>Summoner: {{ summoner$ | async | json }}</pre>
-    <pre>Config: {{ config$ | async | json }}</pre>
   `,
   styleUrls: ['./app.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

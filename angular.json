@@ -344,7 +344,8 @@
         "export": {
           "builder": "@nrwl/next:export",
           "options": {
-            "buildTarget": "doctor-manhattan:build:production"
+            "buildTarget": "doctor-manhattan:build:production",
+            "proxyConfig": "apps/doctor-manhattan/proxy.conf.json"
           }
         },
         "lint": {

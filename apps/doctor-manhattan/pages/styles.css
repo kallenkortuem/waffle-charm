@@ -20,14 +20,14 @@
 }
 
 .app header {
-  background-color: #143055;
-  color: white;
+  background-color: white;
+  color: #143055;
   padding: 5px;
   border-radius: 3px;
 }
 
 .app main {
-  padding: 0 36px;
+  padding: 0;
 }
 
 .app p {

@@ -6,7 +6,6 @@ export const App = () => {
   const [summoner, setSummoner] = useState<SummonerDTO>(null);
   const [summonerName, setSummonerName] = useState('');
   const [matchHistory, setMatchHistory] = useState<MatchlistDto>(null);
-  const [config, setConfig] = useState({});
 
   function getSummoner(e: React.FormEvent<HTMLFormElement>): void {
     e.preventDefault();
@@ -16,14 +15,6 @@ export const App = () => {
         setSummoner(value);
       });
   }
-
-  useEffect(() => {
-    fetch(`/api/config`)
-      .then((_) => _.json())
-      .then((value) => {
-        setConfig(value);
-      });
-  }, []);
 
   useEffect(() => {
     if (summoner) {
@@ -54,7 +45,6 @@ export const App = () => {
       </form>
       <pre>Summoner: {JSON.stringify(summoner, null, 4)}</pre>
       <pre>Match History: {JSON.stringify(matchHistory, null, 4)}</pre>
-      <pre>Config: {JSON.stringify(config, null, 4)}</pre>
     </div>
   );
 };

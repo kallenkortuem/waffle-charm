@@ -57,3 +57,8 @@ export interface MatchlistDto {
   endIndex: number
   matches: MatchReferenceDto[]
 }
+
+
+export interface Test {
+  
+}

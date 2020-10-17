@@ -1,59 +1,59 @@
 export interface Message {
-  message: string;
+  message: string
 }
 
 export interface Config {
-  riotGamesApiKey: string;
+  riotGamesApiKey: string
 }
 
 export interface SummonerDTO {
   /**
    * Encrypted summoner ID. Max length 63 characters.
    */
-  id: string;
+  id: string
   /**
    * Encrypted account ID. Max length 56 characters.
    */
-  accountId: string;
+  accountId: string
   /**
    * Encrypted PUUID. Exact length of 78 characters.
    */
-  puuid: string;
+  puuid: string
   /**
    * Summoner name.
    */
-  name: string;
+  name: string
   /**
    * ID of the summoner icon associated with the summoner.
    */
-  profileIconId: number;
+  profileIconId: number
   /**
    * Date summoner was last modified specified as epoch milliseconds. The following events will update this timestamp: summoner name change, summoner level change, or profile icon change.
    */
-  revisionDate: number;
+  revisionDate: number
   /**
    * Summoner level associated with the summoner.
    */
-  summonerLevel: number;
+  summonerLevel: number
 }
 
 export interface MatchReferenceDto {
-  gameId: number;
-  role: string;
-  season: number;
-  platformId: string;
-  champion: number;
-  queue: number;
-  lane: string;
-  timestamp: number;
+  gameId: number
+  role: string
+  season: number
+  platformId: string
+  champion: number
+  queue: number
+  lane: string
+  timestamp: number
 }
 
 export interface MatchlistDto {
-  startIndex: number;
+  startIndex: number
   /**
    * There is a known issue that this field doesn't correctly return the total number of games that match the parameters of the request. Please paginate using beginIndex until you reach the end of a player's matchlist.
    */
-  totalGames: number;
-  endIndex: number;
-  matches: MatchReferenceDto[];
+  totalGames: number
+  endIndex: number
+  matches: MatchReferenceDto[]
 }

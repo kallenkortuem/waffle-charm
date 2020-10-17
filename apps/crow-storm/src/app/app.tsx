@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import { MatchlistDto, SummonerDTO } from '@waffle-charm/api-interfaces';
 import './app.scss';
 
 export const App = () => {
-  const [summoner, setSummoner] = useState({});
+  const [summoner, setSummoner] = useState<SummonerDTO>(null);
   const [summonerName, setSummonerName] = useState('');
+  const [matchHistory, setMatchHistory] = useState<MatchlistDto>(null);
   const [config, setConfig] = useState({});
 
   function getSummoner(e: React.FormEvent<HTMLFormElement>): void {
@@ -23,6 +25,16 @@ export const App = () => {
       });
   }, []);
 
+  useEffect(() => {
+    if (summoner) {
+      fetch(`/api/match/${summoner.accountId}`)
+      .then((_) => _.json())
+      .then((value) => {
+        setMatchHistory(value);
+      });
+    }
+  }, [summoner])
+
   return (
     <div id="wrapper">
       <div>
@@ -41,6 +53,7 @@ export const App = () => {
         <button type="submit">Search</button>
       </form>
       <pre>Summoner: {JSON.stringify(summoner, null, 4)}</pre>
+      <pre>Match History: {JSON.stringify(matchHistory, null, 4)}</pre>
       <pre>Config: {JSON.stringify(config, null, 4)}</pre>
     </div>
   );

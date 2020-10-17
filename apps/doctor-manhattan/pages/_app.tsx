@@ -8,7 +8,8 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
   return (
     <>
       <Head>
-        <title>Welcome to doctor-manhattan!</title>
+        <title>Doctor-manhattan</title>
+        <link rel="icon" type="image/x-icon" href="favicon.ico" />
       </Head>
       <div className="app">
         <h1>Welcome to doctor-manhattan!</h1>

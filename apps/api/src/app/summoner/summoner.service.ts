@@ -1,19 +1,19 @@
-import { HttpService, Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { SummonerDTO } from '@waffle-charm/api-interfaces';
-import { Observable, of } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { HttpService, Injectable } from '@nestjs/common'
+import { ConfigService } from '@nestjs/config'
+import { SummonerDTO } from '@waffle-charm/api-interfaces'
+import { Observable, of } from 'rxjs'
+import { catchError, map } from 'rxjs/operators'
 
 @Injectable()
 export class SummonerService {
-  private headers;
+  private headers
   constructor(
     private configService: ConfigService,
     private httpService: HttpService
   ) {
     this.headers = {
       'X-Riot-Token': this.configService.get<string>('RIOT_GAMES_API_KEY'),
-    };
+    }
   }
 
   getByName(summonerName: string): Observable<SummonerDTO> {
@@ -24,8 +24,6 @@ export class SummonerService {
           headers: this.headers,
         }
       )
-      .pipe(
-        map((resp) => resp.data)
-      );
+      .pipe(map((resp) => resp.data))
   }
 }

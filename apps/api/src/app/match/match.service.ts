@@ -1,19 +1,19 @@
-import { HttpService, Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { MatchlistDto } from '@waffle-charm/api-interfaces';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { HttpService, Injectable } from '@nestjs/common'
+import { ConfigService } from '@nestjs/config'
+import { MatchlistDto } from '@waffle-charm/api-interfaces'
+import { Observable } from 'rxjs'
+import { map } from 'rxjs/operators'
 
 @Injectable()
 export class MatchService {
-  private headers;
+  private headers
   constructor(
     private configService: ConfigService,
     private httpService: HttpService
   ) {
     this.headers = {
       'X-Riot-Token': this.configService.get<string>('RIOT_GAMES_API_KEY'),
-    };
+    }
   }
 
   getByAccount(accountId: string): Observable<MatchlistDto> {
@@ -24,6 +24,6 @@ export class MatchService {
           headers: this.headers,
         }
       )
-      .pipe(map((resp) => resp.data));
+      .pipe(map((resp) => resp.data))
   }
 }

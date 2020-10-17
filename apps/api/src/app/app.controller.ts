@@ -1,6 +1,6 @@
-import { Controller, Get } from '@nestjs/common';
-import { Message } from '@waffle-charm/api-interfaces';
-import { AppService } from './app.service';
+import { Controller, Get } from '@nestjs/common'
+import { Message } from '@waffle-charm/api-interfaces'
+import { AppService } from './app.service'
 
 @Controller()
 export class AppController {
@@ -8,6 +8,6 @@ export class AppController {
 
   @Get('hello')
   getData(): Message {
-    return this.appService.getData();
+    return this.appService.getData()
   }
 }

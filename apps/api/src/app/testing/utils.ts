@@ -1,1 +1,1 @@
-export const createAxiosResponse = (data: any): any => ({ data });
+export const createAxiosResponse = (data: any): any => ({ data })

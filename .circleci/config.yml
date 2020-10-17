@@ -67,7 +67,7 @@ jobs:
           <<: *set_env
       - restore_cache:
           <<: *npm_cache
-      - run: npm run format:check ${AFFECTED_ARGS}
+      - run: npm run format:check -- ${AFFECTED_ARGS}
   lint:
     <<: *defaults
     steps:
@@ -79,7 +79,7 @@ jobs:
       - restore_cache:
           <<: *npm_cache
       - run: ./node_modules/.bin/nx workspace-lint
-      - run: npm run affected:lint ${AFFECTED_ARGS} --parallel
+      - run: npm run affected:lint -- ${AFFECTED_ARGS} --parallel
   build:
     <<: *defaults
     steps:

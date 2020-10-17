@@ -1,7 +1,14 @@
 import { HttpClient } from '@angular/common/http';
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { Config, SummonerDTO } from '@waffle-charm/api-interfaces';
-import { ReplaySubject } from 'rxjs';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { MatchlistDto, SummonerDTO } from '@waffle-charm/api-interfaces';
+import { ReplaySubject, Subject } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'waffle-charm-root',
@@ -13,37 +20,62 @@ import { ReplaySubject } from 'rxjs';
         src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png"
       />
     </div>
-    <mat-form-field>
-      <mat-label>Summoner Name</mat-label>
-      <input #summonerInput matInput />
-    </mat-form-field>
-    <button mat-button (click)="getSummoner(summonerInput.value)">
-      Search
-    </button>
+    <form [formGroup]="summonerForm" (ngSubmit)="onSubmit()">
+      <mat-form-field>
+        <mat-label>Summoner Name</mat-label>
+        <input #summonerInput matInput />
+      </mat-form-field>
+      <button mat-button>
+        Search
+      </button>
+    </form>
     <pre>Summoner: {{ summoner$ | async | json }}</pre>
+    <pre>Matches: {{ matches$ | async | json }}</pre>
   `,
   styleUrls: ['./app.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AppComponent implements OnInit {
-  config$ = new ReplaySubject<Config>(1);
+export class AppComponent implements OnInit, OnDestroy {
+  destroy$ = new Subject();
+
   summoner$ = new ReplaySubject<SummonerDTO>(1);
+  matches$ = new ReplaySubject<MatchlistDto>(1);
+
+  summonerName = new FormControl();
+  summonerForm = new FormGroup({ summonerName: this.summonerName });
 
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
-    this.getConfig();
+    this.summoner$
+      .pipe(
+        tap(({ accountId }) => {
+          this.getMatches(accountId);
+        })
+      )
+      .subscribe();
   }
 
-  getConfig(): void {
-    this.http
-      .get<Config>('/api/config')
-      .subscribe((value) => this.config$.next(value));
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  onSubmit(): void {
+    if (this.summonerForm.valid) {
+      this.getSummoner(this.summonerName.value);
+    }
   }
 
   getSummoner(name: string): void {
     this.http
       .get<SummonerDTO>(`/api/summoner/${name}`)
       .subscribe((value) => this.summoner$.next(value));
+  }
+
+  getMatches(accountId: string): void {
+    this.http
+      .get<MatchlistDto>(`/api/match/${accountId}`)
+      .subscribe((value) => this.matches$.next(value));
   }
 }

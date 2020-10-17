@@ -58,7 +58,6 @@ export interface MatchlistDto {
   matches: MatchReferenceDto[]
 }
 
-
 export interface Test {
-  
+  id: string
 }

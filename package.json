@@ -102,6 +102,7 @@
     "ts-mockito": "^2.6.1",
     "ts-node": "~7.0.0",
     "tslint": "~6.0.0",
-    "typescript": "~3.9.3"
+    "typescript": "~3.9.3",
+    "node-sass": "4.14.1"
   }
 }

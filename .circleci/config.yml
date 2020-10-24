@@ -7,7 +7,7 @@ version: 2
 defaults: &defaults
   working_directory: ~/repo
   docker:
-    - image: circleci/node:12-browsers
+    - image: circleci/node:14-browsers
 
 set_env: &set_env
   name: Setup Environment Variables
@@ -32,9 +32,8 @@ set_env: &set_env
 
 npm_cache: &npm_cache
   keys:
-    - node-deps-node12-{{ checksum "package-lock.json" }}
+    - node-deps-node14-{{ checksum "package-lock.json" }}
     # fallback to using the latest cache if no exact match is found
-    - node-deps-node12-
 
 deploy_cache: &deploy_cache
   key: last-deploy-sha
@@ -53,7 +52,7 @@ jobs:
       - run:
           <<: *npm_install
       - save_cache:
-          key: node-deps-node12-{{ checksum "package-lock.json" }}
+          key: node-deps-node14-{{ checksum "package-lock.json" }}
           paths:
             - ~/.cache
             - node_modules
@@ -79,7 +78,7 @@ jobs:
       - restore_cache:
           <<: *npm_cache
       - run: ./node_modules/.bin/nx workspace-lint
-      - run: npm run affected:lint -- ${AFFECTED_ARGS} --parallel
+      - run: npm run affected:lint -- ${AFFECTED_ARGS}
   build:
     <<: *defaults
     steps:
@@ -90,7 +89,7 @@ jobs:
           <<: *set_env
       - restore_cache:
           <<: *npm_cache
-      - run: npm run affected:build -- ${AFFECTED_ARGS} --parallel --configuration production
+      - run: npm run build -- wild-hunt --configuration=production
       - save_cache:
           key: build-{{ .Environment.CIRCLE_WORKFLOW_ID }}
           paths:
@@ -107,7 +106,7 @@ jobs:
           <<: *set_env
       - restore_cache:
           <<: *npm_cache
-      - run: npm run affected:test -- ${AFFECTED_ARGS} --parallel -- --ci --code-coverage
+      - run: npm run affected:test -- ${AFFECTED_ARGS} -- --ci --code-coverage
   e2e:
     <<: *defaults
     steps:
@@ -118,7 +117,7 @@ jobs:
           <<: *set_env
       - restore_cache:
           <<: *npm_cache
-      - run: npm run affected:e2e -- ${AFFECTED_ARGS} --configuration production -- --headless
+      - run: npm run e2e -- wild-hunt-e2e --configuration=production --headless
       - store_artifacts:
           path: dist/cypress
 

@@ -44,10 +44,6 @@
     },
     "doctor-manhattan": {
       "tags": ["client-app", "ssr"]
-    },
-    "doctor-manhattan-e2e": {
-      "tags": [],
-      "implicitDependencies": ["doctor-manhattan"]
     }
   }
 }

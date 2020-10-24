@@ -24,8 +24,8 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: npm ci
-    - run: npm run affected:apps -- --base=$GITHUB_SHA --target=master
-    - run: npm run affected:libs -- --base=$GITHUB_SHA --target=master
-    - run: npm run affected:build -- --base=$GITHUB_SHA --target=master
-    - run: npm run affected:e2e -- --base=$GITHUB_SHA --target=master
-    - run: npm run affected:lint -- --base=$GITHUB_SHA --target=master
+    - run: npm run affected:apps -- --base=master --head=$GITHUB_SHA
+    - run: npm run affected:libs -- --base=master --head=$GITHUB_SHA
+    - run: npm run affected:build -- --base=master --head=$GITHUB_SHA
+    - run: npm run affected:e2e -- --base=master --head=$GITHUB_SHA
+    - run: npm run affected:lint -- --base=master --head=$GITHUB_SHA

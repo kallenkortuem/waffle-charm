@@ -29,7 +29,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run affected:apps && npm run affected:libs",
+      "pre-commit": "npm run format && npm run affected:test",
       "pre-push": "npm run affected:apps && npm run affected:libs && npm run affected:build && npm run affected:e2e && npm run affected:test && npm run affected:lint"
     }
   },

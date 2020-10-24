@@ -23,9 +23,10 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
+    - run: git switch -
     - run: npm ci
-    - run: npm run affected:apps 
-    - run: npm run affected:libs 
-    - run: npm run affected:build 
-    - run: npm run affected:e2e 
-    - run: npm run affected:lint 
+    - run: npm run affected:apps -- --base=master --head=$GITHUB_SHA
+    - run: npm run affected:libs -- --base=master --head=$GITHUB_SHA
+    - run: npm run affected:build -- --base=master --head=$GITHUB_SHA
+    - run: npm run affected:e2e -- --base=master --head=$GITHUB_SHA
+    - run: npm run affected:lint -- --base=master --head=$GITHUB_SHA

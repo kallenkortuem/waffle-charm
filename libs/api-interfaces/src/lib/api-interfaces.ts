@@ -586,4 +586,3 @@ export interface MatchEventDto {
   buildingType?: string
   victimId?: number
 }
-

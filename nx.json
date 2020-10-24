@@ -41,9 +41,6 @@
     "crow-storm-e2e": {
       "tags": [],
       "implicitDependencies": ["crow-storm"]
-    },
-    "doctor-manhattan": {
-      "tags": ["client-app", "ssr"]
     }
   }
 }

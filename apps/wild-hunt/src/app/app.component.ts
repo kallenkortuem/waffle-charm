@@ -44,7 +44,9 @@ export class AppComponent implements OnInit, OnDestroy {
   summonerName = new FormControl()
   summonerForm = new FormGroup({ summonerName: this.summonerName })
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    const a = '2';
+  }
 
   ngOnInit(): void {
     this.summoner$

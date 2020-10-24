@@ -7,7 +7,7 @@ version: 2
 defaults: &defaults
   working_directory: ~/repo
   docker:
-    - image: circleci/node:14
+    - image: circleci/node:14-browsers
 
 set_env: &set_env
   name: Setup Environment Variables
@@ -89,7 +89,7 @@ jobs:
           <<: *set_env
       - restore_cache:
           <<: *npm_cache
-      - run: npm run build -- wild-hunt --configuration production
+      - run: npm run build -- wild-hunt --configuration=production
       - save_cache:
           key: build-{{ .Environment.CIRCLE_WORKFLOW_ID }}
           paths:

@@ -587,4 +587,3 @@ export interface MatchEventDto {
   victimId?: number
 }
 
-export type Example = 'string';

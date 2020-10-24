@@ -34,7 +34,6 @@ npm_cache: &npm_cache
   keys:
     - node-deps-node14-{{ checksum "package-lock.json" }}
     # fallback to using the latest cache if no exact match is found
-    - node-deps-node14-
 
 deploy_cache: &deploy_cache
   key: last-deploy-sha

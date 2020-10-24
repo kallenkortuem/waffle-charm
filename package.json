@@ -29,16 +29,8 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": [
-        "npm run affected:apps", 
-        "npm run affected:libs", 
-        "npm run affected:build", 
-        "npm run affected:e2e", 
-        "npm run affected:test", 
-        "npm run affected:lint", 
-        "npm run affected:dep-graph"
-      ],
-      "pre-push": "npm test"
+      "pre-commit": "npm run affected:apps && npm run affected:libs",
+      "pre-push": "npm run affected:apps && npm run affected:libs && npm run affected:build && npm run affected:e2e && npm run affected:test && npm run affected:lint"
     }
   },
   "private": true,

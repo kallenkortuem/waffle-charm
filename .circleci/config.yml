@@ -7,7 +7,7 @@ version: 2
 defaults: &defaults
   working_directory: ~/repo
   docker:
-    - image: circleci/node:14-browsers
+    - image: circleci/node:14
 
 set_env: &set_env
   name: Setup Environment Variables
@@ -89,7 +89,7 @@ jobs:
           <<: *set_env
       - restore_cache:
           <<: *npm_cache
-      - run: npm run build -- crow-storm --configuration production
+      - run: npm run build -- wild-hunt --configuration production
       - save_cache:
           key: build-{{ .Environment.CIRCLE_WORKFLOW_ID }}
           paths:
@@ -117,7 +117,7 @@ jobs:
           <<: *set_env
       - restore_cache:
           <<: *npm_cache
-      - run: npm run e2e -- crow-storm-e2e --configuration=production --headless
+      - run: npm run e2e -- wild-hunt-e2e --configuration=production --headless
       - store_artifacts:
           path: dist/cypress
 

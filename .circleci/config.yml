@@ -118,7 +118,7 @@ jobs:
           <<: *set_env
       - restore_cache:
           <<: *npm_cache
-      - run: npm run e2e -- corw-storm-e2e --configuration=production --headless
+      - run: npm run e2e -- crow-storm-e2e --configuration=production --headless
       - store_artifacts:
           path: dist/cypress
 

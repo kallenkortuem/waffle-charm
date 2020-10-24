@@ -27,6 +27,12 @@
     "dep-graph": "nx dep-graph",
     "help": "nx help"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run format",
+      "pre-push": "npm run affected:test"
+    }
+  },
   "private": true,
   "dependencies": {
     "@angular/animations": "^10.2.0",
@@ -95,6 +101,7 @@
     "eslint-plugin-jsx-a11y": "6.3.1",
     "eslint-plugin-react": "7.21.5",
     "eslint-plugin-react-hooks": "4.2.0",
+    "husky": "^4.3.0",
     "jest": "26.6.1",
     "jest-fetch-mock": "^3.0.3",
     "jest-preset-angular": "8.3.2",

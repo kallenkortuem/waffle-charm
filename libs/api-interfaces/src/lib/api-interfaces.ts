@@ -628,3 +628,87 @@ export interface ChampionMasteryDTO {
    */
   tokensEarned: number
 }
+
+export interface ChampionDataDragon {
+  type: 'champion'
+  format: 'standAloneComplex'
+  version: '10.22.1'
+  data: {
+    [key: string]: ChampionData
+  }
+}
+
+export interface ChampionData {
+  version: string
+  /**
+   * Champion name that matches the key.
+   */
+  id: string
+  /**
+   * Champion number but represented as a string.
+   */
+  key: string
+  /**
+   * Champion name that matches the id.
+   */
+  name: string
+  title: string
+  blurb: string
+  info: ChampionInfo
+  image: ChampionImage
+  tags: Set<'Fighter' | 'Tank'>
+  partype: string
+  stats: ChampionStats
+}
+
+export interface ChampionImage {
+  /**
+   * File name with PNG extension
+   */
+  full: string
+  /**
+   * Sprit file name with PNG extension
+   */
+  sprite: string
+  group: 'champion'
+  x: 0
+  y: 0
+  /**
+   * Width in pixels
+   */
+  w: 48
+  /**
+   * Height in pixels
+   */
+  h: 48
+}
+
+export interface ChampionInfo {
+  attack: number
+  defense: number
+  magic: number
+  difficulty: number
+}
+
+export interface ChampionStats {
+  hp: number
+  hpperlevel: number
+  mp: number
+  mpperlevel: number
+  movespeed: number
+  armor: number
+  armorperlevel: number
+  spellblock: number
+  spellblockperlevel: number
+  attackrange: number
+  hpregen: number
+  hpregenperlevel: number
+  mpregen: number
+  mpregenperlevel: number
+  crit: number
+  critperlevel: number
+  attackdamage: number
+  attackdamageperlevel: number
+  attackspeedperlevel: number
+  attackspeed: number
+}

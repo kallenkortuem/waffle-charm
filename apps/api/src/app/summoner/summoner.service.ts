@@ -1,12 +1,12 @@
 import { HttpService, Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { SummonerDTO } from '@waffle-charm/api-interfaces'
-import { Observable, of } from 'rxjs'
-import { catchError, map } from 'rxjs/operators'
+import { Observable } from 'rxjs'
+import { map } from 'rxjs/operators'
 
 @Injectable()
 export class SummonerService {
-  private headers
+  private headers: any
   constructor(
     private configService: ConfigService,
     private httpService: HttpService

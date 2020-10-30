@@ -1,11 +1,11 @@
-import { HttpService, Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { HttpService, Injectable } from '@nestjs/common'
+import { ConfigService } from '@nestjs/config'
+import { Observable } from 'rxjs'
+import { map } from 'rxjs/operators'
 
 @Injectable()
 export class MasteryService {
-  private headers;
+  private headers
   constructor(
     private configService: ConfigService,
     private httpService: HttpService

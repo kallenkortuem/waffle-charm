@@ -33,7 +33,9 @@ describe('MasteryService', () => {
       ).thenReturn(of(createAxiosResponse(data)))
 
       testScheduler.run(({ expectObservable }) => {
-        expectObservable(service.getMasteriesBySummoner(encryptedSummonerId)).toBe('(a|)', {
+        expectObservable(
+          service.getMasteriesBySummoner(encryptedSummonerId)
+        ).toBe('(a|)', {
           a: data,
         })
       })

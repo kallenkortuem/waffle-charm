@@ -1,9 +1,9 @@
-import { Module } from '@nestjs/common';
-import { MasteryController } from './mastery.controller';
-import { MasteryService } from './mastery.service';
+import { Module } from '@nestjs/common'
+import { MasteryController } from './mastery.controller'
+import { MasteryService } from './mastery.service'
 
 @Module({
   controllers: [MasteryController],
-  providers: [MasteryService]
+  providers: [MasteryService],
 })
 export class MasteryModule {}

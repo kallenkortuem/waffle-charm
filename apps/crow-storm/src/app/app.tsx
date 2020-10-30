@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from 'react'
-import { MatchlistDto, SummonerDTO,ChampionMasteryDTO } from '@waffle-charm/api-interfaces'
+import {
+  MatchlistDto,
+  SummonerDTO,
+  ChampionMasteryDTO,
+} from '@waffle-charm/api-interfaces'
 import './app.scss'
 
 export const App = (): React.ReactElement => {
   const [summoner, setSummoner] = useState<SummonerDTO>(null)
   const [summonerName, setSummonerName] = useState('')
   const [matchHistory, setMatchHistory] = useState<MatchlistDto>(null)
-  const [masteries, setMasteries] = useState<ChampionMasteryDTO[]>([]);
+  const [masteries, setMasteries] = useState<ChampionMasteryDTO[]>([])
 
   function getSummoner(e: React.FormEvent<HTMLFormElement>): void {
     e.preventDefault()

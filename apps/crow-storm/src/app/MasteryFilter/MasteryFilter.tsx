@@ -39,7 +39,7 @@ const StyledToggleButtonGroup = withStyles((theme) => ({
     margin: theme.spacing(0.5),
     '& img': {
       maxHeight: '100%',
-      maxWidth: '100%'
+      maxWidth: '100%',
     },
     border: 'none',
     '&:not(:first-child)': {
@@ -55,13 +55,9 @@ const possibleMasteryLevels = [1, 2, 3, 4, 5, 6, 7]
 
 export default function MasteryFilter(props: {
   masteryLevels: number[]
-  onChange: (
-    event: React.MouseEvent<HTMLElement>,
-    newFormats: number[]
-  ) => void
+  onChange: (event: React.MouseEvent<HTMLElement>, newFormats: number[]) => void
 }): React.ReactElement {
-  const {  masteryLevels, onChange } = props
-
+  const { masteryLevels, onChange } = props
 
   const classes = useStyles()
 
@@ -71,7 +67,10 @@ export default function MasteryFilter(props: {
       value={level}
       aria-label={`Mastery level: ${level}`}
     >
-      <img src={`/assets/images/Champion_Mastery_Level_${level}_Flair.png`} alt=""></img>
+      <img
+        src={`/assets/images/Champion_Mastery_Level_${level}_Flair.png`}
+        alt=""
+      ></img>
     </ToggleButton>
   ))
 

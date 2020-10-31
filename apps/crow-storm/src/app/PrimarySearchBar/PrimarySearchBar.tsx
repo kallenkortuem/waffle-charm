@@ -56,7 +56,7 @@ const useStyles = makeStyles((theme: Theme) =>
       [theme.breakpoints.up('md')]: {
         width: '20ch',
       },
-    }
+    },
   })
 )
 

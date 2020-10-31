@@ -16,7 +16,9 @@ import PrimarySearchBar from './PrimarySearchBar/PrimarySearchBar'
 const SUMMONER_NAME_KEY = 'summonerName'
 const MASTERY_LEVELS = 'masteryLevels'
 const initialSummonerName = sessionStorage.getItem(SUMMONER_NAME_KEY)
-const initialMasteryLevels = JSON.parse(sessionStorage.getItem(MASTERY_LEVELS) || '[6, 7]');
+const initialMasteryLevels = JSON.parse(
+  sessionStorage.getItem(MASTERY_LEVELS) || '[6, 7]'
+)
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -42,7 +44,9 @@ export const App = (): React.ReactElement => {
   const [summonerName, setSummonerName] = useState(initialSummonerName)
   const [masteries, setMasteries] = useState<ChampionMasteryDTO[]>()
   const [championData, setChampionData] = useState<ChampionDataDragon>()
-  const [masteryLevels, setMasteryLevels] = React.useState(() => initialMasteryLevels)
+  const [masteryLevels, setMasteryLevels] = React.useState(
+    () => initialMasteryLevels
+  )
 
   const classes = useStyles()
 
@@ -86,7 +90,7 @@ export const App = (): React.ReactElement => {
   }, [summoner])
 
   useEffect(() => {
-    getSummoner();
+    getSummoner()
   }, [])
 
   useEffect(() => {

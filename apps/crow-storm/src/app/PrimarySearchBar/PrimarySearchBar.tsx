@@ -56,19 +56,7 @@ const useStyles = makeStyles((theme: Theme) =>
       [theme.breakpoints.up('md')]: {
         width: '20ch',
       },
-    },
-    sectionDesktop: {
-      display: 'none',
-      [theme.breakpoints.up('md')]: {
-        display: 'flex',
-      },
-    },
-    sectionMobile: {
-      display: 'flex',
-      [theme.breakpoints.up('md')]: {
-        display: 'none',
-      },
-    },
+    }
   })
 )
 

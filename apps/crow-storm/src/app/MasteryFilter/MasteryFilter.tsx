@@ -1,23 +1,13 @@
-import React from 'react'
-import {
-  makeStyles,
-  withStyles,
-  Theme,
-  createStyles,
-} from '@material-ui/core/styles'
-import FormatAlignLeftIcon from '@material-ui/icons/FormatAlignLeft'
-import FormatAlignCenterIcon from '@material-ui/icons/FormatAlignCenter'
-import FormatAlignRightIcon from '@material-ui/icons/FormatAlignRight'
-import FormatAlignJustifyIcon from '@material-ui/icons/FormatAlignJustify'
-import FormatBoldIcon from '@material-ui/icons/FormatBold'
-import FormatItalicIcon from '@material-ui/icons/FormatItalic'
-import FormatUnderlinedIcon from '@material-ui/icons/FormatUnderlined'
-import FormatColorFillIcon from '@material-ui/icons/FormatColorFill'
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
-import Divider from '@material-ui/core/Divider'
 import Paper from '@material-ui/core/Paper'
+import {
+  createStyles,
+  makeStyles,
+  Theme,
+  withStyles,
+} from '@material-ui/core/styles'
 import ToggleButton from '@material-ui/lab/ToggleButton'
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup'
+import React from 'react'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -51,7 +41,7 @@ const StyledToggleButtonGroup = withStyles((theme) => ({
   },
 }))(ToggleButtonGroup)
 
-const possibleMasteryLevels = [1, 2, 3, 4, 5, 6, 7]
+const possibleMasteryLevels = [7, 6, 5, 4, 3, 2, 1]
 
 export default function MasteryFilter(props: {
   masteryLevels: number[]
@@ -76,7 +66,7 @@ export default function MasteryFilter(props: {
 
   return (
     <div>
-      <Paper elevation={0} className={classes.paper}>
+      <Paper elevation={1} className={classes.paper}>
         <StyledToggleButtonGroup
           size="small"
           value={masteryLevels}

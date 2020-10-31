@@ -1,4 +1,5 @@
 import Container from '@material-ui/core/Container'
+import Typography from '@material-ui/core/Typography'
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
 import {
   ChampionData,
@@ -131,7 +132,9 @@ export const App = (): React.ReactElement => {
       ></PrimarySearchBar>
       <Container maxWidth="md">
         <div>
-          <h1>Champion Mastery</h1>
+          <Typography variant="h3" component="h1">
+            Champion Mastery
+          </Typography>
         </div>
         <MasteryFilter
           masteryLevels={masteryLevels}
@@ -142,8 +145,12 @@ export const App = (): React.ReactElement => {
           .map(([key, group]) =>
             masteryLevels.includes(parseInt(key)) ? (
               <div key={key}>
-                <h2>Mastery {key} </h2>
-                <p>Count {group?.length}</p>
+                <Typography variant="h5" component="h2">
+                  Mastery {key}
+                </Typography>
+                <Typography variant="caption" component="h2">
+                  Count {group?.length}
+                </Typography>
                 <div className={classes.root}>
                   <CSSGrid>
                     {group?.map((mastery) => (

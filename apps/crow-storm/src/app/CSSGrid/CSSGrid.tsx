@@ -18,9 +18,6 @@ const useStyles = makeStyles((theme: Theme) =>
     divider: {
       margin: theme.spacing(2, 0),
     },
-    gridItem: {
-      gridColumnEnd: 'span 4',
-    },
   })
 )
 

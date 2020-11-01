@@ -6,6 +6,7 @@ import {
   withStyles,
 } from '@material-ui/core/styles'
 import ToggleButton from '@material-ui/lab/ToggleButton'
+import Tooltip from '@material-ui/core/Tooltip'
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup'
 import React from 'react'
 
@@ -26,7 +27,7 @@ const StyledToggleButtonGroup = withStyles((theme) => ({
   grouped: {
     height: theme.spacing(5),
     width: theme.spacing(5),
-    margin: theme.spacing(0.5),
+    margin: theme.spacing(1),
     '& img': {
       maxHeight: '100%',
       maxWidth: '100%',
@@ -41,7 +42,7 @@ const StyledToggleButtonGroup = withStyles((theme) => ({
   },
 }))(ToggleButtonGroup)
 
-const possibleMasteryLevels = [7, 6, 5, 4, 3, 2, 1]
+const possibleMasteryLevels = [7,6,5,4,3,2,1]
 
 export default function MasteryFilter(props: {
   masteryLevels: number[]
@@ -52,20 +53,18 @@ export default function MasteryFilter(props: {
   const classes = useStyles()
 
   const masteryLevelToggleButtons = possibleMasteryLevels.map((level) => (
-    <ToggleButton
-      key={level}
-      value={level}
-      aria-label={`Mastery level: ${level}`}
-    >
-      <img
-        src={`/assets/images/Champion_Mastery_Level_${level}_Flair.png`}
-        alt=""
-      ></img>
+    <ToggleButton key={level} value={level}>
+      <Tooltip title={`Mastery Level ${level}`}>
+        <img
+          src={`/assets/images/Champion_Mastery_Level_${level}_Flair.png`}
+          alt=""
+        ></img>
+      </Tooltip>
     </ToggleButton>
   ))
 
   return (
-    <div>
+    <div style={{ display: 'flex' }}>
       <Paper elevation={1} className={classes.paper}>
         <StyledToggleButtonGroup
           size="small"

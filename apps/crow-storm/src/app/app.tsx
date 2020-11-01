@@ -1,6 +1,7 @@
 import Container from '@material-ui/core/Container'
-import Typography from '@material-ui/core/Typography'
+import Snackbar from '@material-ui/core/Snackbar'
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
+import MuiAlert, { AlertProps } from '@material-ui/lab/Alert'
 import {
   ChampionData,
   ChampionDataDragon,
@@ -16,10 +17,14 @@ import PrimarySearchBar from './PrimarySearchBar/PrimarySearchBar'
 
 const SUMMONER_NAME_KEY = 'summonerName'
 const MASTERY_LEVELS = 'masteryLevels'
-const initialSummonerName = sessionStorage.getItem(SUMMONER_NAME_KEY)
+const initialSummonerName = sessionStorage.getItem(SUMMONER_NAME_KEY) || ''
 const initialMasteryLevels = JSON.parse(
-  sessionStorage.getItem(MASTERY_LEVELS) || '[6, 7]'
+  sessionStorage.getItem(MASTERY_LEVELS) || '[5, 6, 7]'
 )
+
+function Alert(props: AlertProps) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />
+}
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -41,13 +46,13 @@ const useStyles = makeStyles((theme: Theme) =>
 )
 
 export const App = (): React.ReactElement => {
+  const [open, setOpen] = useState(false)
+  const [err, setErr] = useState<{ statusCode: number; message: string }>()
   const [summoner, setSummoner] = useState<SummonerDTO>()
   const [summonerName, setSummonerName] = useState(initialSummonerName)
-  const [masteries, setMasteries] = useState<ChampionMasteryDTO[]>()
+  const [masteries, setMasteries] = useState<ChampionMasteryDTO[]>([])
   const [championData, setChampionData] = useState<ChampionDataDragon>()
-  const [masteryLevels, setMasteryLevels] = React.useState(
-    () => initialMasteryLevels
-  )
+  const [masteryLevels, setMasteryLevels] = useState(() => initialMasteryLevels)
 
   const classes = useStyles()
 
@@ -57,7 +62,12 @@ export const App = (): React.ReactElement => {
       fetch(`/api/summoner/${summonerName}`)
         .then((_) => _.json())
         .then((value) => {
-          setSummoner(value)
+          if (value && !value.statusCode) {
+            setSummoner(value)
+          } else {
+            setOpen(true)
+            setErr(value)
+          }
         })
     } else {
       setSummoner(undefined)
@@ -75,9 +85,10 @@ export const App = (): React.ReactElement => {
 
   const handleSetMasteryLevels = (
     event: React.MouseEvent<HTMLElement>,
-    newLevels: number[]
+    value: number[]
   ) => {
-    setMasteryLevels(newLevels)
+    setMasteryLevels(value)
+    sessionStorage.setItem(MASTERY_LEVELS, JSON.stringify(value))
   }
 
   useEffect(() => {
@@ -85,7 +96,12 @@ export const App = (): React.ReactElement => {
       fetch(`/api/mastery/by-summoner/${summoner.id}`)
         .then((_) => _.json())
         .then((value) => {
-          setMasteries(value)
+          if (value && !value.statusCode && Array.isArray(value)) {
+            setMasteries(value)
+          } else {
+            setOpen(true)
+            setErr(value)
+          }
         })
     }
   }, [summoner])
@@ -100,7 +116,12 @@ export const App = (): React.ReactElement => {
     )
       .then((_) => _.json())
       .then((value) => {
-        setChampionData(value)
+        if (value && !value.statusCode) {
+          setChampionData(value)
+        } else {
+          setOpen(true)
+          setErr(value)
+        }
       })
   }, [])
 
@@ -114,7 +135,7 @@ export const App = (): React.ReactElement => {
     ) || {}
 
   const groupedMasteries: Record<number, ChampionMasteryDTO[]> =
-    masteries?.reduce((accum, current) => {
+    masteries.reduce((accum, current) => {
       if (accum[current.championLevel]) {
         accum[current.championLevel].push(current)
       } else {
@@ -122,6 +143,14 @@ export const App = (): React.ReactElement => {
       }
       return accum
     }, {}) || {}
+
+  const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
+    if (reason === 'clickaway') {
+      return
+    }
+
+    setOpen(false)
+  }
 
   return (
     <>
@@ -132,43 +161,38 @@ export const App = (): React.ReactElement => {
       ></PrimarySearchBar>
       <Container maxWidth="md">
         <div>
-          <Typography variant="h3" component="h1">
-            Champion Mastery
-          </Typography>
+          <h1>Champion Mastery</h1>
         </div>
+        <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+          <Alert onClose={handleClose} severity="error">
+            {err?.statusCode}: {err?.message}
+          </Alert>
+        </Snackbar>
         <MasteryFilter
           masteryLevels={masteryLevels}
           onChange={handleSetMasteryLevels}
         />
         {Object.entries(groupedMasteries)
           .sort(([a], [b]) => parseInt(b) - parseInt(a))
-          .map(([key, group]) =>
-            masteryLevels.includes(parseInt(key)) ? (
+          .map(([key, group]) => {
+            return masteryLevels.includes(parseInt(key)) ? (
               <div key={key}>
-                <Typography variant="h5" component="h2">
-                  Mastery {key}
-                </Typography>
-                <Typography variant="caption" component="h2">
-                  Count {group?.length}
-                </Typography>
+                <h2>Mastery {key}</h2>
+                <p>{group?.length} Champions</p>
                 <div className={classes.root}>
                   <CSSGrid>
                     {group?.map((mastery) => (
                       <MasteryCard
                         key={mastery.championId}
-                        src={`http://ddragon.leagueoflegends.com/cdn/10.22.1/img/champion/${
-                          mappedData[mastery.championId]?.image?.full
-                        }`}
-                        alt={mappedData[mastery.championId]?.name}
-                        title={mappedData[mastery.championId]?.name}
-                        subheader={`Total Points: ${mastery.championPoints.toLocaleString()}`}
+                        mastery={mastery}
+                        champion={mappedData[mastery.championId]}
                       />
                     ))}
                   </CSSGrid>
                 </div>
               </div>
             ) : null
-          )}
+          })}
       </Container>
     </>
   )

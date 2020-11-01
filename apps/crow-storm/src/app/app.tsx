@@ -60,6 +60,8 @@ export const App = (): React.ReactElement => {
 
   const getSummoner = (event?: React.FormEvent<HTMLFormElement>) => {
     event?.preventDefault()
+    setSummoner(undefined)
+    setMasteries([])
     if (summonerName) {
       fetch(`/api/summoner/${summonerName}`)
         .then((_) => _.json())
@@ -71,9 +73,6 @@ export const App = (): React.ReactElement => {
             setErr(value)
           }
         })
-    } else {
-      setSummoner(undefined)
-      setMasteries([])
     }
   }
 

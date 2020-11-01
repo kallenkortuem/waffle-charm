@@ -56,20 +56,26 @@ export default function MasteryCard(props: {
         <BorderLinearProgress
           value={progress}
           variant="determinate"
-          aria-label={`${progress}% progress towards mastery level ${mastery.championLevel + 1}`}
+          aria-label={`${progress}% progress towards mastery level ${
+            mastery.championLevel + 1
+          }`}
         ></BorderLinearProgress>
       </CardContent>
     ) : null
   const levelSixTokens =
     mastery.championLevel === 5 ? (
-      <RightAlignedCardContent aria-label={`${mastery.tokensEarned} of 2 Tokens Earned`}>
+      <RightAlignedCardContent
+        aria-label={`${mastery.tokensEarned} of 2 Tokens Earned`}
+      >
         {icons(2)}
         {icons(1)}
       </RightAlignedCardContent>
     ) : null
   const levelSevenTokens =
     mastery.championLevel === 6 ? (
-      <RightAlignedCardContent aria-label={`${mastery.tokensEarned} of 3 Tokens Earned`}>
+      <RightAlignedCardContent
+        aria-label={`${mastery.tokensEarned} of 3 Tokens Earned`}
+      >
         {icons(3)}
         {icons(2)}
         {icons(1)}

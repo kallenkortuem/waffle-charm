@@ -53,7 +53,11 @@ export default function MasteryFilter(props: {
   const classes = useStyles()
 
   const masteryLevelToggleButtons = possibleMasteryLevels.map((level) => (
-    <ToggleButton key={level} value={level} aria-label={`Mastery Level ${level}`}>
+    <ToggleButton
+      key={level}
+      value={level}
+      aria-label={`Mastery Level ${level}`}
+    >
       <Tooltip title={`Mastery Level ${level}`}>
         <img
           src={`/assets/images/Champion_Mastery_Level_${level}_Flair.png`}

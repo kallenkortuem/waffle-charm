@@ -42,7 +42,7 @@ const StyledToggleButtonGroup = withStyles((theme) => ({
   },
 }))(ToggleButtonGroup)
 
-const possibleMasteryLevels = [7,6,5,4,3,2,1]
+const possibleMasteryLevels = [7, 6, 5, 4, 3, 2, 1]
 
 export default function MasteryFilter(props: {
   masteryLevels: number[]

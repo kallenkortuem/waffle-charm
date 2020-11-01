@@ -87,7 +87,7 @@ export default function PrimarySearchBar(props: {
                   input: classes.inputInput,
                 }}
                 value={query}
-                inputProps={{ 'aria-label': 'search' }}
+                inputProps={{ 'aria-label': 'summoner name search' }}
                 onChange={onQueryChange}
               />
             </form>

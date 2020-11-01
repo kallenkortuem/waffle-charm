@@ -200,27 +200,29 @@ export const App = (): React.ReactElement => {
         onQueryChange={handleSetSummonerName}
         onSearch={getSummoner}
       ></PrimarySearchBar>
-      <Container maxWidth="md" className={classes.root}>
-        <Typography variant="h4" component="h1">
-          Champion Mastery
-        </Typography>
+      <main>
+        <Container maxWidth="md" className={classes.root}>
+          <Typography variant="h4" component="h1">
+            Champion Mastery
+          </Typography>
 
-        <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-          <MuiAlert
-            onClose={handleClose}
-            severity="error"
-            elevation={6}
-            variant="filled"
-          >
-            {err?.statusCode}: {err?.message}
-          </MuiAlert>
-        </Snackbar>
-        <MasteryFilter
-          masteryLevels={masteryLevels}
-          onChange={handleSetMasteryLevels}
-        />
-        {masteryGrid}
-      </Container>
+          <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+            <MuiAlert
+              onClose={handleClose}
+              severity="error"
+              elevation={6}
+              variant="filled"
+            >
+              {err?.statusCode}: {err?.message}
+            </MuiAlert>
+          </Snackbar>
+          <MasteryFilter
+            masteryLevels={masteryLevels}
+            onChange={handleSetMasteryLevels}
+          />
+          {masteryGrid}
+        </Container>
+      </main>
     </Suspense>
   )
 }

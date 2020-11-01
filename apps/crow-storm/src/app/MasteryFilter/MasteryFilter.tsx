@@ -53,7 +53,7 @@ export default function MasteryFilter(props: {
   const classes = useStyles()
 
   const masteryLevelToggleButtons = possibleMasteryLevels.map((level) => (
-    <ToggleButton key={level} value={level}>
+    <ToggleButton key={level} value={level} aria-label={`Mastery Level ${level}`}>
       <Tooltip title={`Mastery Level ${level}`}>
         <img
           src={`/assets/images/Champion_Mastery_Level_${level}_Flair.png`}
@@ -70,7 +70,7 @@ export default function MasteryFilter(props: {
           size="small"
           value={masteryLevels}
           onChange={onChange}
-          aria-label="text alignment"
+          aria-label="Champion Mastery Level Filter"
         >
           {masteryLevelToggleButtons}
         </StyledToggleButtonGroup>

@@ -1,30 +1,30 @@
+import CircularProgress from '@material-ui/core/CircularProgress'
 import Container from '@material-ui/core/Container'
 import Snackbar from '@material-ui/core/Snackbar'
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
-import MuiAlert, { AlertProps } from '@material-ui/lab/Alert'
+import Typography from '@material-ui/core/Typography'
+import MuiAlert from '@material-ui/lab/Alert'
+import Skeleton from '@material-ui/lab/Skeleton'
 import {
   ChampionData,
   ChampionDataDragon,
   ChampionMasteryDTO,
   SummonerDTO,
 } from '@waffle-charm/api-interfaces'
-import React, { useEffect, useState } from 'react'
+import React, { lazy, Suspense, useEffect, useState } from 'react'
 import './app.scss'
 import CSSGrid from './CSSGrid/CSSGrid'
-import MasteryCard from './MasteryCard/MasteryCard'
 import MasteryFilter from './MasteryFilter/MasteryFilter'
 import PrimarySearchBar from './PrimarySearchBar/PrimarySearchBar'
+
+const MasteryCard = lazy(() => import('./MasteryCard/MasteryCard'))
 
 const SUMMONER_NAME_KEY = 'summonerName'
 const MASTERY_LEVELS = 'masteryLevels'
 const initialSummonerName = sessionStorage.getItem(SUMMONER_NAME_KEY) || ''
-const initialMasteryLevels = JSON.parse(
+const initialMasteryLevels: number[] = JSON.parse(
   sessionStorage.getItem(MASTERY_LEVELS) || '[5, 6, 7]'
 )
-
-function Alert(props: AlertProps) {
-  return <MuiAlert elevation={6} variant="filled" {...props} />
-}
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -32,9 +32,10 @@ const useStyles = makeStyles((theme: Theme) =>
       flexDirection: 'row',
       flexWrap: 'wrap',
       display: 'flex',
+      paddingTop: theme.spacing(1),
       flexGrow: 1,
       '& > *': {
-        margin: theme.spacing(1),
+        margin: theme.spacing(2, 0),
         width: '100%',
       },
     },
@@ -47,6 +48,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export const App = (): React.ReactElement => {
   const [open, setOpen] = useState(false)
+  const [sortAscending, setSortAscending] = useState(false)
   const [err, setErr] = useState<{ statusCode: number; message: string }>()
   const [summoner, setSummoner] = useState<SummonerDTO>()
   const [summonerName, setSummonerName] = useState(initialSummonerName)
@@ -152,49 +154,74 @@ export const App = (): React.ReactElement => {
     setOpen(false)
   }
 
+  const masteryGrid = masteryLevels
+    .sort((a, b) => (sortAscending ? a - b : b - a))
+    .map((level) => {
+      const masteryGroup = groupedMasteries?.[level]
+      const numberOfChampions = masteryGroup?.length || 0
+      return (
+        <div key={level}>
+          <Typography variant="h5" component="h2">
+            Mastery {level}
+          </Typography>
+          <Typography variant="caption" component="p">
+            {`${numberOfChampions} ${
+              numberOfChampions === 1 ? 'Champion' : 'Champions'
+            }`}
+          </Typography>
+          <div className={classes.root}>
+            <CSSGrid>
+              {masteryGroup?.map((mastery) => (
+                <Suspense
+                  key={mastery.championId}
+                  fallback={
+                    <div>
+                      <Skeleton variant="circle" width={40} height={40} />
+                      <Skeleton variant="text" />
+                    </div>
+                  }
+                >
+                  <MasteryCard
+                    mastery={mastery}
+                    champion={mappedData[mastery.championId]}
+                  />
+                </Suspense>
+              ))}
+            </CSSGrid>
+          </div>
+        </div>
+      )
+    })
+
   return (
-    <>
+    <Suspense fallback={<CircularProgress />}>
       <PrimarySearchBar
         query={summonerName}
         onQueryChange={handleSetSummonerName}
         onSearch={getSummoner}
       ></PrimarySearchBar>
-      <Container maxWidth="md">
-        <div>
-          <h1>Champion Mastery</h1>
-        </div>
+      <Container maxWidth="md" className={classes.root}>
+        <Typography variant="h4" component="h1">
+          Champion Mastery
+        </Typography>
+
         <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-          <Alert onClose={handleClose} severity="error">
+          <MuiAlert
+            onClose={handleClose}
+            severity="error"
+            elevation={6}
+            variant="filled"
+          >
             {err?.statusCode}: {err?.message}
-          </Alert>
+          </MuiAlert>
         </Snackbar>
         <MasteryFilter
           masteryLevels={masteryLevels}
           onChange={handleSetMasteryLevels}
         />
-        {Object.entries(groupedMasteries)
-          .sort(([a], [b]) => parseInt(b) - parseInt(a))
-          .map(([key, group]) => {
-            return masteryLevels.includes(parseInt(key)) ? (
-              <div key={key}>
-                <h2>Mastery {key}</h2>
-                <p>{group?.length} Champions</p>
-                <div className={classes.root}>
-                  <CSSGrid>
-                    {group?.map((mastery) => (
-                      <MasteryCard
-                        key={mastery.championId}
-                        mastery={mastery}
-                        champion={mappedData[mastery.championId]}
-                      />
-                    ))}
-                  </CSSGrid>
-                </div>
-              </div>
-            ) : null
-          })}
+        {masteryGrid}
       </Container>
-    </>
+    </Suspense>
   )
 }
 

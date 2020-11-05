@@ -4,7 +4,10 @@ import { createStyles, fade, makeStyles, Theme } from '@material-ui/core/styles'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import SearchIcon from '@material-ui/icons/Search'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+
+const SUMMONER_NAME_KEY = 'summonerName'
+const initialSummonerName = sessionStorage.getItem(SUMMONER_NAME_KEY) || ''
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -61,12 +64,28 @@ const useStyles = makeStyles((theme: Theme) =>
 )
 
 export default function PrimarySearchBar(props: {
-  onQueryChange: (event: React.ChangeEvent<HTMLInputElement>) => void
-  onSearch: (event: React.FormEvent<HTMLFormElement>) => void
-  query: string
+  onSearch: (
+    event: React.FormEvent<HTMLFormElement>,
+    summonerName: string
+  ) => void
 }): React.ReactElement {
-  const { onQueryChange, onSearch, query } = props
+  const { onSearch } = props
+
+  const [summonerName, setSummonerName] = useState(initialSummonerName)
+
   const classes = useStyles()
+
+  const handleSetSummonerName = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const { value } = event.target
+    setSummonerName(value)
+    sessionStorage.setItem(SUMMONER_NAME_KEY, value)
+  }
+
+  useEffect(() => {
+    onSearch(null, summonerName)
+  }, [])
 
   return (
     <div className={classes.grow}>
@@ -79,16 +98,16 @@ export default function PrimarySearchBar(props: {
             <div className={classes.searchIcon}>
               <SearchIcon />
             </div>
-            <form onSubmit={onSearch}>
+            <form onSubmit={(event) => onSearch(event, summonerName)}>
               <InputBase
                 placeholder="Search…"
                 classes={{
                   root: classes.inputRoot,
                   input: classes.inputInput,
                 }}
-                value={query}
+                value={summonerName}
                 inputProps={{ 'aria-label': 'summoner name search' }}
-                onChange={onQueryChange}
+                onChange={handleSetSummonerName}
               />
             </form>
           </div>

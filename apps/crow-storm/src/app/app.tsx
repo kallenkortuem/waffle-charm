@@ -12,7 +12,7 @@ import {
 import React, { Suspense, useEffect, useState } from 'react'
 import './app.scss'
 import MasteryFilter from './MasteryFilter/MasterFilter'
-import { MasteryGrid } from './MasteryGrid/MasteryGrid'
+import MasteryGridView from './MasteryGridView/MasteryGridView'
 import PrimarySearchBar from './PrimarySearchBar/PrimarySearchBar'
 
 /**
@@ -163,7 +163,7 @@ export const App = (): React.ReactElement => {
             layout={layout}
             onLayoutChange={handleLayoutChange}
           />
-          <MasteryGrid
+          <MasteryGridView
             masteries={masteries}
             masteryLevels={masteryLevels}
             championData={championData}

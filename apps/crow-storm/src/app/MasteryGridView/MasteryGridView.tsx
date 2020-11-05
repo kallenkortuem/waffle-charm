@@ -6,7 +6,7 @@ import {
 import React from 'react'
 import MasteryGroup from '../MasteryGroup/MasteryGroup'
 
-export const MasteryGrid = (props: {
+export const MasteryGridView = (props: {
   masteryLevels: number[]
   sortAscending: boolean
   championData: ChampionDataDragon
@@ -49,4 +49,4 @@ export const MasteryGrid = (props: {
   )
 }
 
-export default MasteryGrid
+export default MasteryGridView

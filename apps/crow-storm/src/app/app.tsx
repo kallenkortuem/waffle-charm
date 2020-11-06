@@ -171,7 +171,9 @@ export const App = (): React.ReactElement => {
               championData={championData}
               sortAscending={sortAscending}
             />
-          ) : <MasteryListView />}
+          ) : (
+            <MasteryListView />
+          )}
         </Container>
       </main>
     </Suspense>

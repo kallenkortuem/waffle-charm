@@ -13,6 +13,7 @@ import React, { Suspense, useEffect, useState } from 'react'
 import './app.scss'
 import MasteryFilter from './MasteryFilter/MasterFilter'
 import MasteryGridView from './MasteryGridView/MasteryGridView'
+import MasteryListView from './MasteryListView/MasteryListView'
 import PrimarySearchBar from './PrimarySearchBar/PrimarySearchBar'
 
 /**
@@ -163,12 +164,14 @@ export const App = (): React.ReactElement => {
             layout={layout}
             onLayoutChange={handleLayoutChange}
           />
-          <MasteryGridView
-            masteries={masteries}
-            masteryLevels={masteryLevels}
-            championData={championData}
-            sortAscending={sortAscending}
-          />
+          {layout === 'module' ? (
+            <MasteryGridView
+              masteries={masteries}
+              masteryLevels={masteryLevels}
+              championData={championData}
+              sortAscending={sortAscending}
+            />
+          ) : <MasteryListView />}
         </Container>
       </main>
     </Suspense>

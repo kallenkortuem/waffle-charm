@@ -172,7 +172,8 @@ export const App = (): React.ReactElement => {
               sortAscending={sortAscending}
             />
           ) : (
-            <MasteryListView />
+            'Work in progress'
+            // <MasteryListView />
           )}
         </Container>
       </main>

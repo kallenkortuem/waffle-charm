@@ -20,6 +20,6 @@ describe('App', () => {
   it('should have a greeting as the title', () => {
     const { getByText } = render(<App />)
 
-    expect(getByText('Welcome to crow-storm!')).toBeTruthy()
+    expect(getByText('Champion Mastery')).toBeTruthy()
   })
 })

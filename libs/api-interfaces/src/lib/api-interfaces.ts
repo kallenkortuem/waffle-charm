@@ -586,3 +586,129 @@ export interface MatchEventDto {
   buildingType?: string
   victimId?: number
 }
+
+/**
+ * This object contains single Champion Mastery information for player and champion combination.
+ */
+export interface ChampionMasteryDTO {
+  /**
+   * Number of points needed to achieve next level. Zero if player reached maximum champion level for this champion.
+   */
+  championPointsUntilNextLevel: number
+  /**
+   * Is chest granted for this champion or not in current season.
+   */
+  chestGranted: boolean
+  /**
+   * Champion ID for this entry.
+   */
+  championId: number
+  /**
+   * Last time this champion was played by this player - in Unix milliseconds time format.
+   */
+  lastPlayTime: number
+  /**
+   * Champion level for specified player and champion combination.
+   */
+  championLevel: number
+  /**
+   * Summoner ID for this entry. (Encrypted)
+   */
+  summonerId: string
+  /**
+   * Total number of champion points for this player and champion combination - they are used to determine championLevel.
+   */
+  championPoints: number
+  /**
+   * Number of points earned since current level has been achieved.
+   */
+  championPointsSinceLastLevel: number
+  /**
+   * The token earned for this champion to levelup.
+   */
+  tokensEarned: number
+}
+
+export interface ChampionDataDragon {
+  type: 'champion'
+  format: 'standAloneComplex'
+  version: '10.22.1'
+  data: {
+    [key: string]: ChampionData
+  }
+}
+
+export interface ChampionData {
+  version: string
+  /**
+   * Champion name that matches the key.
+   */
+  id: string
+  /**
+   * Champion number but represented as a string.
+   */
+  key: string
+  /**
+   * Champion name that matches the id.
+   */
+  name: string
+  title: string
+  blurb: string
+  info: ChampionInfo
+  image: ChampionImage
+  tags: Set<'Fighter' | 'Tank'>
+  partype: string
+  stats: ChampionStats
+}
+
+export interface ChampionImage {
+  /**
+   * File name with PNG extension
+   */
+  full: string
+  /**
+   * Sprit file name with PNG extension
+   */
+  sprite: string
+  group: 'champion'
+  x: 0
+  y: 0
+  /**
+   * Width in pixels
+   */
+  w: 48
+  /**
+   * Height in pixels
+   */
+  h: 48
+}
+
+export interface ChampionInfo {
+  attack: number
+  defense: number
+  magic: number
+  difficulty: number
+}
+
+export interface ChampionStats {
+  hp: number
+  hpperlevel: number
+  mp: number
+  mpperlevel: number
+  movespeed: number
+  armor: number
+  armorperlevel: number
+  spellblock: number
+  spellblockperlevel: number
+  attackrange: number
+  hpregen: number
+  hpregenperlevel: number
+  mpregen: number
+  mpregenperlevel: number
+  crit: number
+  critperlevel: number
+  attackdamage: number
+  attackdamageperlevel: number
+  attackspeedperlevel: number
+  attackspeed: number
+}

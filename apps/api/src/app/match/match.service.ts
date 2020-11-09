@@ -6,7 +6,7 @@ import { map } from 'rxjs/operators'
 
 @Injectable()
 export class MatchService {
-  private headers
+  private headers: any
   constructor(
     private configService: ConfigService,
     private httpService: HttpService

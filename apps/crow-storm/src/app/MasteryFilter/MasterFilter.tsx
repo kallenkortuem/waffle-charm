@@ -1,5 +1,4 @@
-import React from 'react'
-import { makeStyles } from '@material-ui/core/styles'
+import Grid from '@material-ui/core/Grid'
 import Tooltip from '@material-ui/core/Tooltip'
 import Filter1Icon from '@material-ui/icons/Filter1'
 import Filter2Icon from '@material-ui/icons/Filter2'
@@ -10,26 +9,25 @@ import Filter6Icon from '@material-ui/icons/Filter6'
 import Filter7Icon from '@material-ui/icons/Filter7'
 import ViewListIcon from '@material-ui/icons/ViewList'
 import ViewModuleIcon from '@material-ui/icons/ViewModule'
-import Grid from '@material-ui/core/Grid'
 import ToggleButton from '@material-ui/lab/ToggleButton'
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup'
+import React from 'react'
 
-const useStyles = makeStyles((theme) => ({
-  toggleContainer: {
-    margin: theme.spacing(2, 0),
-  },
-  rightContainer: {
-    margin: theme.spacing(2, 0),
-    display: 'flex',
-    flexDirection: 'row-reverse',
-  },
-}))
+const filterIcons = {
+  7: <Filter7Icon />,
+  6: <Filter6Icon />,
+  5: <Filter5Icon />,
+  4: <Filter4Icon />,
+  3: <Filter3Icon />,
+  2: <Filter2Icon />,
+  1: <Filter1Icon />,
+}
 
 export default function ToggleButtonNotEmpty(props: {
-  masteryLevels: number[]
+  masteryLevels: string[]
   onMasteryLevelsChange: (
     event: React.MouseEvent<HTMLElement>,
-    newFormats: number[]
+    newFormats: string[]
   ) => void
   layout: string
   onLayoutChange: (
@@ -39,75 +37,65 @@ export default function ToggleButtonNotEmpty(props: {
 }): React.ReactElement {
   const { masteryLevels, onMasteryLevelsChange, layout, onLayoutChange } = props
 
-  const classes = useStyles()
+  const buttons = React.useMemo(
+    () =>
+      Object.entries(filterIcons)
+        .sort(([a], [b]) => parseInt(b) - parseInt(a))
+        .map(([level, icon]) => {
+          const disabled =
+            masteryLevels.includes(level) && masteryLevels.length === 1
+          const label = `Mastery Level ${level}`
+          return (
+            <ToggleButton
+              key={level}
+              value={level}
+              aria-label={label}
+              disabled={disabled}
+            >
+              <Tooltip title={label}>{icon}</Tooltip>
+            </ToggleButton>
+          )
+        }),
+    [masteryLevels]
+  )
 
   return (
-    <Grid container spacing={2}>
-      <Grid item sm={12} md={6}>
-        <div className={classes.toggleContainer}>
-          <ToggleButtonGroup
-            value={masteryLevels}
-            onChange={onMasteryLevelsChange}
-            aria-label="Champion Mastery Level Filter"
-          >
-            <ToggleButton value={7} aria-label={`Mastery Level ${7}`}>
-              <Tooltip title={`Mastery Level ${7}`}>
-                <Filter7Icon />
-              </Tooltip>
-            </ToggleButton>
-            <ToggleButton value={6} aria-label={`Mastery Level ${6}`}>
-              <Tooltip title={`Mastery Level ${6}`}>
-                <Filter6Icon />
-              </Tooltip>
-            </ToggleButton>
-            <ToggleButton value={5} aria-label={`Mastery Level ${5}`}>
-              <Tooltip title={`Mastery Level ${5}`}>
-                <Filter5Icon />
-              </Tooltip>
-            </ToggleButton>
-            <ToggleButton value={4} aria-label={`Mastery Level ${4}`}>
-              <Tooltip title={`Mastery Level ${4}`}>
-                <Filter4Icon />
-              </Tooltip>
-            </ToggleButton>
-            <ToggleButton value={3} aria-label={`Mastery Level ${3}`}>
-              <Tooltip title={`Mastery Level ${3}`}>
-                <Filter3Icon />
-              </Tooltip>
-            </ToggleButton>
-            <ToggleButton value={2} aria-label={`Mastery Level ${2}`}>
-              <Tooltip title={`Mastery Level ${2}`}>
-                <Filter2Icon />
-              </Tooltip>
-            </ToggleButton>
-            <ToggleButton value={1} aria-label={`Mastery Level ${1}`}>
-              <Tooltip title={`Mastery Level ${1}`}>
-                <Filter1Icon />
-              </Tooltip>
-            </ToggleButton>
-          </ToggleButtonGroup>
-        </div>
+    <Grid container spacing={2} direction="row" justify="space-between">
+      <Grid item sm={6} md={6}>
+        <ToggleButtonGroup
+          value={masteryLevels}
+          onChange={onMasteryLevelsChange}
+          aria-label="Champion Mastery Level Filter"
+        >
+          {buttons}
+        </ToggleButtonGroup>
       </Grid>
-      <Grid item sm={12} md={6}>
-        <div className={classes.rightContainer}>
-          <ToggleButtonGroup
-            value={layout}
-            exclusive
-            onChange={onLayoutChange}
-            aria-label="Layout"
-          >
-            <ToggleButton value="list" aria-label="List">
-              <Tooltip title="List">
-                <ViewListIcon />
-              </Tooltip>
-            </ToggleButton>
-            <ToggleButton value="module" aria-label="Module">
-              <Tooltip title="Module">
-                <ViewModuleIcon />
-              </Tooltip>
-            </ToggleButton>
-          </ToggleButtonGroup>
-        </div>
+      <Grid
+        item
+        container
+        style={{ display: 'flex' }}
+        justify="flex-end"
+        direction="row"
+        sm={6}
+        md={3}
+      >
+        <ToggleButtonGroup
+          value={layout}
+          exclusive
+          onChange={onLayoutChange}
+          aria-label="Layout"
+        >
+          <ToggleButton value="list" aria-label="List">
+            <Tooltip title="List">
+              <ViewListIcon />
+            </Tooltip>
+          </ToggleButton>
+          <ToggleButton value="module" aria-label="Module">
+            <Tooltip title="Module">
+              <ViewModuleIcon />
+            </Tooltip>
+          </ToggleButton>
+        </ToggleButtonGroup>
       </Grid>
     </Grid>
   )

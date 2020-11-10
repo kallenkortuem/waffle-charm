@@ -2,12 +2,11 @@ import Avatar from '@material-ui/core/Avatar'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import CardHeader from '@material-ui/core/CardHeader'
+import LinearProgress from '@material-ui/core/LinearProgress'
+import { createStyles, Theme, withStyles } from '@material-ui/core/styles'
+import CheckCircleRoundedIcon from '@material-ui/icons/CheckCircleRounded'
 import { ChampionData, ChampionMasteryDTO } from '@waffle-charm/api-interfaces'
 import React from 'react'
-import { createStyles, withStyles, Theme } from '@material-ui/core/styles'
-import LinearProgress from '@material-ui/core/LinearProgress'
-import CheckCircleRoundedIcon from '@material-ui/icons/CheckCircleRounded'
-import CheckCircleOutlineRoundedIcon from '@material-ui/icons/CheckCircleOutlineRounded'
 
 const BorderLinearProgress = withStyles((theme: Theme) =>
   createStyles({
@@ -35,12 +34,6 @@ export default function MasteryCard(props: {
   champion: ChampionData
 }): React.ReactElement {
   const { champion, mastery } = props
-  const icons = (count: number) =>
-    mastery.tokensEarned >= count ? (
-      <CheckCircleRoundedIcon />
-    ) : (
-      <CheckCircleOutlineRoundedIcon />
-    )
 
   const src = `/cdn/10.22.1/img/champion/${champion?.image?.full}`
   const subheader = `Total Points: ${mastery?.championPoints.toLocaleString()}`
@@ -67,8 +60,12 @@ export default function MasteryCard(props: {
       <RightAlignedCardContent
         aria-label={`${mastery.tokensEarned} of 2 Tokens Earned`}
       >
-        {icons(2)}
-        {icons(1)}
+        <CheckCircleRoundedIcon
+          color={mastery.tokensEarned >= 1 ? 'primary' : 'disabled'}
+        />
+        <CheckCircleRoundedIcon
+          color={mastery.tokensEarned >= 2 ? 'primary' : 'disabled'}
+        />
       </RightAlignedCardContent>
     ) : null
   const levelSevenTokens =
@@ -76,9 +73,15 @@ export default function MasteryCard(props: {
       <RightAlignedCardContent
         aria-label={`${mastery.tokensEarned} of 3 Tokens Earned`}
       >
-        {icons(3)}
-        {icons(2)}
-        {icons(1)}
+        <CheckCircleRoundedIcon
+          color={mastery.tokensEarned >= 1 ? 'primary' : 'disabled'}
+        />
+        <CheckCircleRoundedIcon
+          color={mastery.tokensEarned >= 2 ? 'primary' : 'disabled'}
+        />
+        <CheckCircleRoundedIcon
+          color={mastery.tokensEarned >= 3 ? 'primary' : 'disabled'}
+        />
       </RightAlignedCardContent>
     ) : null
   return (

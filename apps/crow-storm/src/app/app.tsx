@@ -1,7 +1,14 @@
 import CircularProgress from '@material-ui/core/CircularProgress'
+import CssBaseline from '@material-ui/core/CssBaseline'
 import Container from '@material-ui/core/Container'
 import Snackbar from '@material-ui/core/Snackbar'
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
+import {
+  createMuiTheme,
+  createStyles,
+  makeStyles,
+  Theme,
+  ThemeProvider,
+} from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import MuiAlert from '@material-ui/lab/Alert'
 import {
@@ -13,7 +20,6 @@ import React, { Suspense, useEffect, useState } from 'react'
 import './app.scss'
 import MasteryFilter from './MasteryFilter/MasterFilter'
 import MasteryGridView from './MasteryGridView/MasteryGridView'
-import MasteryListView from './MasteryListView/MasteryListView'
 import PrimarySearchBar from './PrimarySearchBar/PrimarySearchBar'
 
 /**
@@ -25,8 +31,8 @@ const LAYOUT = 'layout'
 /**
  * Load initial values
  */
-const initialMasteryLevels: number[] = JSON.parse(
-  sessionStorage.getItem(MASTERY_LEVELS) || '[5, 6, 7]'
+const initialMasteryLevels: string[] = JSON.parse(
+  sessionStorage.getItem(MASTERY_LEVELS) || '["5", "6", "7"]'
 )
 const initialLayout = sessionStorage.getItem(LAYOUT) || 'module'
 
@@ -51,6 +57,12 @@ const useStyles = makeStyles((theme: Theme) =>
 )
 
 export const App = (): React.ReactElement => {
+  const darkTheme = createMuiTheme({
+    palette: {
+      type: 'dark',
+    },
+  })
+
   const [open, setOpen] = useState(false)
   const [layout, setLayout] = useState(initialLayout)
   const [sortAscending, setSortAscending] = useState(false)
@@ -73,7 +85,7 @@ export const App = (): React.ReactElement => {
 
   const handleSetMasteryLevels = (
     event: React.MouseEvent<HTMLElement>,
-    value: number[]
+    value: string[]
   ) => {
     setMasteryLevels(value)
     sessionStorage.setItem(MASTERY_LEVELS, JSON.stringify(value))
@@ -137,45 +149,53 @@ export const App = (): React.ReactElement => {
   }, [])
 
   return (
-    <Suspense fallback={<CircularProgress />}>
-      <PrimarySearchBar onSearch={handleSearchSummoner}></PrimarySearchBar>
-      <main>
-        <Container maxWidth="md" className={classes.root}>
-          <Typography variant="h4" component="h1">
-            Champion Mastery
-          </Typography>
+    <ThemeProvider theme={darkTheme}>
+      <CssBaseline>
+        <Suspense fallback={<CircularProgress />}>
+          <PrimarySearchBar onSearch={handleSearchSummoner}></PrimarySearchBar>
+          <main>
+            <Container maxWidth="md" className={classes.root}>
+              <Typography variant="h4" component="h1">
+                Champion Mastery
+              </Typography>
 
-          <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-            <MuiAlert
-              onClose={handleClose}
-              severity="error"
-              elevation={6}
-              variant="filled"
-            >
-              {err?.statusCode}: {err?.message}
-            </MuiAlert>
-          </Snackbar>
+              <Snackbar
+                open={open}
+                autoHideDuration={6000}
+                onClose={handleClose}
+              >
+                <MuiAlert
+                  onClose={handleClose}
+                  severity="error"
+                  elevation={6}
+                  variant="filled"
+                >
+                  {err?.statusCode}: {err?.message}
+                </MuiAlert>
+              </Snackbar>
 
-          <MasteryFilter
-            masteryLevels={masteryLevels}
-            onMasteryLevelsChange={handleSetMasteryLevels}
-            layout={layout}
-            onLayoutChange={handleLayoutChange}
-          />
-          {layout === 'module' ? (
-            <MasteryGridView
-              masteries={masteries}
-              masteryLevels={masteryLevels}
-              championData={championData}
-              sortAscending={sortAscending}
-            />
-          ) : (
-            'Work in progress'
-            // <MasteryListView />
-          )}
-        </Container>
-      </main>
-    </Suspense>
+              <MasteryFilter
+                masteryLevels={masteryLevels}
+                onMasteryLevelsChange={handleSetMasteryLevels}
+                layout={layout}
+                onLayoutChange={handleLayoutChange}
+              />
+              {layout === 'module' ? (
+                <MasteryGridView
+                  masteries={masteries}
+                  masteryLevels={masteryLevels}
+                  championData={championData}
+                  sortAscending={sortAscending}
+                />
+              ) : (
+                'Work in progress'
+                // <MasteryListView />
+              )}
+            </Container>
+          </main>
+        </Suspense>
+      </CssBaseline>
+    </ThemeProvider>
   )
 }
 

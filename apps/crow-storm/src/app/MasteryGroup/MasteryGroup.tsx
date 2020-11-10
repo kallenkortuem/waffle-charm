@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme: Theme) =>
 )
 
 export const MasteryGroup = (props: {
-  level: number
+  level: string
   groupedMasteries: Record<number, ChampionMasteryDTO[]>
   mappedData: Record<number, ChampionData>
 }): React.ReactElement => {

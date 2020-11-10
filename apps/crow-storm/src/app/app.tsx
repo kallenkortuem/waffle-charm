@@ -124,9 +124,7 @@ export const App = (): React.ReactElement => {
   }, [summoner])
 
   useEffect(() => {
-    fetch(
-      `/cdn/10.22.1/data/en_US/champion.json`
-    )
+    fetch(`/cdn/10.22.1/data/en_US/champion.json`)
       .then((_) => _.json())
       .then((value) => {
         if (value && !value.statusCode) {

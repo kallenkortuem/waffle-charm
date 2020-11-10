@@ -125,7 +125,7 @@ export const App = (): React.ReactElement => {
 
   useEffect(() => {
     fetch(
-      `http://ddragon.leagueoflegends.com/cdn/10.22.1/data/en_US/champion.json`
+      `/cdn/10.22.1/data/en_US/champion.json`
     )
       .then((_) => _.json())
       .then((value) => {

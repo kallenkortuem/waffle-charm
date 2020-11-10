@@ -42,7 +42,7 @@ export default function MasteryCard(props: {
       <CheckCircleOutlineRoundedIcon />
     )
 
-  const src = `http://ddragon.leagueoflegends.com/cdn/10.22.1/img/champion/${champion?.image?.full}`
+  const src = `/cdn/10.22.1/img/champion/${champion?.image?.full}`
   const subheader = `Total Points: ${mastery?.championPoints.toLocaleString()}`
   const totalInLevel =
     mastery?.championPointsSinceLastLevel +

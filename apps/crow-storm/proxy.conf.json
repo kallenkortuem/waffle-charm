@@ -4,6 +4,8 @@
     "secure": false
   },
   "/cdn": {
-    "target": "http://ddragon.leagueoflegends.com"
+    "target": "http://ddragon.leagueoflegends.com",
+    "secure": false,
+    "changeOrigin": true
   }
 }

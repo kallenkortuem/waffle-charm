@@ -2,6 +2,7 @@ import { render } from '@testing-library/react'
 import { enableFetchMocks } from 'jest-fetch-mock'
 import React from 'react'
 import App from './app'
+import './i18n'
 
 enableFetchMocks()
 

@@ -5,9 +5,16 @@ import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import SearchIcon from '@material-ui/icons/Search'
 import React, { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { useLocation, useHistory } from 'react-router-dom'
 
 const SUMMONER_NAME_KEY = 'summonerName'
-const initialSummonerName = sessionStorage.getItem(SUMMONER_NAME_KEY) || ''
+
+// A custom hook that builds on useLocation to parse
+// the query string for you.
+function useQuery() {
+  return new URLSearchParams(useLocation().search)
+}
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -69,9 +76,14 @@ export default function PrimarySearchBar(props: {
     summonerName: string
   ) => void
 }): React.ReactElement {
+  const { t } = useTranslation()
   const { onSearch } = props
+  const query = useQuery()
+  const history = useHistory()
 
-  const [summonerName, setSummonerName] = useState(initialSummonerName)
+  const [summonerName, setSummonerName] = useState(
+    query.get(SUMMONER_NAME_KEY) ?? ''
+  )
 
   const classes = useStyles()
 
@@ -80,7 +92,7 @@ export default function PrimarySearchBar(props: {
   ) => {
     const { value } = event.target
     setSummonerName(value)
-    sessionStorage.setItem(SUMMONER_NAME_KEY, value)
+    history.push(`/?${SUMMONER_NAME_KEY}=${value}`)
   }
 
   useEffect(() => {
@@ -100,13 +112,13 @@ export default function PrimarySearchBar(props: {
             </div>
             <form onSubmit={(event) => onSearch(event, summonerName)}>
               <InputBase
-                placeholder="Search…"
+                placeholder={t('searchPlaceholder')}
                 classes={{
                   root: classes.inputRoot,
                   input: classes.inputInput,
                 }}
                 value={summonerName}
-                inputProps={{ 'aria-label': 'summoner name search' }}
+                inputProps={{ 'aria-label': t('searchPlaceholder') }}
                 onChange={handleSetSummonerName}
               />
             </form>

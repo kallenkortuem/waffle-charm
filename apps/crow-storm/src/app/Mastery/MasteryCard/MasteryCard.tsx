@@ -2,13 +2,12 @@ import Avatar from '@material-ui/core/Avatar'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import CardHeader from '@material-ui/core/CardHeader'
+import LinearProgress from '@material-ui/core/LinearProgress'
+import { createStyles, Theme, withStyles } from '@material-ui/core/styles'
+import CheckCircleRoundedIcon from '@material-ui/icons/CheckCircleRounded'
 import { ChampionData, ChampionMasteryDTO } from '@waffle-charm/api-interfaces'
 import React from 'react'
-import { createStyles, withStyles, Theme } from '@material-ui/core/styles'
-import LinearProgress from '@material-ui/core/LinearProgress'
-import CheckCircleRoundedIcon from '@material-ui/icons/CheckCircleRounded'
-import CheckCircleOutlineRoundedIcon from '@material-ui/icons/CheckCircleOutlineRounded'
-
+import { useTranslation } from 'react-i18next'
 const BorderLinearProgress = withStyles((theme: Theme) =>
   createStyles({
     root: {
@@ -35,15 +34,11 @@ export default function MasteryCard(props: {
   champion: ChampionData
 }): React.ReactElement {
   const { champion, mastery } = props
-  const icons = (count: number) =>
-    mastery.tokensEarned >= count ? (
-      <CheckCircleRoundedIcon />
-    ) : (
-      <CheckCircleOutlineRoundedIcon />
-    )
-
+  const { t } = useTranslation()
   const src = `/cdn/10.22.1/img/champion/${champion?.image?.full}`
-  const subheader = `Total Points: ${mastery?.championPoints.toLocaleString()}`
+  const subheader = t('totalMasteryPoints', {
+    points: mastery?.championPoints?.toLocaleString() ?? 0,
+  })
   const totalInLevel =
     mastery?.championPointsSinceLastLevel +
     mastery?.championPointsUntilNextLevel
@@ -56,35 +51,58 @@ export default function MasteryCard(props: {
         <BorderLinearProgress
           value={progress}
           variant="determinate"
-          aria-label={`${progress}% progress towards mastery level ${
-            mastery.championLevel + 1
-          }`}
+          aria-label={t('percentMasteryProgress', {
+            percent: progress ?? 0,
+            level: mastery.championLevel + 1,
+          })}
         ></BorderLinearProgress>
       </CardContent>
     ) : null
   const levelSixTokens =
     mastery.championLevel === 5 ? (
       <RightAlignedCardContent
-        aria-label={`${mastery.tokensEarned} of 2 Tokens Earned`}
+        aria-label={t('tokenMasteryProgress', {
+          earned: mastery.tokensEarned,
+          total: 2,
+        })}
       >
-        {icons(2)}
-        {icons(1)}
+        <CheckCircleRoundedIcon
+          color={mastery.tokensEarned >= 1 ? 'primary' : 'disabled'}
+        />
+        <CheckCircleRoundedIcon
+          color={mastery.tokensEarned >= 2 ? 'primary' : 'disabled'}
+        />
       </RightAlignedCardContent>
     ) : null
   const levelSevenTokens =
     mastery.championLevel === 6 ? (
       <RightAlignedCardContent
-        aria-label={`${mastery.tokensEarned} of 3 Tokens Earned`}
+        aria-label={t('tokenMasteryProgress', {
+          earned: mastery.tokensEarned,
+          total: 3,
+        })}
       >
-        {icons(3)}
-        {icons(2)}
-        {icons(1)}
+        <CheckCircleRoundedIcon
+          color={mastery.tokensEarned >= 1 ? 'primary' : 'disabled'}
+        />
+        <CheckCircleRoundedIcon
+          color={mastery.tokensEarned >= 2 ? 'primary' : 'disabled'}
+        />
+        <CheckCircleRoundedIcon
+          color={mastery.tokensEarned >= 3 ? 'primary' : 'disabled'}
+        />
       </RightAlignedCardContent>
     ) : null
   return (
     <Card>
       <CardHeader
-        avatar={<Avatar alt="" src={src} />}
+        avatar={
+          <Avatar
+            alt=""
+            imgProps={{ width: '40px', height: '40px' }}
+            src={src}
+          />
+        }
         title={champion?.name}
         subheader={subheader}
       />

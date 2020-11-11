@@ -12,12 +12,7 @@ import PrimarySearchBar from './PrimarySearchBar/PrimarySearchBar'
 const Mastery = React.lazy(() => import('./Mastery/Mastery'))
 
 export const App = (): React.ReactElement => {
-  const darkTheme = createMuiTheme({
-    palette: {
-      type: 'dark',
-    },
-  })
-
+  const [darkMode, setDarkMode] = React.useState(false)
   const [open, setOpen] = React.useState(false)
   const [err, setErr] = React.useState<{
     statusCode: number
@@ -34,6 +29,21 @@ export const App = (): React.ReactElement => {
     setOpen(false)
   }
 
+  const handleApiError = (value: { statusCode: number; message: string }) => {
+    setOpen(true)
+    setErr(value)
+  }
+
+  const darkTheme = React.useMemo(
+    () =>
+      createMuiTheme({
+        palette: {
+          type: darkMode ? 'dark' : 'light',
+        },
+      }),
+    [darkMode]
+  )
+
   const handleSearchSummoner = (
     event: React.FormEvent<HTMLFormElement>,
     summonerName: string
@@ -47,16 +57,15 @@ export const App = (): React.ReactElement => {
           if (value && !value.statusCode) {
             setSummoner(value)
           } else {
-            setOpen(true)
-            setErr(value)
+            handleApiError(value)
+          }
+        })
+        .catch((error) => {
+          if (error?.statusCode) {
+            handleApiError(error)
           }
         })
     }
-  }
-
-  const handleApiError = (value: { statusCode: number; message: string }) => {
-    setOpen(true)
-    setErr(value)
   }
 
   React.useEffect(() => {

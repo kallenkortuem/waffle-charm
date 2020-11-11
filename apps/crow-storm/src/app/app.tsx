@@ -73,24 +73,26 @@ export const App = (): React.ReactElement => {
   }, [])
 
   return (
-    <ThemeProvider theme={darkTheme}>
-      <CssBaseline>
-        <Suspense fallback={<CircularProgress />}>
-          <PrimarySearchBar onSearch={handleSearchSummoner}></PrimarySearchBar>
-          <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-            <MuiAlert
-              onClose={handleClose}
-              severity="error"
-              elevation={6}
-              variant="filled"
-            >
-              {err?.statusCode}: {err?.message}
-            </MuiAlert>
-          </Snackbar>
-          {/**
-           * Routes
-           */}
-          <Router>
+    <Router>
+      <ThemeProvider theme={darkTheme}>
+        <CssBaseline>
+          <Suspense fallback={<CircularProgress />}>
+            <PrimarySearchBar
+              onSearch={handleSearchSummoner}
+            ></PrimarySearchBar>
+            <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+              <MuiAlert
+                onClose={handleClose}
+                severity="error"
+                elevation={6}
+                variant="filled"
+              >
+                {err?.statusCode}: {err?.message}
+              </MuiAlert>
+            </Snackbar>
+            {/**
+             * Routes
+             */}
             <Switch>
               <Route path="/">
                 <Mastery
@@ -100,10 +102,10 @@ export const App = (): React.ReactElement => {
                 />
               </Route>
             </Switch>
-          </Router>
-        </Suspense>
-      </CssBaseline>
-    </ThemeProvider>
+          </Suspense>
+        </CssBaseline>
+      </ThemeProvider>
+    </Router>
   )
 }
 

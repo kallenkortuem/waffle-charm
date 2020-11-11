@@ -96,7 +96,13 @@ export default function MasteryCard(props: {
   return (
     <Card>
       <CardHeader
-        avatar={<Avatar alt="" src={src} />}
+        avatar={
+          <Avatar
+            alt=""
+            imgProps={{ width: '40px', height: '40px' }}
+            src={src}
+          />
+        }
         title={champion?.name}
         subheader={subheader}
       />

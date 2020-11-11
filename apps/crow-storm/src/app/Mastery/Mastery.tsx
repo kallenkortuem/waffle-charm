@@ -77,7 +77,7 @@ export const Mastery = (props: {
   useEffect(() => {
     if (!summonerId) {
       setMasteries([])
-      return;
+      return
     }
 
     fetch(`/api/mastery/by-summoner/${summonerId}`)

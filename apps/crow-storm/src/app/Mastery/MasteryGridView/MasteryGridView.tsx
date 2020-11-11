@@ -1,7 +1,7 @@
 import {
   ChampionData,
   ChampionDataDragon,
-  ChampionMasteryDTO
+  ChampionMasteryDTO,
 } from '@waffle-charm/api-interfaces'
 import React from 'react'
 import MasteryGridGroup from '../MasteryGridGroup/MasteryGridGroup'

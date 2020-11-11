@@ -17,7 +17,10 @@ export const App = (): React.ReactElement => {
   })
 
   const [open, setOpen] = React.useState(false)
-  const [err, setErr] = React.useState<{ statusCode: number; message: string }>()
+  const [err, setErr] = React.useState<{
+    statusCode: number
+    message: string
+  }>()
   const [summoner, setSummoner] = React.useState<SummonerDTO>()
   const [championData, setChampionData] = React.useState<ChampionDataDragon>()
 
@@ -83,12 +86,11 @@ export const App = (): React.ReactElement => {
             </MuiAlert>
           </Snackbar>
 
-            <Mastery
-              championData={championData}
-              summonerId={summoner?.id}
-              onError={handleApiError}
-            />
-     
+          <Mastery
+            championData={championData}
+            summonerId={summoner?.id}
+            onError={handleApiError}
+          />
         </Suspense>
       </CssBaseline>
     </ThemeProvider>

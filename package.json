@@ -58,7 +58,6 @@
     "document-register-element": "1.14.10",
     "fontsource-roboto": "^3.0.3",
     "i18next": "^19.8.3",
-    "next": "9.5.5",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
     "react-i18next": "^11.7.3",

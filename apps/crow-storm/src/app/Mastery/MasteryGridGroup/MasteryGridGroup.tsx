@@ -1,7 +1,7 @@
 import Typography from '@material-ui/core/Typography'
 import Skeleton from '@material-ui/lab/Skeleton'
 import React, { lazy, Suspense } from 'react'
-import CSSGrid from '../CSSGrid/CSSGrid'
+import CSSGrid from '../../CSSGrid/CSSGrid'
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
 import { ChampionData, ChampionMasteryDTO } from '@waffle-charm/api-interfaces'
 import { useTranslation } from 'react-i18next'
@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-export const MasteryGroup = (props: {
+export const MasteryGridGroup = (props: {
   level: string
   groupedMasteries: Record<number, ChampionMasteryDTO[]>
   mappedData: Record<number, ChampionData>
@@ -72,4 +72,4 @@ export const MasteryGroup = (props: {
   )
 }
 
-export default MasteryGroup
+export default MasteryGridGroup

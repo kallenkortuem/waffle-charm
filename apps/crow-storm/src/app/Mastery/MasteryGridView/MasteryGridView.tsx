@@ -1,10 +1,10 @@
 import {
   ChampionData,
   ChampionDataDragon,
-  ChampionMasteryDTO,
+  ChampionMasteryDTO
 } from '@waffle-charm/api-interfaces'
 import React from 'react'
-import MasteryGroup from '../MasteryGroup/MasteryGroup'
+import MasteryGridGroup from '../MasteryGridGroup/MasteryGridGroup'
 
 export const MasteryGridView = (props: {
   masteryLevels: string[]
@@ -47,12 +47,12 @@ export const MasteryGridView = (props: {
         )
         .map((level) => {
           return (
-            <MasteryGroup
+            <MasteryGridGroup
               key={level}
               level={level}
               groupedMasteries={groupedMasteries}
               mappedData={mappedData}
-            ></MasteryGroup>
+            ></MasteryGridGroup>
           )
         })}
     </>

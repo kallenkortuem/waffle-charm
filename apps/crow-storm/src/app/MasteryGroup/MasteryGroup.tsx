@@ -4,6 +4,7 @@ import React, { lazy, Suspense } from 'react'
 import CSSGrid from '../CSSGrid/CSSGrid'
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
 import { ChampionData, ChampionMasteryDTO } from '@waffle-charm/api-interfaces'
+import { useTranslation } from 'react-i18next'
 
 const MasteryCard = lazy(() => import('../MasteryCard/MasteryCard'))
 
@@ -33,7 +34,7 @@ export const MasteryGroup = (props: {
   mappedData: Record<number, ChampionData>
 }): React.ReactElement => {
   const { level, groupedMasteries, mappedData } = props
-
+  const { t } = useTranslation()
   const classes = useStyles()
 
   const masteryGroup = groupedMasteries?.[level]
@@ -42,12 +43,10 @@ export const MasteryGroup = (props: {
   return (
     <div key={level}>
       <Typography variant="h5" component="h2">
-        Mastery {level}
+        {t("mastery")} {level}
       </Typography>
       <Typography variant="caption" component="p">
-        {`${numberOfChampions} ${
-          numberOfChampions === 1 ? 'Champion' : 'Champions'
-        }`}
+        {t('championWithCount', { count: numberOfChampions ?? 0 })}
       </Typography>
       <div className={classes.root}>
         <CSSGrid>

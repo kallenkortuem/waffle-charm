@@ -7,7 +7,7 @@ import { createStyles, Theme, withStyles } from '@material-ui/core/styles'
 import CheckCircleRoundedIcon from '@material-ui/icons/CheckCircleRounded'
 import { ChampionData, ChampionMasteryDTO } from '@waffle-charm/api-interfaces'
 import React from 'react'
-
+import { useTranslation } from 'react-i18next'
 const BorderLinearProgress = withStyles((theme: Theme) =>
   createStyles({
     root: {
@@ -34,9 +34,11 @@ export default function MasteryCard(props: {
   champion: ChampionData
 }): React.ReactElement {
   const { champion, mastery } = props
-
+  const { t } = useTranslation()
   const src = `/cdn/10.22.1/img/champion/${champion?.image?.full}`
-  const subheader = `Total Points: ${mastery?.championPoints.toLocaleString()}`
+  const subheader = t('totalMasteryPoints', {
+    points: mastery?.championPoints?.toLocaleString() ?? 0,
+  })
   const totalInLevel =
     mastery?.championPointsSinceLastLevel +
     mastery?.championPointsUntilNextLevel
@@ -49,16 +51,17 @@ export default function MasteryCard(props: {
         <BorderLinearProgress
           value={progress}
           variant="determinate"
-          aria-label={`${progress}% progress towards mastery level ${
-            mastery.championLevel + 1
-          }`}
+          aria-label={t('percentMasteryProgress', {
+            percent: progress ?? 0,
+            level: mastery.championLevel + 1,
+          })}
         ></BorderLinearProgress>
       </CardContent>
     ) : null
   const levelSixTokens =
     mastery.championLevel === 5 ? (
       <RightAlignedCardContent
-        aria-label={`${mastery.tokensEarned} of 2 Tokens Earned`}
+        aria-label={t('tokenMasteryProgress', { earned: mastery.tokensEarned, total: 2 })}
       >
         <CheckCircleRoundedIcon
           color={mastery.tokensEarned >= 1 ? 'primary' : 'disabled'}
@@ -71,7 +74,7 @@ export default function MasteryCard(props: {
   const levelSevenTokens =
     mastery.championLevel === 6 ? (
       <RightAlignedCardContent
-        aria-label={`${mastery.tokensEarned} of 3 Tokens Earned`}
+        aria-label={t('tokenMasteryProgress', { earned: mastery.tokensEarned, total: 3 })}
       >
         <CheckCircleRoundedIcon
           color={mastery.tokensEarned >= 1 ? 'primary' : 'disabled'}

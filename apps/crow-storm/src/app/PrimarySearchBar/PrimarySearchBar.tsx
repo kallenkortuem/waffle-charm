@@ -5,6 +5,7 @@ import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import SearchIcon from '@material-ui/icons/Search'
 import React, { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 const SUMMONER_NAME_KEY = 'summonerName'
 const initialSummonerName = sessionStorage.getItem(SUMMONER_NAME_KEY) || ''
@@ -69,6 +70,7 @@ export default function PrimarySearchBar(props: {
     summonerName: string
   ) => void
 }): React.ReactElement {
+  const { t } = useTranslation()
   const { onSearch } = props
 
   const [summonerName, setSummonerName] = useState(initialSummonerName)
@@ -100,13 +102,13 @@ export default function PrimarySearchBar(props: {
             </div>
             <form onSubmit={(event) => onSearch(event, summonerName)}>
               <InputBase
-                placeholder="Search…"
+                placeholder={t('searchPlaceholder')}
                 classes={{
                   root: classes.inputRoot,
                   input: classes.inputInput,
                 }}
                 value={summonerName}
-                inputProps={{ 'aria-label': 'summoner name search' }}
+                inputProps={{ 'aria-label': t('searchPlaceholder') }}
                 onChange={handleSetSummonerName}
               />
             </form>

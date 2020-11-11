@@ -12,6 +12,7 @@ import ViewModuleIcon from '@material-ui/icons/ViewModule'
 import ToggleButton from '@material-ui/lab/ToggleButton'
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup'
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 
 const filterIcons = {
   7: <Filter7Icon />,
@@ -36,7 +37,7 @@ export default function ToggleButtonNotEmpty(props: {
   ) => void
 }): React.ReactElement {
   const { masteryLevels, onMasteryLevelsChange, layout, onLayoutChange } = props
-
+  const { t } = useTranslation()
   const buttons = React.useMemo(
     () =>
       Object.entries(filterIcons)
@@ -44,7 +45,7 @@ export default function ToggleButtonNotEmpty(props: {
         .map(([level, icon]) => {
           const disabled =
             masteryLevels.includes(level) && masteryLevels.length === 1
-          const label = `Mastery Level ${level}`
+          const label = t('masteryLevelNumber', { level })
           return (
             <ToggleButton
               key={level}
@@ -56,7 +57,7 @@ export default function ToggleButtonNotEmpty(props: {
             </ToggleButton>
           )
         }),
-    [masteryLevels]
+    [masteryLevels, t]
   )
 
   return (
@@ -65,7 +66,7 @@ export default function ToggleButtonNotEmpty(props: {
         <ToggleButtonGroup
           value={masteryLevels}
           onChange={onMasteryLevelsChange}
-          aria-label="Champion Mastery Level Filter"
+          aria-label={t('masteryLevelFilter')}
         >
           {buttons}
         </ToggleButtonGroup>
@@ -83,15 +84,15 @@ export default function ToggleButtonNotEmpty(props: {
           value={layout}
           exclusive
           onChange={onLayoutChange}
-          aria-label="Layout"
+          aria-label={t('layout')}
         >
-          <ToggleButton value="list" aria-label="List">
-            <Tooltip title="List">
+          <ToggleButton value="list" aria-label={t('list')}>
+            <Tooltip title={t('list')}>
               <ViewListIcon />
             </Tooltip>
           </ToggleButton>
-          <ToggleButton value="module" aria-label="Module">
-            <Tooltip title="Module">
+          <ToggleButton value="module" aria-label={t('module')}>
+            <Tooltip title={t('module')}>
               <ViewModuleIcon />
             </Tooltip>
           </ToggleButton>

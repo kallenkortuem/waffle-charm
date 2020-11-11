@@ -1,6 +1,6 @@
 import CircularProgress from '@material-ui/core/CircularProgress'
-import CssBaseline from '@material-ui/core/CssBaseline'
 import Container from '@material-ui/core/Container'
+import CssBaseline from '@material-ui/core/CssBaseline'
 import Snackbar from '@material-ui/core/Snackbar'
 import {
   createMuiTheme,
@@ -17,6 +17,7 @@ import {
   SummonerDTO,
 } from '@waffle-charm/api-interfaces'
 import React, { Suspense, useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import './app.scss'
 import MasteryFilter from './MasteryFilter/MasterFilter'
 import MasteryGridView from './MasteryGridView/MasteryGridView'
@@ -72,7 +73,7 @@ export const App = (): React.ReactElement => {
   const [masteries, setMasteries] = useState<ChampionMasteryDTO[]>([])
   const [championData, setChampionData] = useState<ChampionDataDragon>()
   const [masteryLevels, setMasteryLevels] = useState(() => initialMasteryLevels)
-
+  const { t } = useTranslation()
   const classes = useStyles()
 
   const handleLayoutChange = (
@@ -156,7 +157,7 @@ export const App = (): React.ReactElement => {
           <main>
             <Container maxWidth="md" className={classes.root}>
               <Typography variant="h4" component="h1">
-                Champion Mastery
+                {t('championMastery')}
               </Typography>
 
               <Snackbar
@@ -188,7 +189,7 @@ export const App = (): React.ReactElement => {
                   sortAscending={sortAscending}
                 />
               ) : (
-                'Work in progress'
+                t('inProgress')
                 // <MasteryListView />
               )}
             </Container>

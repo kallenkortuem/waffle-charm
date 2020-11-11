@@ -5,8 +5,10 @@ import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
 import MuiAlert from '@material-ui/lab/Alert'
 import { ChampionDataDragon, SummonerDTO } from '@waffle-charm/api-interfaces'
 import React, { Suspense } from 'react'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import './app.scss'
 import PrimarySearchBar from './PrimarySearchBar/PrimarySearchBar'
+
 const Mastery = React.lazy(() => import('./Mastery/Mastery'))
 
 export const App = (): React.ReactElement => {
@@ -85,12 +87,20 @@ export const App = (): React.ReactElement => {
               {err?.statusCode}: {err?.message}
             </MuiAlert>
           </Snackbar>
-
-          <Mastery
-            championData={championData}
-            summonerId={summoner?.id}
-            onError={handleApiError}
-          />
+          {/**
+           * Routes
+           */}
+          <Router>
+            <Switch>
+              <Route path="/">
+                <Mastery
+                  championData={championData}
+                  summonerId={summoner?.id}
+                  onError={handleApiError}
+                />
+              </Route>
+            </Switch>
+          </Router>
         </Suspense>
       </CssBaseline>
     </ThemeProvider>

@@ -61,7 +61,10 @@ export default function MasteryCard(props: {
   const levelSixTokens =
     mastery.championLevel === 5 ? (
       <RightAlignedCardContent
-        aria-label={t('tokenMasteryProgress', { earned: mastery.tokensEarned, total: 2 })}
+        aria-label={t('tokenMasteryProgress', {
+          earned: mastery.tokensEarned,
+          total: 2,
+        })}
       >
         <CheckCircleRoundedIcon
           color={mastery.tokensEarned >= 1 ? 'primary' : 'disabled'}
@@ -74,7 +77,10 @@ export default function MasteryCard(props: {
   const levelSevenTokens =
     mastery.championLevel === 6 ? (
       <RightAlignedCardContent
-        aria-label={t('tokenMasteryProgress', { earned: mastery.tokensEarned, total: 3 })}
+        aria-label={t('tokenMasteryProgress', {
+          earned: mastery.tokensEarned,
+          total: 3,
+        })}
       >
         <CheckCircleRoundedIcon
           color={mastery.tokensEarned >= 1 ? 'primary' : 'disabled'}

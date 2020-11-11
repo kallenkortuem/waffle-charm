@@ -43,7 +43,7 @@ export const MasteryGroup = (props: {
   return (
     <div key={level}>
       <Typography variant="h5" component="h2">
-        {t("mastery")} {level}
+        {t('mastery')} {level}
       </Typography>
       <Typography variant="caption" component="p">
         {t('championWithCount', { count: numberOfChampions ?? 0 })}

@@ -12,7 +12,7 @@ import PrimarySearchBar from './PrimarySearchBar/PrimarySearchBar'
 const Mastery = React.lazy(() => import('./Mastery/Mastery'))
 
 export const App = (): React.ReactElement => {
-  const [darkMode, setDarkMode] = React.useState(false)
+  const [darkMode, setDarkMode] = React.useState(true)
   const [open, setOpen] = React.useState(false)
   const [err, setErr] = React.useState<{
     statusCode: number
@@ -20,6 +20,10 @@ export const App = (): React.ReactElement => {
   }>()
   const [summoner, setSummoner] = React.useState<SummonerDTO>()
   const [championData, setChampionData] = React.useState<ChampionDataDragon>()
+
+  const handleToggleDarkTheme = () => {
+    setDarkMode(!darkMode)
+  }
 
   const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
     if (reason === 'clickaway') {
@@ -88,6 +92,7 @@ export const App = (): React.ReactElement => {
           <Suspense fallback={<CircularProgress />}>
             <PrimarySearchBar
               onSearch={handleSearchSummoner}
+              onToggleTheme={handleToggleDarkTheme}
             ></PrimarySearchBar>
             <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
               <MuiAlert

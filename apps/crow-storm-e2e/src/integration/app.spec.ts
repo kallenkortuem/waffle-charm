@@ -17,7 +17,7 @@ describe('crow-storm', () => {
       expect($body).to.have.css('color', 'rgb(255, 255, 255)')
     })
 
-    getDarkModeToggle().focus().type('{enter}').blur()
+    getDarkModeToggle().click()
 
     getBody().should(($body) => {
       expect($body).to.have.css('background-color', 'rgb(250, 250, 250)')

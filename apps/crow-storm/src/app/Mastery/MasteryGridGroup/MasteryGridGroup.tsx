@@ -41,7 +41,7 @@ export const MasteryGridGroup = (props: {
   const numberOfChampions = masteryGroup?.length || 0
 
   return (
-    <div key={level}>
+    <div key={level} data-cy={`mastery-grid-group-${level}`}>
       <Typography variant="h5" component="h2">
         {t('mastery')} {level}
       </Typography>

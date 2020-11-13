@@ -5,7 +5,7 @@ import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 import { createStyles, fade, makeStyles, Theme } from '@material-ui/core/styles'
 import Toolbar from '@material-ui/core/Toolbar'
-import ToolTip from '@material-ui/core/ToolTip'
+import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
 import BrightnessMediumIcon from '@material-ui/icons/BrightnessMedium'
 import MoreIcon from '@material-ui/icons/MoreVert'
@@ -181,7 +181,7 @@ export default function PrimarySearchBar(props: {
           </div>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            <ToolTip
+            <Tooltip
               title={t('toggleDarkTheme')}
               aria-label={t('toggleDarkTheme')}
             >
@@ -193,7 +193,7 @@ export default function PrimarySearchBar(props: {
               >
                 <BrightnessMediumIcon />
               </IconButton>
-            </ToolTip>
+            </Tooltip>
           </div>
           <div className={classes.sectionMobile}>
             <IconButton

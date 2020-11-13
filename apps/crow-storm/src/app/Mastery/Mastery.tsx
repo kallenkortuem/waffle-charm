@@ -36,7 +36,15 @@ export const Mastery = (props: {
   const { t } = useTranslation()
   const classes = useStyles()
 
-  const [masteryLevels, setMasteryLevels] = useState(() => ["1", "2", "3", "4", "5", "6", "7"])
+  const [masteryLevels, setMasteryLevels] = useState(() => [
+    '1',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+  ])
   const [masteries, setMasteries] = useState<ChampionMasteryDTO[]>([])
   const [layout, setLayout] = useState('module')
   const [sortAscending] = useState(false)

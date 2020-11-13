@@ -87,12 +87,20 @@ export default function ToggleButtonNotEmpty(props: {
           onChange={onLayoutChange}
           aria-label={t('layout')}
         >
-          <ToggleButton value="list" aria-label={t('list')} data-cy="layout-selector-list">
+          <ToggleButton
+            value="list"
+            aria-label={t('list')}
+            data-cy="layout-selector-list"
+          >
             <Tooltip title={t('list')}>
               <ViewListIcon />
             </Tooltip>
           </ToggleButton>
-          <ToggleButton value="module" aria-label={t('module')} data-cy="layout-selector-module">
+          <ToggleButton
+            value="module"
+            aria-label={t('module')}
+            data-cy="layout-selector-module"
+          >
             <Tooltip title={t('module')}>
               <ViewModuleIcon />
             </Tooltip>

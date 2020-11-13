@@ -23,7 +23,7 @@ describe('mastery level filter', () => {
     getMasteryLevelFilter(1).should('have.attr', 'aria-pressed', 'true')
     getMasteryLevelFilter(1).should('have.attr', 'disabled')
 
-    // reset 
+    // reset
     getMasteryLevelFilter(7).click().blur()
     getMasteryLevelFilter(6).click().blur()
     getMasteryLevelFilter(5).click().blur()

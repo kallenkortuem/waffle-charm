@@ -16,12 +16,13 @@ const resources = {
       masteryLevelNumber: 'Mastery Level {{level}}',
       masteryLevelFilter: 'Champion Mastery Level Filter',
       layout: 'Layout',
-      list: 'List',
-      module: 'Module',
+      list: 'List view',
+      module: 'Module view',
       totalMasteryPoints: 'Total Points: {{points}}',
       percentMasteryProgress:
         '{{percent}} progress towards mastery level {{level}}',
       tokenMasteryProgress: '{{earned}} of {{total}} Tokens Earned',
+      toggleDarkTheme: 'Toggle light/dark theme',
     },
   },
 }

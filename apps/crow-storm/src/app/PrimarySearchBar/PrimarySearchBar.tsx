@@ -1,12 +1,18 @@
 import AppBar from '@material-ui/core/AppBar'
+import IconButton from '@material-ui/core/IconButton'
 import InputBase from '@material-ui/core/InputBase'
+import Menu from '@material-ui/core/Menu'
+import MenuItem from '@material-ui/core/MenuItem'
 import { createStyles, fade, makeStyles, Theme } from '@material-ui/core/styles'
 import Toolbar from '@material-ui/core/Toolbar'
+import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
+import BrightnessMediumIcon from '@material-ui/icons/BrightnessMedium'
+import MoreIcon from '@material-ui/icons/MoreVert'
 import SearchIcon from '@material-ui/icons/Search'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useLocation, useHistory } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 
 const SUMMONER_NAME_KEY = 'summonerName'
 
@@ -67,6 +73,18 @@ const useStyles = makeStyles((theme: Theme) =>
         width: '20ch',
       },
     },
+    sectionDesktop: {
+      display: 'none',
+      [theme.breakpoints.up('md')]: {
+        display: 'flex',
+      },
+    },
+    sectionMobile: {
+      display: 'flex',
+      [theme.breakpoints.up('md')]: {
+        display: 'none',
+      },
+    },
   })
 )
 
@@ -75,17 +93,55 @@ export default function PrimarySearchBar(props: {
     event: React.FormEvent<HTMLFormElement>,
     summonerName: string
   ) => void
+  onToggleTheme: () => void
 }): React.ReactElement {
   const { t } = useTranslation()
-  const { onSearch } = props
+  const { onSearch, onToggleTheme } = props
   const query = useQuery()
   const history = useHistory()
 
+  const classes = useStyles()
+  const [
+    mobileMoreAnchorEl,
+    setMobileMoreAnchorEl,
+  ] = React.useState<null | HTMLElement>(null)
   const [summonerName, setSummonerName] = useState(
     query.get(SUMMONER_NAME_KEY) ?? ''
   )
 
-  const classes = useStyles()
+  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl)
+
+  const handleMobileMenuClose = () => {
+    setMobileMoreAnchorEl(null)
+  }
+
+  const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+    setMobileMoreAnchorEl(event.currentTarget)
+  }
+
+  const mobileMenuId = 'primary-search-account-menu-mobile'
+  const renderMobileMenu = (
+    <Menu
+      anchorEl={mobileMoreAnchorEl}
+      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      id={mobileMenuId}
+      keepMounted
+      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+      open={isMobileMenuOpen}
+      onClose={handleMobileMenuClose}
+    >
+      <MenuItem onClick={onToggleTheme}>
+        <IconButton
+          aria-label={t('toggleDarkTheme')}
+          onClick={onToggleTheme}
+          color="inherit"
+        >
+          <BrightnessMediumIcon />
+        </IconButton>
+        <p>{t('toggleDarkTheme')}</p>
+      </MenuItem>
+    </Menu>
+  )
 
   const handleSetSummonerName = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -124,8 +180,35 @@ export default function PrimarySearchBar(props: {
             </form>
           </div>
           <div className={classes.grow} />
+          <div className={classes.sectionDesktop}>
+            <Tooltip
+              title={t('toggleDarkTheme')}
+              aria-label={t('toggleDarkTheme')}
+            >
+              <IconButton
+                edge="end"
+                onClick={onToggleTheme}
+                color="inherit"
+                data-cy="dark-mode"
+              >
+                <BrightnessMediumIcon />
+              </IconButton>
+            </Tooltip>
+          </div>
+          <div className={classes.sectionMobile}>
+            <IconButton
+              aria-label="show more"
+              aria-controls={mobileMenuId}
+              aria-haspopup="true"
+              onClick={handleMobileMenuOpen}
+              color="inherit"
+            >
+              <MoreIcon />
+            </IconButton>
+          </div>
         </Toolbar>
       </AppBar>
+      {renderMobileMenu}
     </div>
   )
 }

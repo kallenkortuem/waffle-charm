@@ -8,6 +8,7 @@ import CheckCircleRoundedIcon from '@material-ui/icons/CheckCircleRounded'
 import { ChampionData, ChampionMasteryDTO } from '@waffle-charm/api-interfaces'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
+
 const BorderLinearProgress = withStyles((theme: Theme) =>
   createStyles({
     root: {

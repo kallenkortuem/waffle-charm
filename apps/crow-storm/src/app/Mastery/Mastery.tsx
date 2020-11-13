@@ -39,20 +39,16 @@ export const Mastery = (props: {
   championData: ChampionDataDragon
   onError: (value: { statusCode: number; message: string }) => void
 }): React.ReactElement => {
-  // props
   const { summonerId, championData, onError } = props
 
-  // translations and styles
   const { t } = useTranslation()
   const classes = useStyles()
 
-  // state
   const [masteryLevels, setMasteryLevels] = useState(() => initialMasteryLevels)
   const [masteries, setMasteries] = useState<ChampionMasteryDTO[]>([])
   const [layout, setLayout] = useState(initialLayout)
   const [sortAscending] = useState(false)
 
-  // handlers
   const handleSetMasteryLevels = (
     event: React.MouseEvent<HTMLElement>,
     value: string[]
@@ -69,7 +65,6 @@ export const Mastery = (props: {
     sessionStorage.setItem(LAYOUT, value)
   }
 
-  // effects
   useEffect(() => {
     if (!summonerId) {
       setMasteries([])
@@ -83,6 +78,11 @@ export const Mastery = (props: {
           setMasteries(value)
         } else {
           onError(value)
+        }
+      })
+      .catch((error) => {
+        if (error?.statusCode) {
+          onError(error)
         }
       })
   }, [summonerId])

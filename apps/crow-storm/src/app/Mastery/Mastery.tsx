@@ -7,7 +7,7 @@ import {
 } from '@waffle-charm/api-interfaces'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import MasteryFilter from './MasteryFilter/MasterFilter'
+import MasteryFilter from './MasteryFilter/MasteryFilter'
 import MasteryGridView from './MasteryGridView/MasteryGridView'
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -26,14 +26,6 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-const MASTERY_LEVELS = 'masteryLevels'
-const LAYOUT = 'layout'
-
-const initialMasteryLevels: string[] = JSON.parse(
-  sessionStorage.getItem(MASTERY_LEVELS) || '["5", "6", "7"]'
-)
-const initialLayout = sessionStorage.getItem(LAYOUT) || 'module'
-
 export const Mastery = (props: {
   summonerId: string
   championData: ChampionDataDragon
@@ -44,9 +36,9 @@ export const Mastery = (props: {
   const { t } = useTranslation()
   const classes = useStyles()
 
-  const [masteryLevels, setMasteryLevels] = useState(() => initialMasteryLevels)
+  const [masteryLevels, setMasteryLevels] = useState(() => ["1", "2", "3", "4", "5", "6", "7"])
   const [masteries, setMasteries] = useState<ChampionMasteryDTO[]>([])
-  const [layout, setLayout] = useState(initialLayout)
+  const [layout, setLayout] = useState('module')
   const [sortAscending] = useState(false)
 
   const handleSetMasteryLevels = (
@@ -54,15 +46,15 @@ export const Mastery = (props: {
     value: string[]
   ) => {
     setMasteryLevels(value)
-    sessionStorage.setItem(MASTERY_LEVELS, JSON.stringify(value))
   }
 
   const handleLayoutChange = (
     event: React.MouseEvent<HTMLElement>,
     value: string
   ) => {
-    setLayout(value)
-    sessionStorage.setItem(LAYOUT, value)
+    if (value) {
+      setLayout(value)
+    }
   }
 
   useEffect(() => {
@@ -108,7 +100,9 @@ export const Mastery = (props: {
             sortAscending={sortAscending}
           />
         ) : (
-          t('inProgress')
+          <Typography variant="h5" component="p" data-cy="work-in-progress">
+            {t('inProgress')}
+          </Typography>
           // <MasteryListView />
         )}
       </Container>

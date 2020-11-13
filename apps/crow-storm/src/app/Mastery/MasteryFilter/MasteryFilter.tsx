@@ -52,6 +52,7 @@ export default function ToggleButtonNotEmpty(props: {
               value={level}
               aria-label={label}
               disabled={disabled}
+              data-cy={`mastery-level-filter-${level}`}
             >
               <Tooltip title={label}>{icon}</Tooltip>
             </ToggleButton>
@@ -86,12 +87,12 @@ export default function ToggleButtonNotEmpty(props: {
           onChange={onLayoutChange}
           aria-label={t('layout')}
         >
-          <ToggleButton value="list" aria-label={t('list')}>
+          <ToggleButton value="list" aria-label={t('list')} data-cy="layout-selector-list">
             <Tooltip title={t('list')}>
               <ViewListIcon />
             </Tooltip>
           </ToggleButton>
-          <ToggleButton value="module" aria-label={t('module')}>
+          <ToggleButton value="module" aria-label={t('module')} data-cy="layout-selector-module">
             <Tooltip title={t('module')}>
               <ViewModuleIcon />
             </Tooltip>

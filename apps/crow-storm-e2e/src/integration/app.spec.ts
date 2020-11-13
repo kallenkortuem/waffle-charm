@@ -1,15 +1,7 @@
-import { getDarkModeToggle, getGreeting, getBody } from '../support/app.po'
+import { getBody, getDarkModeToggle } from '../support/app.po'
 
 describe('crow-storm', () => {
   beforeEach(() => cy.visit('/'))
-
-  it('should display welcome message', () => {
-    // Custom command example, see `../support/commands.ts` file
-    cy.login('my-email@something.com', 'myPassword')
-
-    // Function helper example, see `../support/app.po.ts` file
-    getGreeting().contains('Champion Mastery')
-  })
 
   it('should toggle dark-mode theme', () => {
     getBody().should(($body) => {

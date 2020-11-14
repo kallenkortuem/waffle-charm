@@ -30,3 +30,4 @@ describe('mastery level filter', () => {
     getMasteryLevelFilter(1).should('have.attr', 'aria-pressed', 'true')
   })
 })
+

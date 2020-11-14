@@ -656,7 +656,7 @@ export interface ChampionData {
   blurb: string
   info: ChampionInfo
   image: ChampionImage
-  tags: Set<'Fighter' | 'Tank'>
+  tags: Array<'Fighter' | 'Tank' | 'Support' | 'Marksman' | 'Mage' | 'Assasin'>
   partype: string
   stats: ChampionStats
 }

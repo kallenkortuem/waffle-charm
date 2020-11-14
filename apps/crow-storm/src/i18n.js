@@ -15,6 +15,7 @@ const resources = {
       mastery_plural: 'Masteries',
       masteryLevelNumber: 'Mastery Level {{level}}',
       masteryLevelFilter: 'Champion Mastery Level Filter',
+      roleFilter: 'Champion Roles Filter',
       layout: 'Layout',
       list: 'List view',
       module: 'Module view',

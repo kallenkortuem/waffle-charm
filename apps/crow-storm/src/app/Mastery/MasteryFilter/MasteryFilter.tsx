@@ -24,6 +24,8 @@ const filterIcons = {
   1: <Filter1Icon />,
 }
 
+const allRoles = ['Fighter', 'Tank', 'Mage', 'Assassin', 'Support', 'Marksman']
+
 export default function ToggleButtonNotEmpty(props: {
   masteryLevels: string[]
   onMasteryLevelsChange: (
@@ -35,41 +37,67 @@ export default function ToggleButtonNotEmpty(props: {
     event: React.MouseEvent<HTMLElement>,
     newLayout: string
   ) => void
+  roles: string[]
+  onRolesChange: (
+    event: React.MouseEvent<HTMLElement>,
+    newFormats: string[]
+  ) => void
 }): React.ReactElement {
-  const { masteryLevels, onMasteryLevelsChange, layout, onLayoutChange } = props
+  const {
+    layout,
+    onLayoutChange,
+    roles,
+    onRolesChange,
+    masteryLevels,
+    onMasteryLevelsChange,
+  } = props
   const { t } = useTranslation()
-  const buttons = React.useMemo(
+  const masterLevelButtons = React.useMemo(
     () =>
       Object.entries(filterIcons)
         .sort(([a], [b]) => parseInt(b) - parseInt(a))
         .map(([level, icon]) => {
-          const disabled =
-            masteryLevels.includes(level) && masteryLevels.length === 1
           const label = t('masteryLevelNumber', { level })
           return (
             <ToggleButton
               key={level}
               value={level}
               aria-label={label}
-              disabled={disabled}
               data-cy={`mastery-level-filter-${level}`}
             >
               <Tooltip title={label}>{icon}</Tooltip>
             </ToggleButton>
           )
         }),
-    [masteryLevels, t]
+    [t]
+  )
+
+  const roleButtons = React.useMemo(
+    () =>
+      allRoles.map((role) => (
+        <ToggleButton
+          key={role}
+          value={role}
+          aria-label={role}
+          data-cy={`role-filter-${role}`}
+        >
+          {role}
+        </ToggleButton>
+      )),
+    []
   )
 
   return (
     <Grid container spacing={2} direction="row" justify="space-between">
-      <Grid item sm={6} md={6}>
+      <Grid item xs={12} sm={10} md={10}>
         <ToggleButtonGroup
-          value={masteryLevels}
-          onChange={onMasteryLevelsChange}
-          aria-label={t('masteryLevelFilter')}
+          size="small"
+          value={roles}
+          exclusive
+          onChange={onRolesChange}
+          aria-label={t('rolesFilter')}
         >
-          {buttons}
+          {roleButtons}
         </ToggleButtonGroup>
       </Grid>
       <Grid
@@ -78,10 +106,12 @@ export default function ToggleButtonNotEmpty(props: {
         style={{ display: 'flex' }}
         justify="flex-end"
         direction="row"
-        sm={6}
-        md={3}
+        xs={2}
+        sm={2}
+        md={2}
       >
         <ToggleButtonGroup
+          size="small"
           value={layout}
           exclusive
           onChange={onLayoutChange}
@@ -105,6 +135,16 @@ export default function ToggleButtonNotEmpty(props: {
               <ViewModuleIcon />
             </Tooltip>
           </ToggleButton>
+        </ToggleButtonGroup>
+      </Grid>
+      <Grid item xs={10} sm={6} md={4}>
+        <ToggleButtonGroup
+          size="small"
+          value={masteryLevels}
+          onChange={onMasteryLevelsChange}
+          aria-label={t('masteryLevelFilter')}
+        >
+          {masterLevelButtons}
         </ToggleButtonGroup>
       </Grid>
     </Grid>

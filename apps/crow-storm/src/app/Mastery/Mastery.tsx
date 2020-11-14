@@ -45,6 +45,7 @@ export const Mastery = (props: {
     '6',
     '7',
   ])
+  const [roles, setRoles] = useState(() => [])
   const [masteries, setMasteries] = useState<ChampionMasteryDTO[]>([])
   const [layout, setLayout] = useState('module')
   const [sortAscending] = useState(false)
@@ -53,7 +54,16 @@ export const Mastery = (props: {
     event: React.MouseEvent<HTMLElement>,
     value: string[]
   ) => {
-    setMasteryLevels(value)
+    if (value?.length >= 1) {
+      setMasteryLevels(value)
+    }
+  }
+
+  const handleSetRoles = (
+    event: React.MouseEvent<HTMLElement>,
+    value: string[]
+  ) => {
+    setRoles(value)
   }
 
   const handleLayoutChange = (
@@ -93,10 +103,11 @@ export const Mastery = (props: {
         <Typography variant="h4" component="h1">
           {t('championMastery')}
         </Typography>
-
         <MasteryFilter
           masteryLevels={masteryLevels}
           onMasteryLevelsChange={handleSetMasteryLevels}
+          roles={roles}
+          onRolesChange={handleSetRoles}
           layout={layout}
           onLayoutChange={handleLayoutChange}
         />
@@ -105,6 +116,7 @@ export const Mastery = (props: {
             masteries={masteries}
             masteryLevels={masteryLevels}
             championData={championData}
+            roles={roles}
             sortAscending={sortAscending}
           />
         ) : (

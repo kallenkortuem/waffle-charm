@@ -11,8 +11,9 @@ export const MasteryGridView = (props: {
   sortAscending: boolean
   championData: ChampionDataDragon
   masteries: ChampionMasteryDTO[]
+  roles: string[]
 }): React.ReactElement => {
-  const { masteryLevels, sortAscending, championData, masteries } = props
+  const { masteryLevels, sortAscending, championData, masteries, roles } = props
 
   const mappedData: Record<number, ChampionData> = React.useMemo(
     () =>
@@ -51,6 +52,7 @@ export const MasteryGridView = (props: {
               key={level}
               level={level}
               groupedMasteries={groupedMasteries}
+              roles={roles}
               mappedData={mappedData}
             ></MasteryGridGroup>
           )

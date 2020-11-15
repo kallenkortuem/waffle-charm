@@ -9,6 +9,7 @@ import TableRow from '@material-ui/core/TableRow'
 import { ChampionData, ChampionMasteryDTO } from '@waffle-charm/api-interfaces'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
+import { MasteryProgress } from '../Mastery'
 
 const useStyles = makeStyles({
   table: {
@@ -42,20 +43,22 @@ export const MasteryListView = (props: {
           {masteries
             .sort((a, b) =>
               sortAscending
-                ? a.championPoints - b.championPoints
-                : b.championPoints - a.championPoints
+                ? a.championLevel - b.championLevel
+                : b.championLevel - a.championLevel
             )
             .filter(
               (row) =>
                 masteryLevels.includes(row.championLevel.toString()) &&
                 (!tag || championMap[row.championId].tags.includes(tag))
             )
-            .map((row, i) => (
+            .map((row: ChampionMasteryDTO, i) => (
               <TableRow key={row.championId}>
                 <TableCell>{championMap[row.championId].name}</TableCell>
                 <TableCell>{row.championLevel}</TableCell>
                 <TableCell>{row.championPoints.toLocaleString()}</TableCell>
-                <TableCell>{row.championPointsUntilNextLevel}</TableCell>
+                <TableCell>
+                  <MasteryProgress mastery={row} />
+                </TableCell>
               </TableRow>
             ))}
         </TableBody>

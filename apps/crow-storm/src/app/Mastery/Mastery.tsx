@@ -1,6 +1,10 @@
+import { Tooltip } from '@material-ui/core'
+import Avatar from '@material-ui/core/Avatar'
 import Container from '@material-ui/core/Container'
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
+import LinearProgress from '@material-ui/core/LinearProgress'
+import { createStyles, Theme, withStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
+import CheckCircleRoundedIcon from '@material-ui/icons/CheckCircleRounded'
 import {
   ChampionData,
   ChampionDataDragon,
@@ -12,7 +16,127 @@ import MasteryFilter from './MasteryFilter/MasteryFilter'
 import MasteryGridView from './MasteryGridView/MasteryGridView'
 import MasteryListView from './MasteryListView/MasteryListView'
 
-const useStyles = makeStyles((theme: Theme) =>
+export const getChampionImageSrc = (champion: ChampionData): string =>
+  `/cdn/10.22.1/img/champion/${champion?.image?.full}`
+
+export const getMasteryLevelProgress = (
+  mastery: ChampionMasteryDTO
+): number => {
+  const totalInLevel =
+    mastery?.championPointsSinceLastLevel +
+    mastery?.championPointsUntilNextLevel
+  return Math.floor(
+    (mastery?.championPointsSinceLastLevel / totalInLevel) * 100
+  )
+}
+
+export const MasteryToken = (props: {
+  mastery: ChampionMasteryDTO
+  threshold: number
+  color?: 'primary' | 'secondary'
+}): React.ReactElement => (
+  <CheckCircleRoundedIcon
+    fontSize="small"
+    color={
+      props.mastery.tokensEarned >= props.threshold
+        ? props.color || 'primary'
+        : 'disabled'
+    }
+  />
+)
+
+export const MasteryProgress = (props: {
+  mastery: ChampionMasteryDTO
+}): React.ReactElement => {
+  const { t } = useTranslation()
+  const { mastery } = props
+  const progress = getMasteryLevelProgress(mastery)
+  switch (props.mastery.championLevel) {
+    case 7:
+      return (
+        <Tooltip
+          title={t('tokenMasteryProgress', {
+            earned: 3,
+            total: 3,
+          })}
+        >
+          <span>
+            <MasteryToken mastery={mastery} threshold={0} />
+            <MasteryToken mastery={mastery} threshold={0} />
+            <MasteryToken mastery={mastery} threshold={0} />
+          </span>
+        </Tooltip>
+      )
+    case 6:
+      return (
+        <Tooltip
+          title={t('tokenMasteryProgress', {
+            earned: mastery.tokensEarned,
+            total: 3,
+          })}
+        >
+          <span>
+            <MasteryToken mastery={mastery} threshold={1} />
+            <MasteryToken mastery={mastery} threshold={2} />
+            <MasteryToken mastery={mastery} threshold={3} />
+          </span>
+        </Tooltip>
+      )
+    case 5:
+      return (
+        <Tooltip
+          title={t('tokenMasteryProgress', {
+            earned: mastery.tokensEarned,
+            total: 2,
+          })}
+        >
+          <span>
+            <MasteryToken mastery={mastery} threshold={1} />
+            <MasteryToken mastery={mastery} threshold={2} />
+          </span>
+        </Tooltip>
+      )
+    default:
+      return (
+        <Tooltip
+          title={t('percentMasteryProgress', {
+            percent: progress ?? 0,
+            level: mastery.championLevel + 1,
+          })}
+        >
+          <BorderLinearProgress
+            value={progress}
+            variant="determinate"
+          ></BorderLinearProgress>
+        </Tooltip>
+      )
+  }
+}
+
+export const ChampionAvatar = (props: {
+  size: 'small' | 'large'
+  champion: ChampionData
+}): React.ReactElement => (
+  <Avatar
+    alt=""
+    imgProps={{ width: '40px', height: '40px' }}
+    src={getChampionImageSrc(props.champion)}
+  />
+)
+
+const BorderLinearProgress = withStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      height: theme.spacing(1),
+      borderRadius: theme.spacing(0.5),
+    },
+    bar: {
+      borderRadius: theme.spacing(0.5),
+    },
+  })
+)(LinearProgress)
+
+const MasteryContainer = withStyles((theme: Theme) =>
   createStyles({
     root: {
       flexDirection: 'row',
@@ -26,7 +150,7 @@ const useStyles = makeStyles((theme: Theme) =>
       },
     },
   })
-)
+)(Container)
 
 export const Mastery = (props: {
   summonerId: string
@@ -36,7 +160,6 @@ export const Mastery = (props: {
   const { summonerId, championData, onError } = props
 
   const { t } = useTranslation()
-  const classes = useStyles()
 
   const championMap: Record<number, ChampionData> = React.useMemo(
     () =>
@@ -126,7 +249,7 @@ export const Mastery = (props: {
 
   return (
     <main>
-      <Container maxWidth="md" className={classes.root}>
+      <MasteryContainer maxWidth="md">
         <Typography variant="h4" component="h1">
           {t('championMastery')}
         </Typography>
@@ -156,7 +279,7 @@ export const Mastery = (props: {
             sortAscending={sortAscending}
           />
         )}
-      </Container>
+      </MasteryContainer>
     </main>
   )
 }

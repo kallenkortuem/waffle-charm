@@ -10,18 +10,36 @@
     "importHelpers": true,
     "target": "es2015",
     "module": "esnext",
-    "typeRoots": ["node_modules/@types"],
-    "lib": ["es2017", "dom"],
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "lib": [
+      "es2017",
+      "dom"
+    ],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@waffle-charm/api-interfaces": ["libs/api-interfaces/src/index.ts"],
-      "@waffle-charm/react/mastery/*": ["libs/react/mastery/src/lib/*"],
-      "@waffle-charm/react/mastery": ["libs/react/mastery/src/index.ts"],
-      "@waffle-charm/react/champions/*": ["libs/react/champions/src/lib/*"],
-      "@waffle-charm/react/champions": ["libs/react/champions/src/index.ts"]
+      "@waffle-charm/api-interfaces": [
+        "libs/api-interfaces/src/index.ts"
+      ],
+      "@waffle-charm/react/mastery/*": [
+        "libs/react/mastery/src/lib/*"
+      ],
+      "@waffle-charm/react/mastery": [
+        "libs/react/mastery/src/index.ts"
+      ],
+      "@waffle-charm/champions/*": [
+        "libs/champions/src/lib/*"
+      ],
+      "@waffle-charm/champions": [
+        "libs/champions/src/index.ts"
+      ]
     }
   },
-  "exclude": ["node_modules", "tmp"]
+  "exclude": [
+    "node_modules",
+    "tmp"
+  ]
 }

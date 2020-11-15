@@ -87,10 +87,7 @@
               "apps/wild-hunt/tsconfig.app.json",
               "apps/wild-hunt/tsconfig.spec.json"
             ],
-            "exclude": [
-              "**/node_modules/**",
-              "!apps/wild-hunt/**/*"
-            ]
+            "exclude": ["**/node_modules/**", "!apps/wild-hunt/**/*"]
           }
         },
         "test": {
@@ -123,13 +120,8 @@
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": [
-              "apps/wild-hunt-e2e/tsconfig.e2e.json"
-            ],
-            "exclude": [
-              "**/node_modules/**",
-              "!apps/wild-hunt-e2e/**/*"
-            ]
+            "tsConfig": ["apps/wild-hunt-e2e/tsconfig.e2e.json"],
+            "exclude": ["**/node_modules/**", "!apps/wild-hunt-e2e/**/*"]
           }
         }
       }
@@ -147,9 +139,7 @@
             "outputPath": "dist/apps/api",
             "main": "apps/api/src/main.ts",
             "tsConfig": "apps/api/tsconfig.app.json",
-            "assets": [
-              "apps/api/src/assets"
-            ]
+            "assets": ["apps/api/src/assets"]
           },
           "configurations": {
             "production": {
@@ -178,10 +168,7 @@
               "apps/api/tsconfig.app.json",
               "apps/api/tsconfig.spec.json"
             ],
-            "exclude": [
-              "**/node_modules/**",
-              "!apps/api/**/*"
-            ]
+            "exclude": ["**/node_modules/**", "!apps/api/**/*"]
           }
         },
         "test": {
@@ -206,10 +193,7 @@
               "libs/api-interfaces/tsconfig.lib.json",
               "libs/api-interfaces/tsconfig.spec.json"
             ],
-            "exclude": [
-              "**/node_modules/**",
-              "!libs/api-interfaces/**/*"
-            ]
+            "exclude": ["**/node_modules/**", "!libs/api-interfaces/**/*"]
           }
         },
         "test": {
@@ -239,9 +223,7 @@
               "apps/crow-storm/src/favicon.ico",
               "apps/crow-storm/src/assets"
             ],
-            "styles": [
-              "apps/crow-storm/src/styles.scss"
-            ],
+            "styles": ["apps/crow-storm/src/styles.scss"],
             "scripts": [],
             "webpackConfig": "@nrwl/react/plugins/webpack"
           },
@@ -290,10 +272,7 @@
               "apps/crow-storm/tsconfig.app.json",
               "apps/crow-storm/tsconfig.spec.json"
             ],
-            "exclude": [
-              "**/node_modules/**",
-              "!apps/crow-storm/**/*"
-            ]
+            "exclude": ["**/node_modules/**", "!apps/crow-storm/**/*"]
           }
         },
         "test": {
@@ -327,13 +306,8 @@
           "builder": "@nrwl/linter:lint",
           "options": {
             "linter": "eslint",
-            "tsConfig": [
-              "apps/crow-storm-e2e/tsconfig.e2e.json"
-            ],
-            "exclude": [
-              "**/node_modules/**",
-              "!apps/crow-storm-e2e/**/*"
-            ]
+            "tsConfig": ["apps/crow-storm-e2e/tsconfig.e2e.json"],
+            "exclude": ["**/node_modules/**", "!apps/crow-storm-e2e/**/*"]
           }
         }
       }
@@ -347,9 +321,7 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": [
-              "libs/react/mastery/**/*.{ts,tsx,js,jsx}"
-            ]
+            "lintFilePatterns": ["libs/react/mastery/**/*.{ts,tsx,js,jsx}"]
           }
         },
         "test": {
@@ -370,9 +342,7 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": [
-              "libs/champions/**/*.{ts,tsx,js,jsx}"
-            ]
+            "lintFilePatterns": ["libs/champions/**/*.{ts,tsx,js,jsx}"]
           }
         },
         "test": {

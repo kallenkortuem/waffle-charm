@@ -17,12 +17,7 @@
     "default": {
       "runner": "@nrwl/workspace/tasks-runners/default",
       "options": {
-        "cacheableOperations": [
-          "build",
-          "lint",
-          "test",
-          "e2e"
-        ]
+        "cacheableOperations": ["build", "lint", "test", "e2e"]
       }
     }
   },
@@ -32,9 +27,7 @@
     },
     "wild-hunt-e2e": {
       "tags": [],
-      "implicitDependencies": [
-        "wild-hunt"
-      ]
+      "implicitDependencies": ["wild-hunt"]
     },
     "api": {
       "tags": []
@@ -47,9 +40,7 @@
     },
     "crow-storm-e2e": {
       "tags": [],
-      "implicitDependencies": [
-        "crow-storm"
-      ]
+      "implicitDependencies": ["crow-storm"]
     },
     "react-mastery": {
       "tags": []

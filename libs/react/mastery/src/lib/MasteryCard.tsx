@@ -2,14 +2,19 @@ import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import CardHeader from '@material-ui/core/CardHeader'
 import { ChampionData, ChampionMasteryDTO } from '@waffle-charm/api-interfaces'
+import ChampionAvatar from '@waffle-charm/react/champions/ChampionAvatar'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { ChampionAvatar, MasteryProgress } from '../Mastery'
+import { MasteryProgress } from './MasteryProgress'
 
-export default function MasteryCard(props: {
+export interface MasteryCardProps {
   mastery: ChampionMasteryDTO
   champion: ChampionData
-}): React.ReactElement {
+}
+
+export default function MasteryCard(
+  props: MasteryCardProps
+): React.ReactElement {
   const { champion, mastery } = props
   const { t } = useTranslation()
 

@@ -1,14 +1,18 @@
 import { ChampionData, ChampionMasteryDTO } from '@waffle-charm/api-interfaces'
 import React from 'react'
-import MasteryGridGroup from '../MasteryGridGroup/MasteryGridGroup'
+import MasteryGridGroup from './MasteryGridGroup'
 
-export const MasteryGridView = (props: {
+export interface MasteryGridViewProps {
   masteryLevels: string[]
   sortAscending: boolean
   championMap: Record<number, ChampionData>
   masteries: ChampionMasteryDTO[]
   tag: string
-}): React.ReactElement => {
+}
+
+export const MasteryGridView = (
+  props: MasteryGridViewProps
+): React.ReactElement => {
   const { masteryLevels, sortAscending, championMap, masteries, tag } = props
 
   const groupedMasteries: Record<number, ChampionMasteryDTO[]> = React.useMemo(

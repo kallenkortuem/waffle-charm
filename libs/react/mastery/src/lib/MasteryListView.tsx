@@ -1,5 +1,4 @@
 import Paper from '@material-ui/core/Paper'
-import { makeStyles } from '@material-ui/core/styles'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
@@ -7,30 +6,27 @@ import TableContainer from '@material-ui/core/TableContainer'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import { ChampionData, ChampionMasteryDTO } from '@waffle-charm/api-interfaces'
+import MasteryProgress from './MasteryProgress'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { MasteryProgress } from '../Mastery'
 
-const useStyles = makeStyles({
-  table: {
-    minWidth: 650,
-  },
-})
-
-export const MasteryListView = (props: {
+export interface MasteryListViewProps {
   masteryLevels: string[]
   sortAscending: boolean
   championMap: Record<number, ChampionData>
   masteries: ChampionMasteryDTO[]
   tag: string
-}): React.ReactElement => {
+}
+
+export const MasteryListView = (
+  props: MasteryListViewProps
+): React.ReactElement => {
   const { masteryLevels, sortAscending, championMap, masteries, tag } = props
   const { t } = useTranslation()
-  const classes = useStyles()
 
   return (
     <TableContainer component={Paper} data-cy="mastery-list">
-      <Table className={classes.table} aria-label={t('masteryTable')}>
+      <Table aria-label={t('masteryTable')}>
         <TableHead>
           <TableRow>
             <TableCell>{t('champion')}</TableCell>

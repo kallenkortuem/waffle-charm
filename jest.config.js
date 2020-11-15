@@ -6,5 +6,6 @@ module.exports = {
     '<rootDir>/apps/crow-storm',
     '<rootDir>/apps/doctor-manhattan',
     '<rootDir>/libs/react/mastery',
+    '<rootDir>/libs/react/champions',
   ],
 }

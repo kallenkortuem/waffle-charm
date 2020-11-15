@@ -28,7 +28,7 @@ const resources = {
         '{{percent}} progress towards mastery level {{level}}',
       tokenMasteryProgress: '{{earned}} of {{total}} Tokens Earned',
       toggleDarkTheme: 'Toggle light/dark theme',
-      progress: 'Progress'
+      progress: 'Progress',
     },
   },
 }

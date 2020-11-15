@@ -30,11 +30,11 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export const MasteryGridGroup = (props: {
   level: string
-  roles: string[]
+  tag: string
   groupedMasteries: Record<number, ChampionMasteryDTO[]>
-  mappedData: Record<number, ChampionData>
+  championMap: Record<number, ChampionData>
 }): React.ReactElement => {
-  const { level, groupedMasteries, mappedData, roles } = props
+  const { level, groupedMasteries, championMap, tag } = props
   const { t } = useTranslation()
   const classes = useStyles()
 
@@ -43,14 +43,11 @@ export const MasteryGridGroup = (props: {
 
   const items = React.useMemo(
     () =>
+      masteryGroup &&
       masteryGroup
-        ?.filter(
+        .filter(
           (mastery: ChampionMasteryDTO) =>
-            !roles ||
-            roles.length === 0 ||
-            mappedData[mastery.championId].tags.find((tag) =>
-              roles.includes(tag)
-            )
+            !tag || championMap[mastery.championId].tags.includes(tag)
         )
         .map((mastery: ChampionMasteryDTO) => (
           <Suspense
@@ -64,11 +61,11 @@ export const MasteryGridGroup = (props: {
           >
             <MasteryCard
               mastery={mastery}
-              champion={mappedData[mastery.championId]}
+              champion={championMap[mastery.championId]}
             />
           </Suspense>
         )),
-    [roles, mappedData, masteryGroup]
+    [tag, championMap, masteryGroup]
   )
 
   return (

@@ -2,6 +2,7 @@ import Container from '@material-ui/core/Container'
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import {
+  ChampionData,
   ChampionDataDragon,
   ChampionMasteryDTO,
 } from '@waffle-charm/api-interfaces'
@@ -9,6 +10,7 @@ import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import MasteryFilter from './MasteryFilter/MasteryFilter'
 import MasteryGridView from './MasteryGridView/MasteryGridView'
+import MasteryListView from './MasteryListView/MasteryListView'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -36,7 +38,32 @@ export const Mastery = (props: {
   const { t } = useTranslation()
   const classes = useStyles()
 
-  const [masteryLevels, setMasteryLevels] = useState(() => [
+  const championMap: Record<number, ChampionData> = React.useMemo(
+    () =>
+      Object.entries(championData?.data || []).reduce(
+        (accumulated, [_, entry]) => {
+          accumulated[entry.key] = entry
+          return accumulated
+        },
+        {}
+      ) || {},
+    [championData]
+  )
+
+  const allTags: string[] = React.useMemo(
+    () =>
+      Object.values(championData?.data || []).reduce((totalTags, champion) => {
+        champion.tags.forEach((t) => {
+          if (!totalTags.includes(t)) {
+            totalTags.push(t)
+          }
+        })
+        return totalTags
+      }, []),
+    [championData]
+  )
+
+  const [masteryLevels, setVisibleMasteryLevels] = useState(() => [
     '1',
     '2',
     '3',
@@ -45,7 +72,7 @@ export const Mastery = (props: {
     '6',
     '7',
   ])
-  const [roles, setRoles] = useState(() => [])
+  const [tag, setTag] = useState('')
   const [masteries, setMasteries] = useState<ChampionMasteryDTO[]>([])
   const [layout, setLayout] = useState('module')
   const [sortAscending] = useState(false)
@@ -55,15 +82,15 @@ export const Mastery = (props: {
     value: string[]
   ) => {
     if (value?.length >= 1) {
-      setMasteryLevels(value)
+      setVisibleMasteryLevels(value)
     }
   }
 
-  const handleSetRoles = (
+  const handleSetTag = (
     event: React.MouseEvent<HTMLElement>,
-    value: string[]
+    value: string
   ) => {
-    setRoles(value)
+    setTag(value)
   }
 
   const handleLayoutChange = (
@@ -106,8 +133,9 @@ export const Mastery = (props: {
         <MasteryFilter
           masteryLevels={masteryLevels}
           onMasteryLevelsChange={handleSetMasteryLevels}
-          roles={roles}
-          onRolesChange={handleSetRoles}
+          allTags={allTags}
+          tag={tag}
+          onTagChange={handleSetTag}
           layout={layout}
           onLayoutChange={handleLayoutChange}
         />
@@ -115,15 +143,18 @@ export const Mastery = (props: {
           <MasteryGridView
             masteries={masteries}
             masteryLevels={masteryLevels}
-            championData={championData}
-            roles={roles}
+            championMap={championMap}
+            tag={tag}
             sortAscending={sortAscending}
           />
         ) : (
-          <Typography variant="h5" component="p" data-cy="work-in-progress">
-            {t('inProgress')}
-          </Typography>
-          // <MasteryListView />
+          <MasteryListView
+            masteries={masteries}
+            masteryLevels={masteryLevels}
+            championMap={championMap}
+            tag={tag}
+            sortAscending={sortAscending}
+          />
         )}
       </Container>
     </main>

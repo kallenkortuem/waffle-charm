@@ -254,28 +254,28 @@ export const Mastery = (props: {
           {t('championMastery')}
         </Typography>
         <MasteryFilter
-          masteryLevels={masteryLevels}
-          onMasteryLevelsChange={handleSetMasteryLevels}
           allTags={allTags}
           tag={tag}
-          onTagChange={handleSetTag}
           layout={layout}
+          masteryLevels={masteryLevels}
+          onTagChange={handleSetTag}
           onLayoutChange={handleLayoutChange}
+          onMasteryLevelsChange={handleSetMasteryLevels}
         />
         {layout === 'module' ? (
           <MasteryGridView
-            masteries={masteries}
-            masteryLevels={masteryLevels}
             championMap={championMap}
             tag={tag}
+            masteries={masteries}
+            masteryLevels={masteryLevels}
             sortAscending={sortAscending}
           />
         ) : (
           <MasteryListView
-            masteries={masteries}
-            masteryLevels={masteryLevels}
             championMap={championMap}
             tag={tag}
+            masteries={masteries}
+            masteryLevels={masteryLevels}
             sortAscending={sortAscending}
           />
         )}

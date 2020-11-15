@@ -29,7 +29,7 @@ export const MasteryListView = (props: {
   const classes = useStyles()
 
   return (
-    <TableContainer component={Paper}>
+    <TableContainer component={Paper} data-cy="mastery-list">
       <Table className={classes.table} aria-label={t('masteryTable')}>
         <TableHead>
           <TableRow>

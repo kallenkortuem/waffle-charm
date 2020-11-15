@@ -11,8 +11,12 @@ import PrimarySearchBar from './PrimarySearchBar/PrimarySearchBar'
 
 const Mastery = React.lazy(() => import('./Mastery/Mastery'))
 
+export const DARK_MODE_PREF = 'darkModePref'
+
 export const App = (): React.ReactElement => {
-  const [darkMode, setDarkMode] = React.useState(true)
+  const [darkMode, setDarkMode] = React.useState(
+    JSON.parse(localStorage.getItem(DARK_MODE_PREF)) ?? true
+  )
   const [open, setOpen] = React.useState(false)
   const [err, setErr] = React.useState<{
     statusCode: number
@@ -22,7 +26,9 @@ export const App = (): React.ReactElement => {
   const [championData, setChampionData] = React.useState<ChampionDataDragon>()
 
   const handleToggleDarkTheme = () => {
-    setDarkMode(!darkMode)
+    const newValue = !darkMode
+    setDarkMode(newValue)
+    localStorage.setItem(DARK_MODE_PREF, newValue.toString())
   }
 
   const handleClose = (event?: React.SyntheticEvent, reason?: string) => {

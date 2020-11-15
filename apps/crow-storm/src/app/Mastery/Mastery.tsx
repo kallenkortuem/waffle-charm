@@ -10,6 +10,10 @@ import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import MasteryFilter from './MasteryFilter/MasteryFilter'
 
+export const MASTERY_TAG = 'masteryTag'
+export const MASTERY_LEVELS = 'masteryLevels'
+export const MASTERY_LAYOUT = 'masteryLayout'
+
 export const Mastery = (props: {
   summonerId: string
   championData: ChampionDataDragon
@@ -44,18 +48,14 @@ export const Mastery = (props: {
     [championData]
   )
 
-  const [masteryLevels, setVisibleMasteryLevels] = useState(() => [
-    '1',
-    '2',
-    '3',
-    '4',
-    '5',
-    '6',
-    '7',
-  ])
-  const [tag, setTag] = useState('')
+  const [masteryLevels, setVisibleMasteryLevels] = useState(() =>
+    JSON.parse(localStorage.getItem(MASTERY_LEVELS) || '["1"]')
+  )
+  const [tag, setTag] = useState(() => localStorage.getItem(MASTERY_TAG))
   const [masteries, setMasteries] = useState<ChampionMasteryDTO[]>([])
-  const [layout, setLayout] = useState('module')
+  const [layout, setLayout] = useState(
+    () => localStorage.getItem(MASTERY_LAYOUT) ?? 'module'
+  )
   const [sortAscending] = useState(false)
 
   const handleSetMasteryLevels = (
@@ -64,6 +64,7 @@ export const Mastery = (props: {
   ) => {
     if (value?.length >= 1) {
       setVisibleMasteryLevels(value)
+      localStorage.setItem(MASTERY_LEVELS, JSON.stringify(value))
     }
   }
 
@@ -72,6 +73,7 @@ export const Mastery = (props: {
     value: string
   ) => {
     setTag(value)
+    localStorage.setItem(MASTERY_TAG, value ?? '')
   }
 
   const handleLayoutChange = (
@@ -80,6 +82,7 @@ export const Mastery = (props: {
   ) => {
     if (value) {
       setLayout(value)
+      localStorage.setItem(MASTERY_LAYOUT, value ?? 'module')
     }
   }
 

@@ -1,6 +1,6 @@
 module.exports = {
-  displayName: 'react-mastery',
-  preset: '../../../jest.preset.js',
+  displayName: 'mastery',
+  preset: '../../jest.preset.js',
   transform: {
     '^.+\\.[tj]sx?$': [
       'babel-jest',
@@ -8,5 +8,5 @@ module.exports = {
     ],
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
-  coverageDirectory: '../../../coverage/libs/react/mastery',
+  coverageDirectory: '../../coverage/libs/mastery',
 }

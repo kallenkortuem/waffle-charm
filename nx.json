@@ -42,10 +42,10 @@
       "tags": [],
       "implicitDependencies": ["crow-storm"]
     },
-    "react-mastery": {
+    "champions": {
       "tags": []
     },
-    "champions": {
+    "mastery": {
       "tags": []
     }
   }

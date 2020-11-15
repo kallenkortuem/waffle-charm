@@ -312,27 +312,6 @@
         }
       }
     },
-    "react-mastery": {
-      "root": "libs/react/mastery",
-      "sourceRoot": "libs/react/mastery/src",
-      "projectType": "library",
-      "schematics": {},
-      "architect": {
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": ["libs/react/mastery/**/*.{ts,tsx,js,jsx}"]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "options": {
-            "jestConfig": "libs/react/mastery/jest.config.js",
-            "passWithNoTests": true
-          }
-        }
-      }
-    },
     "champions": {
       "root": "libs/champions",
       "sourceRoot": "libs/champions/src",
@@ -349,6 +328,27 @@
           "builder": "@nrwl/jest:jest",
           "options": {
             "jestConfig": "libs/champions/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "mastery": {
+      "root": "libs/mastery",
+      "sourceRoot": "libs/mastery/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/mastery/**/*.{ts,tsx,js,jsx}"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/mastery/jest.config.js",
             "passWithNoTests": true
           }
         }

@@ -4,11 +4,12 @@ import {
   ChampionDataDragon,
   ChampionMasteryDTO,
 } from '@waffle-charm/api-interfaces'
-import MasteryContainer from '@waffle-charm/react/mastery/MasteryContainer'
-import { MasteryListView, MasteryGridView } from '@waffle-charm/react/mastery'
+import MasteryContainer from '@waffle-charm/mastery/MasteryContainer'
+import MasteryListView from '@waffle-charm/mastery/MasteryListView'
+import MasteryGridView from '@waffle-charm/mastery/MasteryGridView'
+import MasteryFilter from '@waffle-charm/mastery/MasteryFilter'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import MasteryFilter from '@waffle-charm/react/mastery/MasteryFilter'
 
 export const MASTERY_LEVELS = 'masteryLevels'
 export const MASTERY_LAYOUT = 'masteryLayout'

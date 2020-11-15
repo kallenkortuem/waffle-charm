@@ -17,10 +17,8 @@
     "baseUrl": ".",
     "paths": {
       "@waffle-charm/api-interfaces": ["libs/api-interfaces/src/index.ts"],
-      "@waffle-charm/react/mastery/*": ["libs/react/mastery/src/lib/*"],
-      "@waffle-charm/react/mastery": ["libs/react/mastery/src/index.ts"],
       "@waffle-charm/champions/*": ["libs/champions/src/lib/*"],
-      "@waffle-charm/champions": ["libs/champions/src/index.ts"]
+      "@waffle-charm/mastery/*": ["libs/mastery/src/lib/*"]
     }
   },
   "exclude": ["node_modules", "tmp"]

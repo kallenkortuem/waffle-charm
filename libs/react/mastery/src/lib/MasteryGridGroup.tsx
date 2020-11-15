@@ -1,12 +1,26 @@
+import Grid from '@material-ui/core/Grid'
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import Skeleton from '@material-ui/lab/Skeleton'
 import { ChampionData, ChampionMasteryDTO } from '@waffle-charm/api-interfaces'
-import React, { lazy, Suspense } from 'react'
+import React, { lazy, ReactElement, Suspense } from 'react'
 import { useTranslation } from 'react-i18next'
-import CSSGrid from '../../CSSGrid/CSSGrid'
 
-const MasteryCard = lazy(() => import('../MasteryCard/MasteryCard'))
+const MasteryCard = lazy(() => import('./MasteryCard'))
+
+function CSSGrid(props: { children: Array<ReactElement> }): React.ReactElement {
+  const { children } = props
+
+  return (
+    <Grid container direction="row" spacing={2}>
+      {children?.map((element) => (
+        <Grid item xs={12} sm={6} lg={4} key={element.key}>
+          {element}
+        </Grid>
+      ))}
+    </Grid>
+  )
+}
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -28,13 +42,18 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-export const MasteryGridGroup = (props: {
+/* eslint-disable-next-line */
+export interface MasteryGridGroupProps {
   level: string
-  roles: string[]
+  tag: string
   groupedMasteries: Record<number, ChampionMasteryDTO[]>
-  mappedData: Record<number, ChampionData>
-}): React.ReactElement => {
-  const { level, groupedMasteries, mappedData, roles } = props
+  championMap: Record<number, ChampionData>
+}
+
+export const MasteryGridGroup = (
+  props: MasteryGridGroupProps
+): React.ReactElement => {
+  const { level, groupedMasteries, championMap, tag } = props
   const { t } = useTranslation()
   const classes = useStyles()
 
@@ -43,14 +62,11 @@ export const MasteryGridGroup = (props: {
 
   const items = React.useMemo(
     () =>
+      masteryGroup &&
       masteryGroup
-        ?.filter(
+        .filter(
           (mastery: ChampionMasteryDTO) =>
-            !roles ||
-            roles.length === 0 ||
-            mappedData[mastery.championId].tags.find((tag) =>
-              roles.includes(tag)
-            )
+            !tag || championMap[mastery.championId].tags.includes(tag)
         )
         .map((mastery: ChampionMasteryDTO) => (
           <Suspense
@@ -64,11 +80,11 @@ export const MasteryGridGroup = (props: {
           >
             <MasteryCard
               mastery={mastery}
-              champion={mappedData[mastery.championId]}
+              champion={championMap[mastery.championId]}
             />
           </Suspense>
         )),
-    [roles, mappedData, masteryGroup]
+    [tag, championMap, masteryGroup]
   )
 
   return (

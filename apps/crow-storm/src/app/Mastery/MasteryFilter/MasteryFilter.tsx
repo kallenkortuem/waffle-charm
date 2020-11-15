@@ -24,9 +24,8 @@ const filterIcons = {
   1: <Filter1Icon />,
 }
 
-const allRoles = ['Fighter', 'Tank', 'Mage', 'Assassin', 'Support', 'Marksman']
-
-export default function ToggleButtonNotEmpty(props: {
+export interface MasteryFilterProps {
+  allTags: string[]
   masteryLevels: string[]
   onMasteryLevelsChange: (
     event: React.MouseEvent<HTMLElement>,
@@ -37,18 +36,20 @@ export default function ToggleButtonNotEmpty(props: {
     event: React.MouseEvent<HTMLElement>,
     newLayout: string
   ) => void
-  roles: string[]
-  onRolesChange: (
-    event: React.MouseEvent<HTMLElement>,
-    newFormats: string[]
-  ) => void
-}): React.ReactElement {
+  tag: string
+  onTagChange: (event: React.MouseEvent<HTMLElement>, tag: string) => void
+}
+
+export default function MasteryFilter(
+  props: MasteryFilterProps
+): React.ReactElement {
   const {
     layout,
-    onLayoutChange,
-    roles,
-    onRolesChange,
+    allTags,
+    tag,
     masteryLevels,
+    onTagChange,
+    onLayoutChange,
     onMasteryLevelsChange,
   } = props
   const { t } = useTranslation()
@@ -74,7 +75,7 @@ export default function ToggleButtonNotEmpty(props: {
 
   const roleButtons = React.useMemo(
     () =>
-      allRoles.map((role) => (
+      allTags?.map((role) => (
         <ToggleButton
           key={role}
           value={role}
@@ -84,7 +85,7 @@ export default function ToggleButtonNotEmpty(props: {
           {role}
         </ToggleButton>
       )),
-    []
+    [allTags]
   )
 
   return (
@@ -92,9 +93,9 @@ export default function ToggleButtonNotEmpty(props: {
       <Grid item xs={12} sm={10} md={10}>
         <ToggleButtonGroup
           size="small"
-          value={roles}
+          value={tag}
           exclusive
-          onChange={onRolesChange}
+          onChange={onTagChange}
           aria-label={t('rolesFilter')}
         >
           {roleButtons}

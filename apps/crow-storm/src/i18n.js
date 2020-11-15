@@ -6,6 +6,7 @@ import { initReactI18next } from 'react-i18next'
 const resources = {
   en: {
     translation: {
+      champion: 'Champion',
       championMastery: 'Champion Mastery',
       inProgress: 'Work in progress',
       searchPlaceholder: 'Search Summoner...',
@@ -13,17 +14,21 @@ const resources = {
       championWithCount_plural: '{{count}} Champions',
       mastery: 'Mastery',
       mastery_plural: 'Masteries',
+      masteryLevel: 'Mastery Level',
       masteryLevelNumber: 'Mastery Level {{level}}',
       masteryLevelFilter: 'Champion Mastery Level Filter',
+      masteryTable: 'Champion Mastery Table',
       roleFilter: 'Champion Roles Filter',
       layout: 'Layout',
       list: 'List view',
       module: 'Module view',
+      totalPoints: 'Total Points',
       totalMasteryPoints: 'Total Points: {{points}}',
       percentMasteryProgress:
-        '{{percent}} progress towards mastery level {{level}}',
+        '{{percent}}% Progress Towards Mastery Level {{level}}',
       tokenMasteryProgress: '{{earned}} of {{total}} Tokens Earned',
       toggleDarkTheme: 'Toggle light/dark theme',
+      progress: 'Progress',
     },
   },
 }

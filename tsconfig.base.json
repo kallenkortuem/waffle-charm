@@ -16,7 +16,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@waffle-charm/api-interfaces": ["libs/api-interfaces/src/index.ts"]
+      "@waffle-charm/api-interfaces": ["libs/api-interfaces/src/index.ts"],
+      "@waffle-charm/react/mastery": ["libs/react/mastery/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

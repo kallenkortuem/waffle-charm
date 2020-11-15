@@ -41,6 +41,9 @@
     "crow-storm-e2e": {
       "tags": [],
       "implicitDependencies": ["crow-storm"]
+    },
+    "react-mastery": {
+      "tags": []
     }
   }
 }

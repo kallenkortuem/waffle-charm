@@ -407,7 +407,10 @@
         "babel": true
       },
       "component": {
-        "style": "scss"
+        "style": "none",
+        "export": true,
+        "pascalCaseFiles": true,
+        "flat": true
       },
       "library": {
         "style": "scss",

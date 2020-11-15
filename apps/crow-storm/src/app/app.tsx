@@ -7,9 +7,9 @@ import { ChampionDataDragon, SummonerDTO } from '@waffle-charm/api-interfaces'
 import React, { Suspense } from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import './app.scss'
-import PrimarySearchBar from './PrimarySearchBar/PrimarySearchBar'
+import PrimarySearchBar from './components/PrimarySearchBar'
 
-const Mastery = React.lazy(() => import('./Mastery/Mastery'))
+const Mastery = React.lazy(() => import('./pages/Mastery'))
 
 export const DARK_MODE_PREF = 'darkModePref'
 

@@ -8,7 +8,7 @@ import MasteryContainer from '@waffle-charm/react/mastery/MasteryContainer'
 import { MasteryListView, MasteryGridView } from '@waffle-charm/react/mastery'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import MasteryFilter from './MasteryFilter/MasteryFilter'
+import MasteryFilter from '@waffle-charm/react/mastery/MasteryFilter'
 
 export const MASTERY_LEVELS = 'masteryLevels'
 export const MASTERY_LAYOUT = 'masteryLayout'

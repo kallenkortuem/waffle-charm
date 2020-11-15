@@ -10,7 +10,6 @@ import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import MasteryFilter from './MasteryFilter/MasteryFilter'
 
-export const MASTERY_TAG = 'masteryTag'
 export const MASTERY_LEVELS = 'masteryLevels'
 export const MASTERY_LAYOUT = 'masteryLayout'
 
@@ -51,7 +50,7 @@ export const Mastery = (props: {
   const [masteryLevels, setVisibleMasteryLevels] = useState(() =>
     JSON.parse(localStorage.getItem(MASTERY_LEVELS) || '["1"]')
   )
-  const [tag, setTag] = useState(() => localStorage.getItem(MASTERY_TAG))
+  const [tag, setTag] = useState('')
   const [masteries, setMasteries] = useState<ChampionMasteryDTO[]>([])
   const [layout, setLayout] = useState(
     () => localStorage.getItem(MASTERY_LAYOUT) ?? 'module'
@@ -73,7 +72,6 @@ export const Mastery = (props: {
     value: string
   ) => {
     setTag(value)
-    localStorage.setItem(MASTERY_TAG, value ?? '')
   }
 
   const handleLayoutChange = (

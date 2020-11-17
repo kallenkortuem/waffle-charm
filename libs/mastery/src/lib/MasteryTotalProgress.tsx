@@ -4,7 +4,7 @@ import CardHeader from '@material-ui/core/CardHeader'
 import {
   ChampionData,
   ChampionMasteryDTO,
-  SummonerDTO
+  SummonerDTO,
 } from '@waffle-charm/api-interfaces'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
@@ -91,7 +91,7 @@ export const MasteryTotalProgress = (props: MasteryTotalProgressProps) => {
         })}
       />
       <CardContent style={{ textAlign: 'right' }}>
-      <MasteryLinearProgress
+        <MasteryLinearProgress
           current={stats.totalLevel}
           total={filteredChampions.length * 7}
           label={t('percentMasteryProgress', {

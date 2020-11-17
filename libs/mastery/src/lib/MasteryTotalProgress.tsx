@@ -90,9 +90,13 @@ export const MasteryTotalProgress = (props: MasteryTotalProgressProps) => {
     <Card>
       <CardHeader
         title={summoner?.name}
-        subheader={t('totalMasteryPoints', {
-          points: stats?.totalPoints?.toLocaleString() ?? 0,
-        }) + ' | Total Levels: ' + stats?.totalLevel?.toLocaleString() ?? 0 }
+        subheader={
+          t('totalMasteryPoints', {
+            points: stats?.totalPoints?.toLocaleString() ?? 0,
+          }) +
+            ' | Total Levels: ' +
+            stats?.totalLevel?.toLocaleString() ?? 0
+        }
       />
       <CardContent>
         <ChampionRoleFilter

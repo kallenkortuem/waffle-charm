@@ -1,5 +1,16 @@
 import CircularProgress from '@material-ui/core/CircularProgress'
-import { blue, green, purple, orange, yellow, red , teal, indigo, amber, deepPurple} from '@material-ui/core/colors'
+import {
+  blue,
+  green,
+  purple,
+  orange,
+  yellow,
+  red,
+  teal,
+  indigo,
+  amber,
+  deepPurple,
+} from '@material-ui/core/colors'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import Snackbar from '@material-ui/core/Snackbar'
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles'

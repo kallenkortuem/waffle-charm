@@ -92,15 +92,7 @@ export const MasteryTotalProgress = (props: MasteryTotalProgressProps) => {
       />
       <CardContent style={{ textAlign: 'right' }}>
         <MasteryLinearProgress
-          current={stats.totalLevel}
-          total={filteredChampions.length * 7}
-          label={t('percentMasteryProgress', {
-            percent: championLevelsProgress ?? 0,
-            level: 5,
-          })}
-          progress={championLevelsProgress}
-        />
-        <MasteryLinearProgress
+          color="secondary"
           current={stats.totalCappedPoints}
           total={filteredChampions.length * ((1800 + 2400) * 5)}
           label={t('percentMasteryProgress', {

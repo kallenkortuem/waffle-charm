@@ -1,10 +1,11 @@
+import { LinearProgressProps } from '@material-ui/core'
 import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
 import BorderLinearProgress from '@waffle-charm/material/BorderLinearProgress'
 import React from 'react'
 
 /* eslint-disable-next-line */
-export interface MasteryLinearProgressProps {
+export interface MasteryLinearProgressProps extends LinearProgressProps {
   current: number
   total: number
   label: string
@@ -12,7 +13,7 @@ export interface MasteryLinearProgressProps {
 }
 
 export const MasteryLinearProgress = (props: MasteryLinearProgressProps) => {
-  const { current, total, label, progress } = props
+  const { current, total, label, progress, ...linearProps } = props
   return (
     <div style={{ textAlign: 'right' }}>
       <Typography variant="caption" component="div" color="textSecondary">
@@ -22,6 +23,7 @@ export const MasteryLinearProgress = (props: MasteryLinearProgressProps) => {
         <BorderLinearProgress
           value={progress}
           variant="determinate"
+          {...linearProps}
         ></BorderLinearProgress>
       </Tooltip>
     </div>

@@ -35,10 +35,6 @@ const useStyles = makeStyles((theme: Theme) =>
         width: '100%',
       },
     },
-    paper: {
-      margin: theme.spacing(1),
-      padding: theme.spacing(2),
-    },
   })
 )
 

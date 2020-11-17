@@ -1,10 +1,9 @@
-import { Tooltip } from '@material-ui/core'
-import LinearProgress from '@material-ui/core/LinearProgress'
-import { createStyles, Theme, withStyles } from '@material-ui/core/styles'
+import Tooltip from '@material-ui/core/Tooltip'
 import { ChampionMasteryDTO } from '@waffle-charm/api-interfaces'
-import MasteryToken from './MasteryToken'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
+import MasteryLinearProgress from './MasteryLinearProgress'
+import MasteryToken from './MasteryToken'
 
 const getMasteryLevelProgress = (mastery: ChampionMasteryDTO): number => {
   const totalInLevel =
@@ -14,18 +13,6 @@ const getMasteryLevelProgress = (mastery: ChampionMasteryDTO): number => {
     (mastery?.championPointsSinceLastLevel / totalInLevel) * 100
   )
 }
-
-const BorderLinearProgress = withStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      height: theme.spacing(1),
-      borderRadius: theme.spacing(0.5),
-    },
-    bar: {
-      borderRadius: theme.spacing(0.5),
-    },
-  })
-)(LinearProgress)
 
 export interface MasteryProgressProps {
   mastery: ChampionMasteryDTO
@@ -84,17 +71,18 @@ export const MasteryProgress = (
       )
     default:
       return (
-        <Tooltip
-          title={t('percentMasteryProgress', {
+        <MasteryLinearProgress
+          current={mastery.championPointsSinceLastLevel}
+          total={
+            mastery.championPointsUntilNextLevel +
+            mastery.championPointsSinceLastLevel
+          }
+          label={t('percentMasteryProgress', {
             percent: progress ?? 0,
             level: mastery.championLevel + 1,
           })}
-        >
-          <BorderLinearProgress
-            value={progress}
-            variant="determinate"
-          ></BorderLinearProgress>
-        </Tooltip>
+          progress={progress}
+        />
       )
   }
 }

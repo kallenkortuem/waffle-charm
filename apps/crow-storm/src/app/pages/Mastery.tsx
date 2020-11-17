@@ -3,11 +3,13 @@ import {
   ChampionData,
   ChampionDataDragon,
   ChampionMasteryDTO,
+  SummonerDTO,
 } from '@waffle-charm/api-interfaces'
 import MasteryContainer from '@waffle-charm/mastery/MasteryContainer'
 import MasteryListView from '@waffle-charm/mastery/MasteryListView'
 import MasteryGridView from '@waffle-charm/mastery/MasteryGridView'
 import MasteryFilter from '@waffle-charm/mastery/MasteryFilter'
+import MasteryTotalProgress from '@waffle-charm/mastery/MasteryTotalProgress'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -15,11 +17,11 @@ export const MASTERY_LEVELS = 'masteryLevels'
 export const MASTERY_LAYOUT = 'masteryLayout'
 
 export const Mastery = (props: {
-  summonerId: string
+  summoner: SummonerDTO
   championData: ChampionDataDragon
   onError: (value: { statusCode: number; message: string }) => void
 }): React.ReactElement => {
-  const { summonerId, championData, onError } = props
+  const { summoner, championData, onError } = props
 
   const { t } = useTranslation()
 
@@ -86,12 +88,12 @@ export const Mastery = (props: {
   }
 
   useEffect(() => {
-    if (!summonerId) {
+    if (!summoner) {
       setMasteries([])
       return
     }
 
-    fetch(`/api/mastery/by-summoner/${summonerId}`)
+    fetch(`/api/mastery/by-summoner/${summoner.id}`)
       .then((_) => _.json())
       .then((value) => {
         if (value && !value.statusCode && Array.isArray(value)) {
@@ -105,7 +107,7 @@ export const Mastery = (props: {
           onError(error)
         }
       })
-  }, [summonerId])
+  }, [summoner])
 
   return (
     <main>
@@ -113,6 +115,7 @@ export const Mastery = (props: {
         <Typography variant="h4" component="h1">
           {t('championMastery')}
         </Typography>
+
         <MasteryFilter
           allTags={allTags}
           tag={tag}
@@ -121,6 +124,12 @@ export const Mastery = (props: {
           onTagChange={handleSetTag}
           onLayoutChange={handleLayoutChange}
           onMasteryLevelsChange={handleSetMasteryLevels}
+        />
+        <MasteryTotalProgress
+          summoner={summoner}
+          tag={tag}
+          championMap={championMap}
+          masteries={masteries}
         />
         {layout === 'module' ? (
           <MasteryGridView

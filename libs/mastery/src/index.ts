@@ -1,3 +1,5 @@
+export * from './lib/MasteryLinearProgress'
+export * from './lib/MasteryTotalProgress'
 export * from './lib/MasteryCard'
 export * from './lib/MasteryGridGroup'
 export * from './lib/MasteryFilter'

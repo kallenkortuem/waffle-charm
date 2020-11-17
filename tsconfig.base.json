@@ -18,7 +18,8 @@
     "paths": {
       "@waffle-charm/api-interfaces": ["libs/api-interfaces/src/index.ts"],
       "@waffle-charm/champions/*": ["libs/champions/src/lib/*"],
-      "@waffle-charm/mastery/*": ["libs/mastery/src/lib/*"]
+      "@waffle-charm/mastery/*": ["libs/mastery/src/lib/*"],
+      "@waffle-charm/material/*": ["libs/material/src/lib/*"]
     }
   },
   "exclude": ["node_modules", "tmp"]

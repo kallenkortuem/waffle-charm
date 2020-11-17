@@ -117,7 +117,7 @@ export const App = (): React.ReactElement => {
               <Route path="/">
                 <Mastery
                   championData={championData}
-                  summonerId={summoner?.id}
+                  summoner={summoner}
                   onError={handleApiError}
                 />
               </Route>

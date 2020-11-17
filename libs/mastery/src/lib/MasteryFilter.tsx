@@ -25,7 +25,6 @@ const filterIcons = {
 }
 
 export interface MasteryFilterProps {
-  allTags: string[]
   masteryLevels: string[]
   onMasteryLevelsChange: (
     event: React.MouseEvent<HTMLElement>,
@@ -36,22 +35,12 @@ export interface MasteryFilterProps {
     event: React.MouseEvent<HTMLElement>,
     newLayout: string
   ) => void
-  tag: string
-  onTagChange: (event: React.MouseEvent<HTMLElement>, tag: string) => void
 }
 
 export default function MasteryFilter(
   props: MasteryFilterProps
 ): React.ReactElement {
-  const {
-    layout,
-    allTags,
-    tag,
-    masteryLevels,
-    onTagChange,
-    onLayoutChange,
-    onMasteryLevelsChange,
-  } = props
+  const { layout, masteryLevels, onLayoutChange, onMasteryLevelsChange } = props
   const { t } = useTranslation()
   const masterLevelButtons = React.useMemo(
     () =>
@@ -73,32 +62,16 @@ export default function MasteryFilter(
     [t]
   )
 
-  const roleButtons = React.useMemo(
-    () =>
-      allTags?.map((role) => (
-        <ToggleButton
-          key={role}
-          value={role}
-          aria-label={role}
-          data-cy={`role-filter-${role}`}
-        >
-          {role}
-        </ToggleButton>
-      )),
-    [allTags]
-  )
-
   return (
     <Grid container spacing={2} direction="row" justify="space-between">
-      <Grid item xs={12} sm={10} md={10}>
+      <Grid item xs={10} sm={6} md={4}>
         <ToggleButtonGroup
           size="small"
-          value={tag}
-          exclusive
-          onChange={onTagChange}
-          aria-label={t('rolesFilter')}
+          value={masteryLevels}
+          onChange={onMasteryLevelsChange}
+          aria-label={t('masteryLevelFilter')}
         >
-          {roleButtons}
+          {masterLevelButtons}
         </ToggleButtonGroup>
       </Grid>
       <Grid
@@ -136,16 +109,6 @@ export default function MasteryFilter(
               <ViewModuleIcon />
             </Tooltip>
           </ToggleButton>
-        </ToggleButtonGroup>
-      </Grid>
-      <Grid item xs={10} sm={6} md={4}>
-        <ToggleButtonGroup
-          size="small"
-          value={masteryLevels}
-          onChange={onMasteryLevelsChange}
-          aria-label={t('masteryLevelFilter')}
-        >
-          {masterLevelButtons}
         </ToggleButtonGroup>
       </Grid>
     </Grid>

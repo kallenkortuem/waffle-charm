@@ -115,22 +115,21 @@ export const Mastery = (props: {
         <Typography variant="h4" component="h1">
           {t('championMastery')}
         </Typography>
-
-        <MasteryFilter
-          allTags={allTags}
-          tag={tag}
-          layout={layout}
-          masteryLevels={masteryLevels}
-          onTagChange={handleSetTag}
-          onLayoutChange={handleLayoutChange}
-          onMasteryLevelsChange={handleSetMasteryLevels}
-        />
         <MasteryTotalProgress
+          allTags={allTags}
+          onTagChange={handleSetTag}
           summoner={summoner}
           tag={tag}
           championMap={championMap}
           masteries={masteries}
         />
+        <MasteryFilter
+          layout={layout}
+          masteryLevels={masteryLevels}
+          onLayoutChange={handleLayoutChange}
+          onMasteryLevelsChange={handleSetMasteryLevels}
+        />
+
         {layout === 'module' ? (
           <MasteryGridView
             championMap={championMap}

@@ -1,3 +1,4 @@
+import { Box, Divider } from '@material-ui/core'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import CardHeader from '@material-ui/core/CardHeader'
@@ -6,6 +7,7 @@ import {
   ChampionMasteryDTO,
   SummonerDTO,
 } from '@waffle-charm/api-interfaces'
+import ChampionRoleFilter from '@waffle-charm/champions/ChampionRoleFilter'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import MasteryLinearProgress from './MasteryLinearProgress'
@@ -20,11 +22,13 @@ export interface MasteryTotalProgressProps {
   masteries: ChampionMasteryDTO[]
   championMap: Record<number, ChampionData>
   summoner: SummonerDTO
+  allTags: string[]
   tag?: string
+  onTagChange: (event: React.MouseEvent<HTMLElement>, tag: string) => void
 }
 
 export const MasteryTotalProgress = (props: MasteryTotalProgressProps) => {
-  const { masteries, championMap, tag, summoner } = props
+  const { masteries, championMap, tag, summoner, allTags, onTagChange } = props
   const { t } = useTranslation()
 
   const championEntries = React.useMemo(() => {
@@ -88,9 +92,14 @@ export const MasteryTotalProgress = (props: MasteryTotalProgressProps) => {
         title={summoner?.name}
         subheader={t('totalMasteryPoints', {
           points: stats?.totalPoints?.toLocaleString() ?? 0,
-        })}
+        }) + ' | Total Levels: ' + stats?.totalLevel?.toLocaleString() ?? 0 }
       />
-      <CardContent style={{ textAlign: 'right' }}>
+      <CardContent>
+        <ChampionRoleFilter
+          tag={tag}
+          allTags={allTags}
+          onTagChange={onTagChange}
+        />
         <MasteryLinearProgress
           color="secondary"
           current={stats.totalCappedPoints}

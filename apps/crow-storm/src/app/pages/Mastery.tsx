@@ -6,12 +6,13 @@ import {
   SummonerDTO,
 } from '@waffle-charm/api-interfaces'
 import MasteryContainer from '@waffle-charm/mastery/MasteryContainer'
-import MasteryListView from '@waffle-charm/mastery/MasteryListView'
-import MasteryGridView from '@waffle-charm/mastery/MasteryGridView'
 import MasteryFilter from '@waffle-charm/mastery/MasteryFilter'
+import MasteryGridView from '@waffle-charm/mastery/MasteryGridView'
+import MasteryListView from '@waffle-charm/mastery/MasteryListView'
 import MasteryTotalProgress from '@waffle-charm/mastery/MasteryTotalProgress'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import WelcomeBanner from '../components/WelcomeBanner'
 
 export const MASTERY_LEVELS = 'masteryLevels'
 export const MASTERY_LAYOUT = 'masteryLayout'
@@ -19,9 +20,10 @@ export const MASTERY_LAYOUT = 'masteryLayout'
 export const Mastery = (props: {
   summoner: SummonerDTO
   championData: ChampionDataDragon
+  loading: boolean
   onError: (value: { statusCode: number; message: string }) => void
 }): React.ReactElement => {
-  const { summoner, championData, onError } = props
+  const { loading, summoner, championData, onError } = props
 
   const { t } = useTranslation()
 
@@ -109,44 +111,53 @@ export const Mastery = (props: {
       })
   }, [summoner])
 
+  const showWelcomeScreen = !loading && !summoner
+
+  const content = (
+    <>
+      <MasteryTotalProgress
+        allTags={allTags}
+        onTagChange={handleSetTag}
+        summoner={summoner}
+        tag={tag}
+        championMap={championMap}
+        masteries={masteries}
+      />
+      <MasteryFilter
+        layout={layout}
+        masteryLevels={masteryLevels}
+        onLayoutChange={handleLayoutChange}
+        onMasteryLevelsChange={handleSetMasteryLevels}
+      />
+
+      {layout === 'module' ? (
+        <MasteryGridView
+          championMap={championMap}
+          tag={tag}
+          masteries={masteries}
+          masteryLevels={masteryLevels}
+          sortAscending={sortAscending}
+        />
+      ) : (
+        <MasteryListView
+          championMap={championMap}
+          tag={tag}
+          masteries={masteries}
+          masteryLevels={masteryLevels}
+          sortAscending={sortAscending}
+        />
+      )}
+    </>
+  )
+
   return (
     <main>
       <MasteryContainer maxWidth="md">
         <Typography variant="h4" component="h1">
           {t('championMastery')}
         </Typography>
-        <MasteryTotalProgress
-          allTags={allTags}
-          onTagChange={handleSetTag}
-          summoner={summoner}
-          tag={tag}
-          championMap={championMap}
-          masteries={masteries}
-        />
-        <MasteryFilter
-          layout={layout}
-          masteryLevels={masteryLevels}
-          onLayoutChange={handleLayoutChange}
-          onMasteryLevelsChange={handleSetMasteryLevels}
-        />
 
-        {layout === 'module' ? (
-          <MasteryGridView
-            championMap={championMap}
-            tag={tag}
-            masteries={masteries}
-            masteryLevels={masteryLevels}
-            sortAscending={sortAscending}
-          />
-        ) : (
-          <MasteryListView
-            championMap={championMap}
-            tag={tag}
-            masteries={masteries}
-            masteryLevels={masteryLevels}
-            sortAscending={sortAscending}
-          />
-        )}
+        {showWelcomeScreen ? <WelcomeBanner /> : content}
       </MasteryContainer>
     </main>
   )

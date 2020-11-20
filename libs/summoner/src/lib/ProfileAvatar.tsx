@@ -18,11 +18,17 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export const ProfileAvatar = (props: ProfileAvatarProps) => {
   const classes = useStyles()
+
   return (
     <Avatar
       className={classes.root}
       imgProps={{ width: '80px', height: '80px' }}
-      src={`/cdn/10.23.1/img/profileicon/${props.summoner?.profileIconId}.png`}
+      src={
+        props.summoner
+          ? `/cdn/10.23.1/img/profileicon/${props.summoner?.profileIconId}.png`
+          : ''
+      }
+      alt=""
     />
   )
 }

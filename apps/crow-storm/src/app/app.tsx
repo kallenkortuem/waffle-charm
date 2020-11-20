@@ -25,6 +25,7 @@ export const App = (): React.ReactElement => {
   }>()
   const [summoner, setSummoner] = React.useState<SummonerDTO>()
   const [championData, setChampionData] = React.useState<ChampionDataDragon>()
+  const [summonerLoading, setSummonerLoading] = React.useState(false)
 
   const handleToggleDarkTheme = () => {
     const newValue = !darkMode
@@ -68,9 +69,11 @@ export const App = (): React.ReactElement => {
     event?.preventDefault()
     setSummoner(undefined)
     if (summonerName) {
+      setSummonerLoading(true)
       fetch(`/api/summoner/${summonerName}`)
         .then((_) => _.json())
         .then((value) => {
+          setSummonerLoading(false)
           if (value && !value.statusCode) {
             setSummoner(value)
           } else {
@@ -78,6 +81,7 @@ export const App = (): React.ReactElement => {
           }
         })
         .catch((error) => {
+          setSummonerLoading(false)
           if (error?.statusCode) {
             handleApiError(error)
           }
@@ -123,6 +127,7 @@ export const App = (): React.ReactElement => {
             <Switch>
               <Route path="/">
                 <Mastery
+                  loading={summonerLoading}
                   championData={championData}
                   summoner={summoner}
                   onError={handleApiError}

@@ -30,6 +30,8 @@ const resources = {
       tokenMasteryProgress: '{{earned}} of {{total}} Tokens Earned',
       toggleDarkTheme: 'Toggle light/dark theme',
       progress: 'Progress',
+      welcomeHeader: 'Welcome to Fiddlestats',
+      welcomeSubheader: 'Search for a summoner name in the input above to view champion mastery stats.',
     },
   },
 }

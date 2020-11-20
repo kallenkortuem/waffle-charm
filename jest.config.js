@@ -7,5 +7,7 @@ module.exports = {
     '<rootDir>/apps/doctor-manhattan',
     '<rootDir>/libs/react/mastery',
     '<rootDir>/libs/react/champions',
+    '<rootDir>/libs/material',
+    '<rootDir>/libs/summoner',
   ],
 }

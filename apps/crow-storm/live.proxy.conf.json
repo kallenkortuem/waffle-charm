@@ -1,0 +1,12 @@
+{
+  "/api": {
+    "target": "https://fiddlestats.com",
+    "secure": true,
+    "changeOrigin": true
+  },
+  "/cdn": {
+    "target": "http://ddragon.leagueoflegends.com",
+    "secure": false,
+    "changeOrigin": true
+  }
+}

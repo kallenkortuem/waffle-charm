@@ -261,6 +261,9 @@
           "configurations": {
             "production": {
               "buildTarget": "crow-storm:build:production"
+            },
+            "e2e": {
+              "proxyConfig": "apps/crow-storm/live.proxy.conf.json"
             }
           }
         },
@@ -294,7 +297,7 @@
           "options": {
             "cypressConfig": "apps/crow-storm-e2e/cypress.json",
             "tsConfig": "apps/crow-storm-e2e/tsconfig.e2e.json",
-            "devServerTarget": "crow-storm:serve"
+            "devServerTarget": "crow-storm:serve:e2e"
           },
           "configurations": {
             "production": {
@@ -312,43 +315,85 @@
         }
       }
     },
-    "react-mastery": {
-      "root": "libs/react/mastery",
-      "sourceRoot": "libs/react/mastery/src",
+    "champions": {
+      "root": "libs/champions",
+      "sourceRoot": "libs/champions/src",
       "projectType": "library",
       "schematics": {},
       "architect": {
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["libs/react/mastery/**/*.{ts,tsx,js,jsx}"]
+            "lintFilePatterns": ["libs/champions/**/*.{ts,tsx,js,jsx}"]
           }
         },
         "test": {
           "builder": "@nrwl/jest:jest",
           "options": {
-            "jestConfig": "libs/react/mastery/jest.config.js",
+            "jestConfig": "libs/champions/jest.config.js",
             "passWithNoTests": true
           }
         }
       }
     },
-    "react-champions": {
-      "root": "libs/react/champions",
-      "sourceRoot": "libs/react/champions/src",
+    "mastery": {
+      "root": "libs/mastery",
+      "sourceRoot": "libs/mastery/src",
       "projectType": "library",
       "schematics": {},
       "architect": {
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["libs/react/champions/**/*.{ts,tsx,js,jsx}"]
+            "lintFilePatterns": ["libs/mastery/**/*.{ts,tsx,js,jsx}"]
           }
         },
         "test": {
           "builder": "@nrwl/jest:jest",
           "options": {
-            "jestConfig": "libs/react/champions/jest.config.js",
+            "jestConfig": "libs/mastery/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "material": {
+      "root": "libs/material",
+      "sourceRoot": "libs/material/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/material/**/*.{ts,tsx,js,jsx}"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/material/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "summoner": {
+      "root": "libs/summoner",
+      "sourceRoot": "libs/summoner/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/summoner/**/*.{ts,tsx,js,jsx}"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/summoner/jest.config.js",
             "passWithNoTests": true
           }
         }
@@ -407,7 +452,10 @@
         "babel": true
       },
       "component": {
-        "style": "scss"
+        "style": "none",
+        "export": true,
+        "pascalCaseFiles": true,
+        "flat": true
       },
       "library": {
         "style": "scss",

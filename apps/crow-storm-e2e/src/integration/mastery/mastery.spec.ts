@@ -1,7 +1,9 @@
 import { getGreeting } from '../../support/app.po'
 
 describe('mastery grid group', () => {
-  beforeEach(() => cy.visit('/'))
+  beforeEach(() => {
+    cy.visitSummoner()
+  })
 
   it('should display welcome message', () => {
     getGreeting().contains('Champion Mastery')

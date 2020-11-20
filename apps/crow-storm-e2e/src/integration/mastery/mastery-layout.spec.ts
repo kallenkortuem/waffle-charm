@@ -1,13 +1,17 @@
 import {
   getLayoutSelector,
+  getMasteryCards,
   getMasteryGridGroup,
   getMasteryList,
 } from '../../support/app.po'
 
 describe('mastery layout', () => {
-  beforeEach(() => cy.visit('/'))
+  beforeEach(() => {
+    cy.visitSummoner()
+  })
 
   it('should allow toggling between layout views', () => {
+    getMasteryCards().should('exist')
     getLayoutSelector('list').should('have.attr', 'aria-pressed', 'false')
     getLayoutSelector('module').should('have.attr', 'aria-pressed', 'true')
 
@@ -16,7 +20,7 @@ describe('mastery layout', () => {
     getMasteryList().should('not.exist')
 
     // change the layout view
-    getLayoutSelector('list').click().blur()
+    getLayoutSelector('list').click()
 
     // check that the module view has an item
     getMasteryGridGroup(1).should('not.exist')
@@ -25,6 +29,6 @@ describe('mastery layout', () => {
     getLayoutSelector('module').should('have.attr', 'aria-pressed', 'false')
 
     // switch back
-    getLayoutSelector('module').click().blur()
+    getLayoutSelector('module').click()
   })
 })

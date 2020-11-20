@@ -1,4 +1,5 @@
 import CircularProgress from '@material-ui/core/CircularProgress'
+import { blue, green } from '@material-ui/core/colors'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import Snackbar from '@material-ui/core/Snackbar'
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
@@ -7,9 +8,9 @@ import { ChampionDataDragon, SummonerDTO } from '@waffle-charm/api-interfaces'
 import React, { Suspense } from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import './app.scss'
-import PrimarySearchBar from './PrimarySearchBar/PrimarySearchBar'
+import PrimarySearchBar from './components/PrimarySearchBar'
 
-const Mastery = React.lazy(() => import('./Mastery/Mastery'))
+const Mastery = React.lazy(() => import('./pages/Mastery'))
 
 export const DARK_MODE_PREF = 'darkModePref'
 
@@ -24,6 +25,7 @@ export const App = (): React.ReactElement => {
   }>()
   const [summoner, setSummoner] = React.useState<SummonerDTO>()
   const [championData, setChampionData] = React.useState<ChampionDataDragon>()
+  const [summonerLoading, setSummonerLoading] = React.useState(false)
 
   const handleToggleDarkTheme = () => {
     const newValue = !darkMode
@@ -49,6 +51,12 @@ export const App = (): React.ReactElement => {
       createMuiTheme({
         palette: {
           type: darkMode ? 'dark' : 'light',
+          primary: {
+            main: blue[800],
+          },
+          secondary: {
+            main: green.A700,
+          },
         },
       }),
     [darkMode]
@@ -61,9 +69,11 @@ export const App = (): React.ReactElement => {
     event?.preventDefault()
     setSummoner(undefined)
     if (summonerName) {
+      setSummonerLoading(true)
       fetch(`/api/summoner/${summonerName}`)
         .then((_) => _.json())
         .then((value) => {
+          setSummonerLoading(false)
           if (value && !value.statusCode) {
             setSummoner(value)
           } else {
@@ -71,6 +81,7 @@ export const App = (): React.ReactElement => {
           }
         })
         .catch((error) => {
+          setSummonerLoading(false)
           if (error?.statusCode) {
             handleApiError(error)
           }
@@ -116,8 +127,9 @@ export const App = (): React.ReactElement => {
             <Switch>
               <Route path="/">
                 <Mastery
+                  loading={summonerLoading}
                   championData={championData}
-                  summonerId={summoner?.id}
+                  summoner={summoner}
                   onError={handleApiError}
                 />
               </Route>

@@ -261,6 +261,9 @@
           "configurations": {
             "production": {
               "buildTarget": "crow-storm:build:production"
+            },
+            "e2e": {
+              "proxyConfig": "apps/crow-storm/live.proxy.conf.json"
             }
           }
         },
@@ -294,7 +297,7 @@
           "options": {
             "cypressConfig": "apps/crow-storm-e2e/cypress.json",
             "tsConfig": "apps/crow-storm-e2e/tsconfig.e2e.json",
-            "devServerTarget": "crow-storm:serve"
+            "devServerTarget": "crow-storm:serve:e2e"
           },
           "configurations": {
             "production": {

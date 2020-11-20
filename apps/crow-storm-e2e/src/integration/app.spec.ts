@@ -1,7 +1,9 @@
 import { getBody, getDarkModeToggle } from '../support/app.po'
 
 describe('crow-storm', () => {
-  beforeEach(() => cy.visit('/'))
+  beforeEach(() => {
+    cy.visit('/')
+  })
 
   it('should toggle dark-mode theme', () => {
     getBody().should(($body) => {

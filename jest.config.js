@@ -8,5 +8,6 @@ module.exports = {
     '<rootDir>/libs/react/mastery',
     '<rootDir>/libs/react/champions',
     '<rootDir>/libs/material',
+    '<rootDir>/libs/summoner',
   ],
 }

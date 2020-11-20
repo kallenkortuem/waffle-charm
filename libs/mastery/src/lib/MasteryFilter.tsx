@@ -63,7 +63,7 @@ export default function MasteryFilter(
   )
 
   return (
-    <Grid container>
+    <Grid container direction="row" justify="space-between">
       <Grid item xs={10} sm={6} md={4}>
         <ToggleButtonGroup
           size="small"

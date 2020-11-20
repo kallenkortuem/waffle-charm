@@ -118,11 +118,7 @@ export const MasteryTotalProgress = (props: MasteryTotalProgressProps) => {
         }
         subheader={
           <Typography>
-            {loaded ? (
-              subheader
-            ) : (
-              <Skeleton width="30%" />
-            )}
+            {loaded ? subheader : <Skeleton width="30%" />}
           </Typography>
         }
       />

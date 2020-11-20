@@ -21,7 +21,9 @@ export default function MasteryCard(
   return (
     <Card>
       <CardHeader
-        avatar={<ChampionAvatar variant="square" size="small" champion={champion} />}
+        avatar={
+          <ChampionAvatar variant="square" size="small" champion={champion} />
+        }
         title={champion?.name}
         subheader={t('totalMasteryPoints', {
           points: mastery?.championPoints?.toLocaleString() ?? 0,

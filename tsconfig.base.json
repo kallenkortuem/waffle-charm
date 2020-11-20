@@ -20,7 +20,7 @@
       "@waffle-charm/champions/*": ["libs/champions/src/lib/*"],
       "@waffle-charm/mastery/*": ["libs/mastery/src/lib/*"],
       "@waffle-charm/material/*": ["libs/material/src/lib/*"],
-      "@waffle-charm/summoner": ["libs/summoner/src/index.ts"]
+      "@waffle-charm/summoner/*": ["libs/summoner/src/lib/*"]
     }
   },
   "exclude": ["node_modules", "tmp"]

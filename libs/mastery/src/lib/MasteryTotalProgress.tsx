@@ -1,4 +1,3 @@
-import { Box, Divider } from '@material-ui/core'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import CardHeader from '@material-ui/core/CardHeader'
@@ -8,6 +7,7 @@ import {
   SummonerDTO,
 } from '@waffle-charm/api-interfaces'
 import ChampionRoleFilter from '@waffle-charm/champions/ChampionRoleFilter'
+import ProfileAvatar from '@waffle-charm/summoner/ProfileAvatar'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import MasteryLinearProgress from './MasteryLinearProgress'
@@ -90,6 +90,7 @@ export const MasteryTotalProgress = (props: MasteryTotalProgressProps) => {
     <Card>
       <CardHeader
         title={summoner?.name}
+        avatar={<ProfileAvatar summoner={summoner} />}
         subheader={
           t('totalMasteryPoints', {
             points: stats?.totalPoints?.toLocaleString() ?? 0,

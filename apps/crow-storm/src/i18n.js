@@ -24,6 +24,7 @@ const resources = {
       module: 'Module view',
       totalPoints: 'Total Points',
       totalMasteryPoints: 'Total Points: {{points}}',
+      totalChamoionLevels: 'Total Champion Levels: {{levels}}',
       percentMasteryProgress:
         '{{percent}}% Progress Towards Mastery Level {{level}}',
       tokenMasteryProgress: '{{earned}} of {{total}} Tokens Earned',

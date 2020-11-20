@@ -1,6 +1,8 @@
+import { Typography } from '@material-ui/core'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import CardHeader from '@material-ui/core/CardHeader'
+import Skeleton from '@material-ui/lab/Skeleton'
 import {
   ChampionData,
   ChampionMasteryDTO,
@@ -86,17 +88,42 @@ export const MasteryTotalProgress = (props: MasteryTotalProgressProps) => {
     filteredChampions.length * ((1800 + 2400) * 5)
   )
 
+  const subheader =
+    t('totalMasteryPoints', {
+      points: stats?.totalPoints?.toLocaleString() ?? 0,
+    }) +
+    '  |  ' +
+    t('totalChamoionLevels', {
+      levels: stats?.totalLevel?.toLocaleString() ?? 0,
+    })
+
+  const loaded = summoner && masteries?.length
+
   return (
     <Card>
       <CardHeader
-        title={summoner?.name}
-        avatar={<ProfileAvatar summoner={summoner} />}
+        title={
+          <Typography variant="h5" component="span">
+            {loaded ? summoner.name : <Skeleton width="50%" />}
+          </Typography>
+        }
+        avatar={
+          loaded ? (
+            <ProfileAvatar summoner={summoner} />
+          ) : (
+            <Skeleton variant="circle">
+              <ProfileAvatar summoner={summoner} />
+            </Skeleton>
+          )
+        }
         subheader={
-          t('totalMasteryPoints', {
-            points: stats?.totalPoints?.toLocaleString() ?? 0,
-          }) +
-            ' | Total Levels: ' +
-            stats?.totalLevel?.toLocaleString() ?? 0
+          <Typography>
+            {loaded ? (
+              subheader
+            ) : (
+              <Skeleton width="30%" />
+            )}
+          </Typography>
         }
       />
       <CardContent>

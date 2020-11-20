@@ -30,10 +30,6 @@ const useStyles = makeStyles((theme: Theme) =>
       display: 'flex',
       paddingTop: theme.spacing(1),
       flexGrow: 1,
-      '& > *': {
-        margin: theme.spacing(2, 0),
-        width: '100%',
-      },
     },
   })
 )

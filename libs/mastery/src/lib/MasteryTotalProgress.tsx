@@ -129,7 +129,6 @@ export const MasteryTotalProgress = (props: MasteryTotalProgressProps) => {
           onTagChange={onTagChange}
         />
         <MasteryLinearProgress
-          color="secondary"
           current={stats.totalCappedPoints}
           total={filteredChampions.length * ((1800 + 2400) * 5)}
           label={t('percentMasteryProgress', {

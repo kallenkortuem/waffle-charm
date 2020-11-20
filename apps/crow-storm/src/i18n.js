@@ -31,7 +31,8 @@ const resources = {
       toggleDarkTheme: 'Toggle light/dark theme',
       progress: 'Progress',
       welcomeHeader: 'Welcome to Fiddlestats',
-      welcomeSubheader: 'Search for a summoner name in the input above to view champion mastery stats.',
+      welcomeSubheader:
+        'Search for a summoner name in the input above to view champion mastery stats.',
     },
   },
 }

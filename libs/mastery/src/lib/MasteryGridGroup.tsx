@@ -74,10 +74,12 @@ export const MasteryGridGroup = (
               </div>
             }
           >
-            <MasteryCard
-              mastery={mastery}
-              champion={championMap[mastery.championId]}
-            />
+            <div data-cy="mastery-card">
+              <MasteryCard
+                mastery={mastery}
+                champion={championMap[mastery.championId]}
+              />
+            </div>
           </Suspense>
         )),
     [tag, championMap, masteryGroup]

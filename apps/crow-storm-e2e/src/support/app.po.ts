@@ -25,3 +25,6 @@ export const getMasteryLevelFilter = (
 
 export const getMasteryList = (): Cypress.Chainable<JQuery<HTMLTableElement>> =>
   cy.get('[data-cy=mastery-list]', { timeout: 5000 })
+
+  export const getMasteryCards = (): Cypress.Chainable<JQuery<Node>> =>
+  cy.get('[data-cy=mastery-card]', { timeout: 5000 })

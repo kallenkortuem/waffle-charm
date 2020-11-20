@@ -1,5 +1,6 @@
 import {
   getLayoutSelector,
+  getMasteryCards,
   getMasteryGridGroup,
   getMasteryList,
 } from '../../support/app.po'
@@ -10,6 +11,7 @@ describe('mastery layout', () => {
   })
 
   it('should allow toggling between layout views', () => {
+    getMasteryCards().should('exist')
     getLayoutSelector('list').should('have.attr', 'aria-pressed', 'false')
     getLayoutSelector('module').should('have.attr', 'aria-pressed', 'true')
 

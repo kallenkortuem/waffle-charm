@@ -10,15 +10,15 @@ import Typography from '@material-ui/core/Typography'
 import BrightnessMediumIcon from '@material-ui/icons/BrightnessMedium'
 import MoreIcon from '@material-ui/icons/MoreVert'
 import SearchIcon from '@material-ui/icons/Search'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useHistory, useLocation } from 'react-router-dom'
 
-const SUMMONER_NAME_KEY = 'summonerName'
+export const SUMMONER_NAME_KEY = 'summonerName'
 
 // A custom hook that builds on useLocation to parse
 // the query string for you.
-function useQuery() {
+export function useQuery(): URLSearchParams {
   return new URLSearchParams(useLocation().search)
 }
 
@@ -89,15 +89,10 @@ const useStyles = makeStyles((theme: Theme) =>
 )
 
 export default function PrimarySearchBar(props: {
-  onSearch: (
-    event: React.FormEvent<HTMLFormElement>,
-    summonerName: string
-  ) => void
   onToggleTheme: () => void
 }): React.ReactElement {
   const { t } = useTranslation()
-  const { onSearch, onToggleTheme } = props
-  const query = useQuery()
+  const { onToggleTheme } = props
   const history = useHistory()
 
   const classes = useStyles()
@@ -105,9 +100,7 @@ export default function PrimarySearchBar(props: {
     mobileMoreAnchorEl,
     setMobileMoreAnchorEl,
   ] = React.useState<null | HTMLElement>(null)
-  const [summonerName, setSummonerName] = useState(
-    query.get(SUMMONER_NAME_KEY) ?? ''
-  )
+  const [summonerName, setSummonerName] = useState('')
 
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl)
 
@@ -148,12 +141,13 @@ export default function PrimarySearchBar(props: {
   ) => {
     const { value } = event.target
     setSummonerName(value)
-    history.push(`/?${SUMMONER_NAME_KEY}=${value}`)
   }
 
-  useEffect(() => {
-    onSearch(null, summonerName)
-  }, [])
+  const handleSearch = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    history.push(`/?${SUMMONER_NAME_KEY}=${summonerName}`)
+    setSummonerName('')
+  }
 
   return (
     <div className={classes.grow}>
@@ -166,7 +160,7 @@ export default function PrimarySearchBar(props: {
             <div className={classes.searchIcon}>
               <SearchIcon />
             </div>
-            <form onSubmit={(event) => onSearch(event, summonerName)}>
+            <form onSubmit={handleSearch}>
               <InputBase
                 placeholder={t('searchPlaceholder')}
                 classes={{

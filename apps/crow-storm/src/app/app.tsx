@@ -7,14 +7,15 @@ import MuiAlert from '@material-ui/lab/Alert'
 import { ChampionDataDragon, SummonerDTO } from '@waffle-charm/api-interfaces'
 import React, { Suspense } from 'react'
 import { Route, Switch } from 'react-router-dom'
-import PrimarySearchBar from './components/PrimarySearchBar'
-import Landing from './pages/Landing'
+import PrimarySearchBar, { SUMMONER_NAME_KEY, useQuery } from './components/PrimarySearchBar'
 
 const Mastery = React.lazy(() => import('./pages/Mastery'))
 
 export const DARK_MODE_PREF = 'darkModePref'
 
 export const App = (): React.ReactElement => {
+  const query = useQuery()
+  const summonerName = query.get(SUMMONER_NAME_KEY)
   const [darkMode, setDarkMode] = React.useState(
     JSON.parse(localStorage.getItem(DARK_MODE_PREF)) ?? true
   )
@@ -62,11 +63,20 @@ export const App = (): React.ReactElement => {
     [darkMode]
   )
 
-  const handleSearchSummoner = (
-    event: React.FormEvent<HTMLFormElement>,
-    summonerName: string
-  ) => {
-    event?.preventDefault()
+  React.useEffect(() => {
+    fetch(`/cdn/10.22.1/data/en_US/champion.json`)
+      .then((_) => _.json())
+      .then((value) => {
+        if (value && !value.statusCode) {
+          setChampionData(value)
+        } else {
+          setOpen(true)
+          setErr(value)
+        }
+      })
+  }, [])
+
+  React.useEffect(() => {
     setSummoner(undefined)
     if (summonerName) {
       setSummonerLoading(true)
@@ -87,27 +97,13 @@ export const App = (): React.ReactElement => {
           }
         })
     }
-  }
-
-  React.useEffect(() => {
-    fetch(`/cdn/10.22.1/data/en_US/champion.json`)
-      .then((_) => _.json())
-      .then((value) => {
-        if (value && !value.statusCode) {
-          setChampionData(value)
-        } else {
-          setOpen(true)
-          setErr(value)
-        }
-      })
-  }, [])
+  }, [summonerName])
 
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline>
         <Suspense fallback={<CircularProgress />}>
           <PrimarySearchBar
-            onSearch={handleSearchSummoner}
             onToggleTheme={handleToggleDarkTheme}
           ></PrimarySearchBar>
           <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>

@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react'
 import { ChampionData, ChampionMasteryDTO } from '@waffle-charm/api-interfaces'
 import React from 'react'
-import MasteryCard from '../MasteryCard'
+import MasteryCard from './MasteryCard'
 
 describe('MasteryCard', () => {
   const champion: ChampionData = {

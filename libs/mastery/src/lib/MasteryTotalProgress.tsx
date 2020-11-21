@@ -8,8 +8,8 @@ import {
   ChampionMasteryDTO,
   SummonerDTO,
 } from '@waffle-charm/api-interfaces'
-import ChampionRoleFilter from '@waffle-charm/champions/ChampionRoleFilter'
-import ProfileAvatar from '@waffle-charm/summoner/ProfileAvatar'
+import { ChampionRoleFilter } from '@waffle-charm/champions'
+import { ProfileAvatar } from '@waffle-charm/summoner'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import MasteryLinearProgress from './MasteryLinearProgress'

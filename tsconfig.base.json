@@ -17,10 +17,10 @@
     "baseUrl": ".",
     "paths": {
       "@waffle-charm/api-interfaces": ["libs/api-interfaces/src/index.ts"],
-      "@waffle-charm/champions/*": ["libs/champions/src/lib/*"],
-      "@waffle-charm/mastery/*": ["libs/mastery/src/lib/*"],
-      "@waffle-charm/material/*": ["libs/material/src/lib/*"],
-      "@waffle-charm/summoner/*": ["libs/summoner/src/lib/*"]
+      "@waffle-charm/champions": ["libs/champions/src/index.ts"],
+      "@waffle-charm/mastery": ["libs/mastery/src/index.ts"],
+      "@waffle-charm/material": ["libs/material/src/index.ts"],
+      "@waffle-charm/summoner": ["libs/summoner/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

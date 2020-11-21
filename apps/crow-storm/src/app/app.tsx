@@ -1,3 +1,4 @@
+import { Typography } from '@material-ui/core'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import { blue, green } from '@material-ui/core/colors'
 import CssBaseline from '@material-ui/core/CssBaseline'
@@ -5,6 +6,7 @@ import Snackbar from '@material-ui/core/Snackbar'
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
 import MuiAlert from '@material-ui/lab/Alert'
 import { ChampionDataDragon, SummonerDTO } from '@waffle-charm/api-interfaces'
+import { PageContainer } from '@waffle-charm/material'
 import React, { Suspense } from 'react'
 import { Route, Switch } from 'react-router-dom'
 import PrimarySearchBar, {
@@ -132,6 +134,15 @@ export const App = (): React.ReactElement => {
               />
             </Route>
           </Switch>
+          <PageContainer maxWidth="md">
+            <Typography variant="caption">
+              © Copyright 2020 fiddlestats.com. Fiddlestats isn't endorsed by
+              Riot Games and doesn't reflect the views or opinions of Riot Games
+              or anyone officially involved in producing or managing Riot Games
+              properties. Riot Games, and all associated properties are
+              trademarks or registered trademarks of Riot Games, Inc.
+            </Typography>
+          </PageContainer>
         </Suspense>
       </CssBaseline>
     </ThemeProvider>

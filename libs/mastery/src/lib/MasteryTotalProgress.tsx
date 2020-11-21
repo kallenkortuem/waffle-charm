@@ -6,7 +6,7 @@ import Skeleton from '@material-ui/lab/Skeleton'
 import {
   ChampionData,
   ChampionMasteryDTO,
-  SummonerDTO
+  SummonerDTO,
 } from '@waffle-charm/api-interfaces'
 import { ChampionRoleFilter } from '@waffle-charm/champions'
 import { getSummonerInfoUrl, ProfileAvatar } from '@waffle-charm/summoner'

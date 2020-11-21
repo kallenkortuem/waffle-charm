@@ -12,7 +12,7 @@ import MoreIcon from '@material-ui/icons/MoreVert'
 import SearchIcon from '@material-ui/icons/Search'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useHistory, useLocation } from 'react-router-dom'
+import { Link, useHistory, useLocation } from 'react-router-dom'
 
 export const SUMMONER_NAME_KEY = 'summonerName'
 
@@ -153,9 +153,11 @@ export default function PrimarySearchBar(props: {
     <div className={classes.grow}>
       <AppBar position="static">
         <Toolbar>
-          <Typography className={classes.title} variant="h6" noWrap>
-            Fiddlestats
-          </Typography>
+          <Link to="/" style={{ textDecoration: 'unset', color: 'unset' }}>
+            <Typography className={classes.title} variant="h6" noWrap>
+              Fiddlestats
+            </Typography>
+          </Link>
           <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />

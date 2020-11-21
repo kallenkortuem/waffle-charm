@@ -7,7 +7,10 @@ import MuiAlert from '@material-ui/lab/Alert'
 import { ChampionDataDragon, SummonerDTO } from '@waffle-charm/api-interfaces'
 import React, { Suspense } from 'react'
 import { Route, Switch } from 'react-router-dom'
-import PrimarySearchBar, { SUMMONER_NAME_KEY, useQuery } from './components/PrimarySearchBar'
+import PrimarySearchBar, {
+  SUMMONER_NAME_KEY,
+  useQuery,
+} from './components/PrimarySearchBar'
 
 const Mastery = React.lazy(() => import('./pages/Mastery'))
 

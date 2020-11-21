@@ -9,6 +9,8 @@ import { ChampionData, ChampionMasteryDTO } from '@waffle-charm/api-interfaces'
 import MasteryProgress from './MasteryProgress'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
+import { Link } from '@material-ui/core'
+import { getChampionInfoUrl } from '@waffle-charm/champions'
 
 export interface MasteryListViewProps {
   masteryLevels: string[]
@@ -49,7 +51,16 @@ export const MasteryListView = (
             )
             .map((row: ChampionMasteryDTO, i) => (
               <TableRow key={row.championId}>
-                <TableCell>{championMap[row.championId].name}</TableCell>
+                <TableCell>
+                  <Link
+                    variant="body2"
+                    href={getChampionInfoUrl(championMap[row.championId])}
+                    underline="hover"
+                    color="textPrimary"
+                  >
+                    {championMap[row.championId].name}
+                  </Link>
+                </TableCell>
                 <TableCell>{row.championLevel}</TableCell>
                 <TableCell>{row.championPoints.toLocaleString()}</TableCell>
                 <TableCell>

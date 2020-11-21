@@ -1,7 +1,5 @@
 {
-  "rulesDirectory": [
-    "node_modules/@nrwl/workspace/src/tslint"
-  ],
+  "rulesDirectory": ["node_modules/@nrwl/workspace/src/tslint"],
   "linterOptions": {
     "exclude": ["**/*"]
   },

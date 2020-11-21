@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react'
 import { ChampionData } from '@waffle-charm/api-interfaces'
 import React from 'react'
-import ChampionAvatar from '../ChampionAvatar'
+import ChampionAvatar from './ChampionAvatar'
 
 describe('ChampionAvatar', () => {
   const champion: ChampionData = {

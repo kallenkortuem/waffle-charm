@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react'
 import React from 'react'
-import ChampionRoleFilter from '../ChampionRoleFilter'
+import ChampionRoleFilter from './ChampionRoleFilter'
 
 describe('ChampionRoleFilter', () => {
   const allTags = ['Tank', 'Fighter', 'Support', 'Assasin', 'Mage', 'Marksman']

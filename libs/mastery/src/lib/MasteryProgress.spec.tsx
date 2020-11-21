@@ -1,9 +1,10 @@
-import { render } from '@testing-library/react'
-import { ChampionMasteryDTO } from '@waffle-charm/api-interfaces'
 import React from 'react'
-import MasteryToken from '../MasteryToken'
+import { render } from '@testing-library/react'
 
-describe('MasteryToken', () => {
+import MasteryProgress from './MasteryProgress'
+import { ChampionMasteryDTO } from '@waffle-charm/api-interfaces'
+
+describe('MasteryProgress', () => {
   const mastery: ChampionMasteryDTO = {
     championId: 266,
     championLevel: 3,
@@ -15,11 +16,8 @@ describe('MasteryToken', () => {
     tokensEarned: 0,
     summonerId: '',
   }
-
   it('should render successfully', () => {
-    const { baseElement } = render(
-      <MasteryToken mastery={mastery} threshold={0} />
-    )
+    const { baseElement } = render(<MasteryProgress mastery={mastery} />)
     expect(baseElement).toBeTruthy()
   })
 })

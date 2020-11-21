@@ -1,7 +1,7 @@
 import React from 'react'
 import { render } from '@testing-library/react'
 
-import MasteryListView from '../MasteryListView'
+import MasteryListView from './MasteryListView'
 import { ChampionData, ChampionMasteryDTO } from '@waffle-charm/api-interfaces'
 
 describe('MasteryListView', () => {

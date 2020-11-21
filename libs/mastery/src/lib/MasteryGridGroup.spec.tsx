@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react'
 import { ChampionData, ChampionMasteryDTO } from '@waffle-charm/api-interfaces'
 import React from 'react'
-import MasteryGridGroup from '../MasteryGridGroup'
+import MasteryGridGroup from './MasteryGridGroup'
 
 describe('MasteryGridGroup', () => {
   const groupedMasteries: Record<number, ChampionMasteryDTO[]> = {}

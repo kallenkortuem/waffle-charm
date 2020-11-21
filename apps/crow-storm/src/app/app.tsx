@@ -6,8 +6,7 @@ import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
 import MuiAlert from '@material-ui/lab/Alert'
 import { ChampionDataDragon, SummonerDTO } from '@waffle-charm/api-interfaces'
 import React, { Suspense } from 'react'
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-import './app.scss'
+import { Route, Switch } from 'react-router-dom'
 import PrimarySearchBar from './components/PrimarySearchBar'
 
 const Mastery = React.lazy(() => import('./pages/Mastery'))
@@ -124,7 +123,10 @@ export const App = (): React.ReactElement => {
            * Routes
            */}
           <Switch>
-            <Route path="/">
+            <Route exact path="/">
+              
+            </Route>
+            <Route path="/mastery/:summonerName">
               <Mastery
                 loading={summonerLoading}
                 championData={championData}

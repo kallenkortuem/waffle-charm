@@ -1,7 +1,7 @@
 import React from 'react'
 import { render } from '@testing-library/react'
 
-import MasteryLinearProgress from '../MasteryLinearProgress'
+import MasteryLinearProgress from './MasteryLinearProgress'
 
 describe('MasteryLinearProgress', () => {
   it('should render successfully', () => {

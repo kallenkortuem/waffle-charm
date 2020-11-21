@@ -1,11 +1,11 @@
 import React from 'react'
 import { render } from '@testing-library/react'
 
-import WelcomeBanner from '../WelcomeBanner'
+import MasteryContainer from './MasteryContainer'
 
-describe('WelcomeBanner', () => {
+describe('MasteryContainer', () => {
   it('should render successfully', () => {
-    const { baseElement } = render(<WelcomeBanner />)
+    const { baseElement } = render(<MasteryContainer>{}</MasteryContainer>)
     expect(baseElement).toBeTruthy()
   })
 })

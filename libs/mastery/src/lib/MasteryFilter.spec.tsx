@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react'
 import React from 'react'
-import MasteryFilter from '../MasteryFilter'
+import MasteryFilter from './MasteryFilter'
 
 describe('MasteryFilter', () => {
   const layout = 'module'

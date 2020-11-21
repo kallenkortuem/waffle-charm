@@ -1,11 +1,11 @@
 import React from 'react'
 import { render } from '@testing-library/react'
 
-import MasteryContainer from '../MasteryContainer'
+import BorderLinearProgress from './BorderLinearProgress'
 
-describe('MasteryContainer', () => {
+describe('BorderLinearProgress', () => {
   it('should render successfully', () => {
-    const { baseElement } = render(<MasteryContainer>{}</MasteryContainer>)
+    const { baseElement } = render(<BorderLinearProgress />)
     expect(baseElement).toBeTruthy()
   })
 })

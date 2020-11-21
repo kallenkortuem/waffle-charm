@@ -1,11 +1,11 @@
 import React from 'react'
 import { render } from '@testing-library/react'
 
-import ProfileAvatar from '../ProfileAvatar'
+import WelcomeBanner from './WelcomeBanner'
 
-describe('ProfileAvatar', () => {
+describe('WelcomeBanner', () => {
   it('should render successfully', () => {
-    const { baseElement } = render(<ProfileAvatar summoner={null} />)
+    const { baseElement } = render(<WelcomeBanner />)
     expect(baseElement).toBeTruthy()
   })
 })

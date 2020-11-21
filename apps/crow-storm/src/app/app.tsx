@@ -6,15 +6,19 @@ import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
 import MuiAlert from '@material-ui/lab/Alert'
 import { ChampionDataDragon, SummonerDTO } from '@waffle-charm/api-interfaces'
 import React, { Suspense } from 'react'
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-import './app.scss'
-import PrimarySearchBar from './components/PrimarySearchBar'
+import { Route, Switch } from 'react-router-dom'
+import PrimarySearchBar, {
+  SUMMONER_NAME_KEY,
+  useQuery,
+} from './components/PrimarySearchBar'
 
 const Mastery = React.lazy(() => import('./pages/Mastery'))
 
 export const DARK_MODE_PREF = 'darkModePref'
 
 export const App = (): React.ReactElement => {
+  const query = useQuery()
+  const summonerName = query.get(SUMMONER_NAME_KEY)
   const [darkMode, setDarkMode] = React.useState(
     JSON.parse(localStorage.getItem(DARK_MODE_PREF)) ?? true
   )
@@ -62,11 +66,20 @@ export const App = (): React.ReactElement => {
     [darkMode]
   )
 
-  const handleSearchSummoner = (
-    event: React.FormEvent<HTMLFormElement>,
-    summonerName: string
-  ) => {
-    event?.preventDefault()
+  React.useEffect(() => {
+    fetch(`/cdn/10.22.1/data/en_US/champion.json`)
+      .then((_) => _.json())
+      .then((value) => {
+        if (value && !value.statusCode) {
+          setChampionData(value)
+        } else {
+          setOpen(true)
+          setErr(value)
+        }
+      })
+  }, [])
+
+  React.useEffect(() => {
     setSummoner(undefined)
     if (summonerName) {
       setSummonerLoading(true)
@@ -87,57 +100,41 @@ export const App = (): React.ReactElement => {
           }
         })
     }
-  }
-
-  React.useEffect(() => {
-    fetch(`/cdn/10.22.1/data/en_US/champion.json`)
-      .then((_) => _.json())
-      .then((value) => {
-        if (value && !value.statusCode) {
-          setChampionData(value)
-        } else {
-          setOpen(true)
-          setErr(value)
-        }
-      })
-  }, [])
+  }, [summonerName])
 
   return (
-    <Router>
-      <ThemeProvider theme={darkTheme}>
-        <CssBaseline>
-          <Suspense fallback={<CircularProgress />}>
-            <PrimarySearchBar
-              onSearch={handleSearchSummoner}
-              onToggleTheme={handleToggleDarkTheme}
-            ></PrimarySearchBar>
-            <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-              <MuiAlert
-                onClose={handleClose}
-                severity="error"
-                elevation={6}
-                variant="filled"
-              >
-                {err?.statusCode}: {err?.message}
-              </MuiAlert>
-            </Snackbar>
-            {/**
-             * Routes
-             */}
-            <Switch>
-              <Route path="/">
-                <Mastery
-                  loading={summonerLoading}
-                  championData={championData}
-                  summoner={summoner}
-                  onError={handleApiError}
-                />
-              </Route>
-            </Switch>
-          </Suspense>
-        </CssBaseline>
-      </ThemeProvider>
-    </Router>
+    <ThemeProvider theme={darkTheme}>
+      <CssBaseline>
+        <Suspense fallback={<CircularProgress />}>
+          <PrimarySearchBar
+            onToggleTheme={handleToggleDarkTheme}
+          ></PrimarySearchBar>
+          <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+            <MuiAlert
+              onClose={handleClose}
+              severity="error"
+              elevation={6}
+              variant="filled"
+            >
+              {err?.statusCode}: {err?.message}
+            </MuiAlert>
+          </Snackbar>
+          {/**
+           * Routes
+           */}
+          <Switch>
+            <Route path="/">
+              <Mastery
+                loading={summonerLoading}
+                championData={championData}
+                summoner={summoner}
+                onError={handleApiError}
+              />
+            </Route>
+          </Switch>
+        </Suspense>
+      </CssBaseline>
+    </ThemeProvider>
   )
 }
 

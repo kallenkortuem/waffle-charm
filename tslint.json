@@ -1,8 +1,5 @@
 {
-  "rulesDirectory": [
-    "node_modules/@nrwl/workspace/src/tslint",
-    "node_modules/codelyzer"
-  ],
+  "rulesDirectory": ["node_modules/@nrwl/workspace/src/tslint"],
   "linterOptions": {
     "exclude": ["**/*"]
   },

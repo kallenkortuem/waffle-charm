@@ -37,9 +37,7 @@ export interface MasteryFilterProps {
   ) => void
 }
 
-export default function MasteryFilter(
-  props: MasteryFilterProps
-): React.ReactElement {
+export function MasteryFilter(props: MasteryFilterProps): React.ReactElement {
   const { layout, masteryLevels, onLayoutChange, onMasteryLevelsChange } = props
   const { t } = useTranslation()
   const masterLevelButtons = React.useMemo(
@@ -114,3 +112,5 @@ export default function MasteryFilter(
     </Grid>
   )
 }
+
+export default MasteryFilter

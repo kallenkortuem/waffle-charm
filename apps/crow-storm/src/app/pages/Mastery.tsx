@@ -5,13 +5,15 @@ import {
   ChampionMasteryDTO,
   SummonerDTO,
 } from '@waffle-charm/api-interfaces'
-import MasteryContainer from '@waffle-charm/mastery/MasteryContainer'
-import MasteryFilter from '@waffle-charm/mastery/MasteryFilter'
-import MasteryGridView from '@waffle-charm/mastery/MasteryGridView'
-import MasteryListView from '@waffle-charm/mastery/MasteryListView'
-import MasteryTotalProgress from '@waffle-charm/mastery/MasteryTotalProgress'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import {
+  MasteryFilter,
+  MasteryGridView,
+  MasteryListView,
+  MasteryTotalProgress,
+} from '@waffle-charm/mastery'
+import { PageContainer } from '@waffle-charm/material'
 import WelcomeBanner from '../components/WelcomeBanner'
 
 export const MASTERY_LEVELS = 'masteryLevels'
@@ -152,13 +154,13 @@ export const Mastery = (props: {
 
   return (
     <main>
-      <MasteryContainer maxWidth="md">
+      <PageContainer maxWidth="md">
         <Typography variant="h4" component="h1">
           {t('championMastery')}
         </Typography>
 
         {showWelcomeScreen ? <WelcomeBanner /> : content}
-      </MasteryContainer>
+      </PageContainer>
     </main>
   )
 }

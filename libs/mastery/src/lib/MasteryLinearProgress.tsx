@@ -1,7 +1,7 @@
 import { LinearProgressProps } from '@material-ui/core'
 import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
-import BorderLinearProgress from '@waffle-charm/material/BorderLinearProgress'
+import { BorderLinearProgress } from '@waffle-charm/material'
 import React from 'react'
 
 /* eslint-disable-next-line */

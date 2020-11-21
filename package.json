@@ -69,6 +69,7 @@
     "@nrwl/node": "^10.3.3",
     "@nrwl/nx-cloud": "^10.1.8",
     "@nrwl/react": "^10.3.3",
+    "@nrwl/storybook": "^10.4.4",
     "@nrwl/tao": "^10.3.3",
     "@nrwl/web": "^10.3.3",
     "@nrwl/workspace": "^10.3.3",

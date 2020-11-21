@@ -8,6 +8,7 @@ import { ChampionDataDragon, SummonerDTO } from '@waffle-charm/api-interfaces'
 import React, { Suspense } from 'react'
 import { Route, Switch } from 'react-router-dom'
 import PrimarySearchBar from './components/PrimarySearchBar'
+import Landing from './pages/Landing'
 
 const Mastery = React.lazy(() => import('./pages/Mastery'))
 
@@ -123,10 +124,7 @@ export const App = (): React.ReactElement => {
            * Routes
            */}
           <Switch>
-            <Route exact path="/">
-              
-            </Route>
-            <Route path="/mastery/:summonerName">
+            <Route path="/">
               <Mastery
                 loading={summonerLoading}
                 championData={championData}

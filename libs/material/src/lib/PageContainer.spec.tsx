@@ -1,11 +1,11 @@
 import React from 'react'
 import { render } from '@testing-library/react'
 
-import MasteryContainer from './MasteryContainer'
+import PageContainer from './PageContainer'
 
 describe('MasteryContainer', () => {
   it('should render successfully', () => {
-    const { baseElement } = render(<MasteryContainer>{}</MasteryContainer>)
+    const { baseElement } = render(<PageContainer>{}</PageContainer>)
     expect(baseElement).toBeTruthy()
   })
 })

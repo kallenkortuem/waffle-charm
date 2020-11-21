@@ -5,7 +5,7 @@ import {
   ChampionMasteryDTO,
   SummonerDTO,
 } from '@waffle-charm/api-interfaces'
-import MasteryContainer from '@waffle-charm/mastery/MasteryContainer'
+import PageContainer from '@waffle-charm/material/PageContainer'
 import MasteryFilter from '@waffle-charm/mastery/MasteryFilter'
 import MasteryGridView from '@waffle-charm/mastery/MasteryGridView'
 import MasteryListView from '@waffle-charm/mastery/MasteryListView'
@@ -152,13 +152,13 @@ export const Mastery = (props: {
 
   return (
     <main>
-      <MasteryContainer maxWidth="md">
+      <PageContainer maxWidth="md">
         <Typography variant="h4" component="h1">
           {t('championMastery')}
         </Typography>
 
         {showWelcomeScreen ? <WelcomeBanner /> : content}
-      </MasteryContainer>
+      </PageContainer>
     </main>
   )
 }

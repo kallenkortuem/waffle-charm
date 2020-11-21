@@ -1,7 +1,7 @@
 import Container from '@material-ui/core/Container'
 import { createStyles, Theme, withStyles } from '@material-ui/core/styles'
 
-export const MasteryContainer = withStyles((theme: Theme) =>
+export const PageContainer = withStyles((theme: Theme) =>
   createStyles({
     root: {
       flexDirection: 'row',
@@ -17,4 +17,4 @@ export const MasteryContainer = withStyles((theme: Theme) =>
   })
 )(Container)
 
-export default MasteryContainer
+export default PageContainer

@@ -103,41 +103,39 @@ export const App = (): React.ReactElement => {
   }, [])
 
   return (
-    <Router>
-      <ThemeProvider theme={darkTheme}>
-        <CssBaseline>
-          <Suspense fallback={<CircularProgress />}>
-            <PrimarySearchBar
-              onSearch={handleSearchSummoner}
-              onToggleTheme={handleToggleDarkTheme}
-            ></PrimarySearchBar>
-            <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-              <MuiAlert
-                onClose={handleClose}
-                severity="error"
-                elevation={6}
-                variant="filled"
-              >
-                {err?.statusCode}: {err?.message}
-              </MuiAlert>
-            </Snackbar>
-            {/**
-             * Routes
-             */}
-            <Switch>
-              <Route path="/">
-                <Mastery
-                  loading={summonerLoading}
-                  championData={championData}
-                  summoner={summoner}
-                  onError={handleApiError}
-                />
-              </Route>
-            </Switch>
-          </Suspense>
-        </CssBaseline>
-      </ThemeProvider>
-    </Router>
+    <ThemeProvider theme={darkTheme}>
+      <CssBaseline>
+        <Suspense fallback={<CircularProgress />}>
+          <PrimarySearchBar
+            onSearch={handleSearchSummoner}
+            onToggleTheme={handleToggleDarkTheme}
+          ></PrimarySearchBar>
+          <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+            <MuiAlert
+              onClose={handleClose}
+              severity="error"
+              elevation={6}
+              variant="filled"
+            >
+              {err?.statusCode}: {err?.message}
+            </MuiAlert>
+          </Snackbar>
+          {/**
+           * Routes
+           */}
+          <Switch>
+            <Route path="/">
+              <Mastery
+                loading={summonerLoading}
+                championData={championData}
+                summoner={summoner}
+                onError={handleApiError}
+              />
+            </Route>
+          </Switch>
+        </Suspense>
+      </CssBaseline>
+    </ThemeProvider>
   )
 }
 

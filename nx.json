@@ -22,13 +22,6 @@
     }
   },
   "projects": {
-    "wild-hunt": {
-      "tags": []
-    },
-    "wild-hunt-e2e": {
-      "tags": [],
-      "implicitDependencies": ["wild-hunt"]
-    },
     "api": {
       "tags": []
     },

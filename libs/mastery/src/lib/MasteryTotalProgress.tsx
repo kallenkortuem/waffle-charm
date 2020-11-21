@@ -1,4 +1,4 @@
-import { Typography } from '@material-ui/core'
+import { Link, Typography } from '@material-ui/core'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import CardHeader from '@material-ui/core/CardHeader'
@@ -6,10 +6,10 @@ import Skeleton from '@material-ui/lab/Skeleton'
 import {
   ChampionData,
   ChampionMasteryDTO,
-  SummonerDTO,
+  SummonerDTO
 } from '@waffle-charm/api-interfaces'
 import { ChampionRoleFilter } from '@waffle-charm/champions'
-import { ProfileAvatar } from '@waffle-charm/summoner'
+import { getSummonerInfoUrl, ProfileAvatar } from '@waffle-charm/summoner'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import MasteryLinearProgress from './MasteryLinearProgress'
@@ -78,11 +78,6 @@ export const MasteryTotalProgress = (props: MasteryTotalProgressProps) => {
     [masteries, tag, championEntries]
   )
 
-  const championLevelsProgress = getProgress(
-    stats.totalLevel,
-    filteredChampions.length * 7
-  )
-
   const championPointsProgress = getProgress(
     stats.totalCappedPoints,
     filteredChampions.length * ((1800 + 2400) * 5)
@@ -103,9 +98,14 @@ export const MasteryTotalProgress = (props: MasteryTotalProgressProps) => {
     <Card>
       <CardHeader
         title={
-          <Typography variant="h5" component="span">
+          <Link
+            variant="h5"
+            underline="hover"
+            color="textPrimary"
+            href={getSummonerInfoUrl(summoner)}
+          >
             {loaded ? summoner.name : <Skeleton width="50%" />}
-          </Typography>
+          </Link>
         }
         avatar={
           loaded ? (

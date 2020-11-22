@@ -1,7 +1,9 @@
 import { render } from '@testing-library/react'
+import { enablei18nMocks } from '@waffle-charm/testing-utils'
 import React from 'react'
 import MasteryFilter from './MasteryFilter'
 
+enablei18nMocks()
 describe('MasteryFilter', () => {
   const layout = 'module'
   const masteryLevels = ['1']

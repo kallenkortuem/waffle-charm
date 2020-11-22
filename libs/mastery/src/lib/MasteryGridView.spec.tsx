@@ -1,8 +1,10 @@
 import { render } from '@testing-library/react'
 import { ChampionData, ChampionMasteryDTO } from '@waffle-charm/api-interfaces'
+import { enablei18nMocks } from '@waffle-charm/testing-utils'
 import React from 'react'
 import MasteryGridView from './MasteryGridView'
 
+enablei18nMocks()
 describe('MasteryGridView', () => {
   const masteries: ChampionMasteryDTO[] = []
   const championMap: Record<number, ChampionData> = {}

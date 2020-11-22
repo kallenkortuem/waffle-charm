@@ -46,6 +46,9 @@
     },
     "summoner": {
       "tags": []
+    },
+    "testing-utils": {
+      "tags": []
     }
   }
 }

@@ -1,7 +1,10 @@
 import { render } from '@testing-library/react'
 import { ChampionData } from '@waffle-charm/api-interfaces'
+import { enablei18nMocks } from '@waffle-charm/testing-utils'
 import React from 'react'
 import ChampionAvatar from './ChampionAvatar'
+
+enablei18nMocks()
 
 describe('ChampionAvatar', () => {
   const champion: ChampionData = {

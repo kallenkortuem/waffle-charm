@@ -1,7 +1,10 @@
 import { render } from '@testing-library/react'
 import { ChampionData, ChampionMasteryDTO } from '@waffle-charm/api-interfaces'
+import { enablei18nMocks } from '@waffle-charm/testing-utils'
 import React from 'react'
 import MasteryCard from './MasteryCard'
+
+enablei18nMocks()
 
 describe('MasteryCard', () => {
   const champion: ChampionData = {

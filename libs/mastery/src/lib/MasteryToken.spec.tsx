@@ -1,8 +1,10 @@
 import { render } from '@testing-library/react'
 import { ChampionMasteryDTO } from '@waffle-charm/api-interfaces'
+import { enablei18nMocks } from '@waffle-charm/testing-utils'
 import React from 'react'
 import MasteryToken from './MasteryToken'
 
+enablei18nMocks()
 describe('MasteryToken', () => {
   const mastery: ChampionMasteryDTO = {
     championId: 266,

@@ -7,5 +7,6 @@ module.exports = {
     '<rootDir>/libs/champions',
     '<rootDir>/libs/material',
     '<rootDir>/libs/summoner',
+    '<rootDir>/libs/testing-utils',
   ],
 }

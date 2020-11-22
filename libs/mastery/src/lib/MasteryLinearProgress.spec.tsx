@@ -1,7 +1,9 @@
-import React from 'react'
 import { render } from '@testing-library/react'
-
+import { enablei18nMocks } from '@waffle-charm/testing-utils'
+import React from 'react'
 import MasteryLinearProgress from './MasteryLinearProgress'
+
+enablei18nMocks()
 
 describe('MasteryLinearProgress', () => {
   it('should render successfully', () => {

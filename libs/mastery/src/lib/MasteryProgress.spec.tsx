@@ -1,9 +1,10 @@
-import React from 'react'
 import { render } from '@testing-library/react'
-
-import MasteryProgress from './MasteryProgress'
 import { ChampionMasteryDTO } from '@waffle-charm/api-interfaces'
+import { enablei18nMocks } from '@waffle-charm/testing-utils'
+import React from 'react'
+import MasteryProgress from './MasteryProgress'
 
+enablei18nMocks()
 describe('MasteryProgress', () => {
   const mastery: ChampionMasteryDTO = {
     championId: 266,

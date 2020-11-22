@@ -1,95 +1,84 @@
 # WaffleCharm
 
-This project was generated using [Nx](https://nx.dev).
+View the live site at https://fiddlestats.com
 
-<p align="center"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="450"></p>
+## Install dependencies
 
-🔎 **Nx is a set of Extensible Dev Tools for Monorepos.**
+Run `npm install`
 
-## Quick Start & Documentation
+## Development server
 
-[Nx Documentation](https://nx.dev/angular)
+Run `RIOT_GAMES_API_KEY=RGAPI-123456789 npm run nx serve api` to start the API dev server exposed on http://localhost:3333/.
 
-[10-minute video showing all Nx features](https://nx.dev/angular/getting-started/what-is-nx)
+> You will need to provide your own `RIOT_GAMES_API_KEY` found here: https://developer.riotgames.com/#
 
-[Interactive Tutorial](https://nx.dev/angular/tutorial/01-create-application)
+In a seperate console, run `npm run nx serve crow-storm` to start the frontend dev server. Navigate to http://localhost:4200/.
 
-## Adding capabilities to your workspace
+The app or api will automatically reload if you change any of the source files.
 
-Nx supports many plugins which add capabilities for developing different types of applications and different tools.
+## Build
 
-These capabilities include generating applications, libraries, etc as well as the devtools to test, and build projects as well.
+Run `npm run nx build crowstorm` to build the project.
 
-Below are our core plugins:
+The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
 
-- [Angular](https://angular.io)
-  - `ng add @nrwl/angular`
-- [React](https://reactjs.org)
-  - `ng add @nrwl/react`
-- Web (no framework frontends)
-  - `ng add @nrwl/web`
-- [Nest](https://nestjs.com)
-  - `ng add @nrwl/nest`
-- [Express](https://expressjs.com)
-  - `ng add @nrwl/express`
-- [Node](https://nodejs.org)
-  - `ng add @nrwl/node`
+## Running unit tests
 
-There are also many [community plugins](https://nx.dev/nx-community) you could add.
+Run `npm run nx test crow-storm` to execute the unit tests via [Jest](https://jestjs.io).
+
+Run `npm run nx affected:test` to execute the unit tests affected by a change.
+
+## Running end-to-end tests
+
+Run `npm run nx e2e crow-storm-e2e` to execute the end-to-end tests via [Cypress](https://www.cypress.io).
+
+Run `npm run nx affected:e2e` to execute the end-to-end tests affected by a change.
+
+## Formatting code
+
+Run `npm run nx format:write` to format the code.
+
+## Understand the workspace
+
+Run `npm run nx dep-graph` to see a diagram of the dependencies of your projects.
+
+# Code scaffolding
 
 ## Generate an application
 
-Run `ng g @nrwl/angular:app my-app` to generate an application.
-
-> You can use any of the plugins above to generate applications as well.
+Run `npm run nx g @nrwl/react:app my-app` to generate an application.
 
 When using Nx, you can create multiple applications and libraries in the same workspace.
 
 ## Generate a library
 
-Run `ng g @nrwl/angular:lib my-lib` to generate a library.
-
-> You can also use any of the plugins above to generate libraries as well.
+Run `npm run nx g @nrwl/react:lib my-lib` to generate a new library.
 
 Libraries are sharable across libraries and applications. They can be imported from `@waffle-charm/mylib`.
 
-## Development server
+## Generate a component
 
-Run `ng serve my-app` for a dev server. Navigate to http://localhost:4200/. The app will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `ng g component my-component --project=my-app` to generate a new component.
-
-## Build
-
-Run `ng build my-app` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test my-app` to execute the unit tests via [Jest](https://jestjs.io).
-
-Run `nx affected:test` to execute the unit tests affected by a change.
-
-## Running end-to-end tests
-
-Run `ng e2e my-app` to execute the end-to-end tests via [Cypress](https://www.cypress.io).
-
-Run `nx affected:e2e` to execute the end-to-end tests affected by a change.
-
-## Understand your workspace
-
-Run `nx dep-graph` to see a diagram of the dependencies of your projects.
+Run `npm run nx g @nrwl/react:component my-component --project=my-app` to generate a new component.
 
 ## Further help
 
-Visit the [Nx Documentation](https://nx.dev/angular) to learn more.
+Visit the [Nx Documentation](https://nx.dev/react) to learn more.
+
+This project was generated using [Nx](https://nx.dev).
+
+🔎 **Nx is a set of Extensible Dev Tools for Monorepos.**
+
+## Quick Start & Documentation
+
+[Nx Documentation](https://nx.dev/react)
+
+[10-minute video showing all Nx features](https://nx.dev/react/getting-started/what-is-nx)
+
+[Interactive Tutorial](https://nx.dev/react/tutorial/01-create-application)
 
 ## ☁ Nx Cloud
 
 ### Computation Memoization in the Cloud
-
-<p align="center"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-cloud-card.png"></p>
 
 Nx Cloud pairs with Nx in order to enable you to build and test code more rapidly, by up to 10 times. Even teams that are new to Nx can connect to Nx Cloud and start saving time instantly.
 

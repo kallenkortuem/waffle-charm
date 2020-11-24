@@ -42,6 +42,14 @@ export const summonerAdapter = createEntityAdapter<SummonerEntity>()
 export const fetchSummoner = createAsyncThunk(
   'summoner/fetchStatus',
   async (summonerName: string, thunkAPI) => {
+    if (!summonerName) {
+      throw `summonerName is required`
+    }
+
+    if (summonerName.length < 3) {
+      throw `summonerName must be longer than 3 characters`
+    }
+
     const response = await fetch(`/api/summoner/${summonerName}`).then((_) =>
       _.json()
     )

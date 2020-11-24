@@ -1,12 +1,5 @@
 import Typography from '@material-ui/core/Typography'
-import {
-  ChampionData,
-  ChampionDataDragon,
-  ChampionMasteryDTO,
-  SummonerDTO,
-} from '@waffle-charm/api-interfaces'
-import React, { useEffect, useState } from 'react'
-import { useTranslation } from 'react-i18next'
+import { ChampionMasteryDTO } from '@waffle-charm/api-interfaces'
 import {
   MasteryFilter,
   MasteryGridView,
@@ -14,45 +7,32 @@ import {
   MasteryTotalProgress,
 } from '@waffle-charm/mastery'
 import { PageContainer } from '@waffle-charm/material'
+import React, { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { useSelector } from 'react-redux'
+import {
+  selectAllChampionTags,
+  selectChampionEntities,
+} from '../+store/features/champion.slice'
+import { createSelectSummonerByName } from '../+store/features/summoner.slice'
 import WelcomeBanner from '../components/WelcomeBanner'
 
 export const MASTERY_LEVELS = 'masteryLevels'
 export const MASTERY_LAYOUT = 'masteryLayout'
 
 export const Mastery = (props: {
-  summoner: SummonerDTO
-  championData: ChampionDataDragon
+  summonerName: string
   loading: boolean
-  onError: (value: { statusCode: number; message: string }) => void
 }): React.ReactElement => {
-  const { loading, summoner, championData, onError } = props
+  const { loading, summonerName } = props
 
   const { t } = useTranslation()
-
-  const championMap: Record<number, ChampionData> = React.useMemo(
-    () =>
-      Object.entries(championData?.data || []).reduce(
-        (accumulated, [_, entry]) => {
-          accumulated[entry.key] = entry
-          return accumulated
-        },
-        {}
-      ) || {},
-    [championData]
+  const selectSummonerByName = createSelectSummonerByName()
+  const summoner = useSelector((state) =>
+    selectSummonerByName(state, summonerName)
   )
-
-  const allTags: string[] = React.useMemo(
-    () =>
-      Object.values(championData?.data || []).reduce((totalTags, champion) => {
-        champion.tags.forEach((t) => {
-          if (!totalTags.includes(t)) {
-            totalTags.push(t)
-          }
-        })
-        return totalTags
-      }, []),
-    [championData]
-  )
+  const championMap = useSelector(selectChampionEntities)
+  const allTags = useSelector(selectAllChampionTags)
 
   const [masteryLevels, setVisibleMasteryLevels] = useState(() =>
     JSON.parse(localStorage.getItem(MASTERY_LEVELS) || '["1"]')
@@ -102,13 +82,6 @@ export const Mastery = (props: {
       .then((value) => {
         if (value && !value.statusCode && Array.isArray(value)) {
           setMasteries(value)
-        } else {
-          onError(value)
-        }
-      })
-      .catch((error) => {
-        if (error?.statusCode) {
-          onError(error)
         }
       })
   }, [summoner])

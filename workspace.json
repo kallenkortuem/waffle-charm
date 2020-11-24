@@ -359,7 +359,7 @@
       },
       "redux": {
         "project": "crow-storm",
-        "directory": "store/features"
+        "directory": "+store/features"
       }
     },
     "@nrwl/next": {

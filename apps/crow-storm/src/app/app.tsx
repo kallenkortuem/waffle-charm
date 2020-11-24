@@ -5,10 +5,13 @@ import CssBaseline from '@material-ui/core/CssBaseline'
 import Snackbar from '@material-ui/core/Snackbar'
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
 import MuiAlert from '@material-ui/lab/Alert'
-import { ChampionDataDragon, SummonerDTO } from '@waffle-charm/api-interfaces'
+import { ChampionDataDragon } from '@waffle-charm/api-interfaces'
 import { PageContainer } from '@waffle-charm/material'
 import React, { Suspense } from 'react'
+import { useDispatch } from 'react-redux'
 import { Route, Switch } from 'react-router-dom'
+import { fetchChampion } from './+store/features/champion.slice'
+import { fetchSummoner } from './+store/features/summoner.slice'
 import PrimarySearchBar, {
   SUMMONER_NAME_KEY,
   useQuery,
@@ -20,6 +23,7 @@ export const DARK_MODE_PREF = 'darkModePref'
 
 export const App = (): React.ReactElement => {
   const query = useQuery()
+  const dispatch = useDispatch()
   const summonerName = query.get(SUMMONER_NAME_KEY)
   const [darkMode, setDarkMode] = React.useState(
     JSON.parse(localStorage.getItem(DARK_MODE_PREF)) ?? true
@@ -29,8 +33,6 @@ export const App = (): React.ReactElement => {
     statusCode: number
     message: string
   }>()
-  const [summoner, setSummoner] = React.useState<SummonerDTO>()
-  const [championData, setChampionData] = React.useState<ChampionDataDragon>()
   const [summonerLoading, setSummonerLoading] = React.useState(false)
 
   const handleToggleDarkTheme = () => {
@@ -69,40 +71,12 @@ export const App = (): React.ReactElement => {
   )
 
   React.useEffect(() => {
-    fetch(`/cdn/10.22.1/data/en_US/champion.json`)
-      .then((_) => _.json())
-      .then((value) => {
-        if (value && !value.statusCode) {
-          setChampionData(value)
-        } else {
-          setOpen(true)
-          setErr(value)
-        }
-      })
-  }, [])
+    dispatch(fetchChampion())
+  }, [dispatch])
 
   React.useEffect(() => {
-    setSummoner(undefined)
-    if (summonerName) {
-      setSummonerLoading(true)
-      fetch(`/api/summoner/${summonerName}`)
-        .then((_) => _.json())
-        .then((value) => {
-          setSummonerLoading(false)
-          if (value && !value.statusCode) {
-            setSummoner(value)
-          } else {
-            handleApiError(value)
-          }
-        })
-        .catch((error) => {
-          setSummonerLoading(false)
-          if (error?.statusCode) {
-            handleApiError(error)
-          }
-        })
-    }
-  }, [summonerName])
+    dispatch(fetchSummoner(summonerName))
+  }, [dispatch, summonerName])
 
   return (
     <ThemeProvider theme={darkTheme}>
@@ -126,12 +100,7 @@ export const App = (): React.ReactElement => {
            */}
           <Switch>
             <Route path="/">
-              <Mastery
-                loading={summonerLoading}
-                championData={championData}
-                summoner={summoner}
-                onError={handleApiError}
-              />
+              <Mastery summonerName={summonerName} loading={summonerLoading} />
             </Route>
           </Switch>
           <PageContainer maxWidth="md">

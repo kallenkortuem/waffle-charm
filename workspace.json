@@ -356,6 +356,10 @@
       "library": {
         "style": "scss",
         "linter": "eslint"
+      },
+      "redux": {
+        "project": "crow-storm",
+        "directory": "store/features"
       }
     },
     "@nrwl/next": {

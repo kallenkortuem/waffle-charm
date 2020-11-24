@@ -138,6 +138,11 @@ export const selectSummonerEntities = createSelector(
   selectEntities
 )
 
+export const selectSummonerLoadingStatus = createSelector(
+  getSummonerState,
+  (state) => state.loadingStatus
+)
+
 export const createSelectSummonerByName = () =>
   createSelector(
     selectAllSummoner,

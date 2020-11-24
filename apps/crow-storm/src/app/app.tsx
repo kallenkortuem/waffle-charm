@@ -2,10 +2,7 @@ import { Typography } from '@material-ui/core'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import { blue, green } from '@material-ui/core/colors'
 import CssBaseline from '@material-ui/core/CssBaseline'
-import Snackbar from '@material-ui/core/Snackbar'
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
-import MuiAlert from '@material-ui/lab/Alert'
-import { ChampionDataDragon } from '@waffle-charm/api-interfaces'
 import { PageContainer } from '@waffle-charm/material'
 import React, { Suspense } from 'react'
 import { useDispatch } from 'react-redux'
@@ -28,30 +25,11 @@ export const App = (): React.ReactElement => {
   const [darkMode, setDarkMode] = React.useState(
     JSON.parse(localStorage.getItem(DARK_MODE_PREF)) ?? true
   )
-  const [open, setOpen] = React.useState(false)
-  const [err, setErr] = React.useState<{
-    statusCode: number
-    message: string
-  }>()
-  const [summonerLoading, setSummonerLoading] = React.useState(false)
 
   const handleToggleDarkTheme = () => {
     const newValue = !darkMode
     setDarkMode(newValue)
     localStorage.setItem(DARK_MODE_PREF, newValue.toString())
-  }
-
-  const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
-    if (reason === 'clickaway') {
-      return
-    }
-
-    setOpen(false)
-  }
-
-  const handleApiError = (value: { statusCode: number; message: string }) => {
-    setOpen(true)
-    setErr(value)
   }
 
   const darkTheme = React.useMemo(
@@ -85,22 +63,12 @@ export const App = (): React.ReactElement => {
           <PrimarySearchBar
             onToggleTheme={handleToggleDarkTheme}
           ></PrimarySearchBar>
-          <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-            <MuiAlert
-              onClose={handleClose}
-              severity="error"
-              elevation={6}
-              variant="filled"
-            >
-              {err?.statusCode}: {err?.message}
-            </MuiAlert>
-          </Snackbar>
           {/**
            * Routes
            */}
           <Switch>
             <Route path="/">
-              <Mastery summonerName={summonerName} loading={summonerLoading} />
+              <Mastery summonerName={summonerName} />
             </Route>
           </Switch>
           <PageContainer maxWidth="md">

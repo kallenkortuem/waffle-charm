@@ -34,8 +34,12 @@ import {
 import {
   fetchMastery,
   selectAllMastery,
+  selectMasteryLoadingStatus,
 } from '../+store/features/mastery.slice'
-import { createSelectSummonerByName } from '../+store/features/summoner.slice'
+import {
+  createSelectSummonerByName,
+  selectSummonerLoadingStatus,
+} from '../+store/features/summoner.slice'
 import WelcomeBanner from '../components/WelcomeBanner'
 
 export const MASTERY_LEVELS = 'masteryLevels'
@@ -51,6 +55,8 @@ export const Mastery = (props: {
   const summoner = useSelector((state) =>
     selectSummonerByName(state, summonerName)
   )
+  const summonerLoading = useSelector(selectSummonerLoadingStatus)
+  const masteriesLoading = useSelector(selectMasteryLoadingStatus)
 
   const [tag, setTag] = useState('')
 
@@ -67,20 +73,6 @@ export const Mastery = (props: {
     }
   }, [summoner])
 
-  const showWelcomeScreen = !false && !summoner
-
-  const content = (
-    <>
-      <MasteryTotalProgress
-        summonerName={summonerName}
-        onTagChange={handleSetTag}
-        tag={tag}
-      />
-
-      <Masteries tag={tag} />
-    </>
-  )
-
   return (
     <main>
       <PageContainer maxWidth="md">
@@ -88,7 +80,19 @@ export const Mastery = (props: {
           {t('championMastery')}
         </Typography>
 
-        {showWelcomeScreen ? <WelcomeBanner /> : content}
+        {summonerLoading === 'not loaded' || summonerLoading === 'error' ? (
+          <WelcomeBanner />
+        ) : (
+          <>
+            <MasteryTotalProgress
+              summonerName={summonerName}
+              onTagChange={handleSetTag}
+              tag={tag}
+            />
+
+            <Masteries tag={tag} />
+          </>
+        )}
       </PageContainer>
     </main>
   )

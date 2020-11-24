@@ -23,14 +23,14 @@ describe('mastery reducer', () => {
 
     state = masteryReducer(
       state,
-      fetchMastery.fulfilled([{ id: 1 }], null, null)
+      fetchMastery.fulfilled([{ championId: 1 }], null, null)
     )
 
     expect(state).toEqual(
       expect.objectContaining({
         loadingStatus: 'loaded',
         error: null,
-        entities: { 1: { id: 1 } },
+        entities: { 1: { championId: 1 } },
       })
     )
 
@@ -43,7 +43,7 @@ describe('mastery reducer', () => {
       expect.objectContaining({
         loadingStatus: 'error',
         error: 'Uh oh',
-        entities: { 1: { id: 1 } },
+        entities: { 1: { championId: 1 } },
       })
     )
   })

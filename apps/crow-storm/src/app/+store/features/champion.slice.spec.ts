@@ -2,6 +2,7 @@ import {
   fetchChampion,
   championAdapter,
   championReducer,
+  ChampionEntity,
 } from './champion.slice'
 
 describe('champion reducer', () => {
@@ -27,14 +28,14 @@ describe('champion reducer', () => {
 
     state = championReducer(
       state,
-      fetchChampion.fulfilled([{ id: 1 }], null, null)
+      fetchChampion.fulfilled([{ key: '1' } as ChampionEntity], null, null)
     )
 
     expect(state).toEqual(
       expect.objectContaining({
         loadingStatus: 'loaded',
         error: null,
-        entities: { 1: { id: 1 } },
+        entities: { '1': { key: '1' } },
       })
     )
 
@@ -47,7 +48,7 @@ describe('champion reducer', () => {
       expect.objectContaining({
         loadingStatus: 'error',
         error: 'Uh oh',
-        entities: { 1: { id: 1 } },
+        entities: { '1': { key: '1' } },
       })
     )
   })

@@ -1,7 +1,9 @@
 import { render } from '@testing-library/react'
 import { enableFetchMocks } from 'jest-fetch-mock'
 import React from 'react'
+import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
+import store from './+store'
 import App from './app'
 import './i18n'
 
@@ -16,7 +18,9 @@ describe('App', () => {
   it('should render successfully', () => {
     const { baseElement } = render(
       <BrowserRouter>
-        <App />
+        <Provider store={store}>
+          <App />
+        </Provider>
       </BrowserRouter>
     )
 
@@ -26,7 +30,9 @@ describe('App', () => {
   it('should have a greeting as the title', () => {
     const { getByText } = render(
       <BrowserRouter>
-        <App />
+        <Provider store={store}>
+          <App />
+        </Provider>
       </BrowserRouter>
     )
 

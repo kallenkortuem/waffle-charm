@@ -145,7 +145,7 @@ export const selectAllChampionTags = createSelector(
   selectAllChampion,
   (champions) =>
     champions.reduce((totalTags, champion) => {
-      champion.tags.forEach((t) => {
+      champion?.tags?.forEach((t) => {
         if (!totalTags.includes(t)) {
           totalTags.push(t)
         }

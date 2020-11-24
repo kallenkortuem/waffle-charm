@@ -283,6 +283,8 @@ export const MasteryTotalProgress = (props: MasteryTotalProgressProps) => {
       (champion) => !tag || champion.tags.includes(tag)
     )
   }, [championEntries, tag])
+  const masteriesLoading = useSelector(selectMasteryLoadingStatus)
+  const summonerLoading = useSelector(selectSummonerLoadingStatus)
 
   const stats: {
     totalLevel: number
@@ -333,7 +335,7 @@ export const MasteryTotalProgress = (props: MasteryTotalProgressProps) => {
       levels: stats?.totalLevel?.toLocaleString() ?? 0,
     })
 
-  const loaded = summoner && masteries?.length
+  const loaded = summoner && masteries.length
 
   return (
     <Card>

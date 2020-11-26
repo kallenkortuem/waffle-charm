@@ -1,4 +1,4 @@
-import { Link } from '@material-ui/core'
+import { createStyles, Link, makeStyles, Theme } from '@material-ui/core'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import CardHeader from '@material-ui/core/CardHeader'
@@ -13,11 +13,23 @@ export interface MasteryCardProps {
   champion: ChampionData
 }
 
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      padding: theme.spacing(0, 2),
+      '&:last-child': {
+        paddingBottom: theme.spacing(2),
+      },
+    },
+  })
+)
+
 export default function MasteryCard(
   props: MasteryCardProps
 ): React.ReactElement {
   const { champion, mastery } = props
   const { t } = useTranslation()
+  const classes = useStyles()
 
   return (
     <Card>
@@ -41,7 +53,7 @@ export default function MasteryCard(
             mastery?.championPoints?.toLocaleString() ?? 0
         }
       />
-      <CardContent>
+      <CardContent className={classes.root}>
         <MasteryProgress mastery={mastery} />
       </CardContent>
     </Card>

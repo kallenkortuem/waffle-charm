@@ -1,3 +1,4 @@
+import { Hidden } from '@material-ui/core'
 import Grid from '@material-ui/core/Grid'
 import Tooltip from '@material-ui/core/Tooltip'
 import Filter1Icon from '@material-ui/icons/Filter1'
@@ -82,32 +83,34 @@ export function MasteryFilter(props: MasteryFilterProps): React.ReactElement {
         sm={2}
         md={2}
       >
-        <ToggleButtonGroup
-          size="small"
-          value={layout}
-          exclusive
-          onChange={onLayoutChange}
-          aria-label={t('layout')}
-        >
-          <ToggleButton
-            value="list"
-            aria-label={t('list')}
-            data-cy="layout-selector-list"
+        <Hidden only="xs">
+          <ToggleButtonGroup
+            size="small"
+            value={layout}
+            exclusive
+            aria-label={t('layout')}
+            onChange={onLayoutChange}
           >
-            <Tooltip title={t('list')}>
-              <ViewListIcon />
-            </Tooltip>
-          </ToggleButton>
-          <ToggleButton
-            value="module"
-            aria-label={t('module')}
-            data-cy="layout-selector-module"
-          >
-            <Tooltip title={t('module')}>
-              <ViewModuleIcon />
-            </Tooltip>
-          </ToggleButton>
-        </ToggleButtonGroup>
+            <ToggleButton
+              value="list"
+              aria-label={t('list')}
+              data-cy="layout-selector-list"
+            >
+              <Tooltip title={t('list')}>
+                <ViewListIcon />
+              </Tooltip>
+            </ToggleButton>
+            <ToggleButton
+              value="module"
+              aria-label={t('module')}
+              data-cy="layout-selector-module"
+            >
+              <Tooltip title={t('module')}>
+                <ViewModuleIcon />
+              </Tooltip>
+            </ToggleButton>
+          </ToggleButtonGroup>
+        </Hidden>
       </Grid>
     </Grid>
   )

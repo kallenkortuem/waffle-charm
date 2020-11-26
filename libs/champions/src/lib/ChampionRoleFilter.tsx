@@ -33,6 +33,7 @@ export const ChampionRoleFilter = (props: ChampionRoleFilterProps) => {
       exclusive
       onChange={onTagChange}
       aria-label={t('rolesFilter')}
+      data-cy="champion-role-filter"
     >
       {roleButtons}
     </ToggleButtonGroup>

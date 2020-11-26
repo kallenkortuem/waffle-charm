@@ -28,3 +28,11 @@ export const getMasteryList = (): Cypress.Chainable<JQuery<HTMLTableElement>> =>
 
 export const getMasteryCards = (): Cypress.Chainable<JQuery<Node>> =>
   cy.get('[data-cy=mastery-card]', { timeout: 5000 })
+
+export const getChampionRoleFilter = (): Cypress.Chainable<
+  JQuery<HTMLElement>
+> => cy.get('[data-cy=champion-role-filter]', { timeout: 5000 })
+
+export const getSummonerName = (): Cypress.Chainable<
+  JQuery<HTMLAnchorElement>
+> => cy.get('[data-cy=summoner-name]', { timeout: 5000 })

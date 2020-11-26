@@ -1,61 +1,102 @@
 import {
+  getChampionRoleFilter,
   getGreeting,
   getLayoutSelector,
   getMasteryCards,
   getMasteryGridGroup,
   getMasteryLevelFilter,
   getMasteryList,
+  getSummonerName,
 } from '../../support/app.po'
+
+const summonerName = 'Brian Muller'
+
 describe('mastery grid group', () => {
   beforeEach(() => {
-    cy.visit('/?summonerName=Brian Muller')
+    cy.visit(`/?summonerName=${summonerName}`)
+
+    // wait for the cards to show to know that the page is loaded
+    getMasteryCards().should('exist')
   })
 
   it('should display welcome message', () => {
     getGreeting().contains('Champion Mastery')
   })
 
-  it('should respect the mastery filter', () => {
-    getMasteryCards().should('exist')
-    getMasteryGridGroup(2).should('not.exist')
-    getMasteryLevelFilter(2).click()
-    getMasteryGridGroup(2).should('exist')
-    getMasteryLevelFilter(2).click()
-    getMasteryGridGroup(2).should('not.exist')
+  describe('summoner info', () => {
+    it('should show the summoner name', () => {
+      getSummonerName().should('have.text', summonerName)
+      getSummonerName().should(
+        'have.attr',
+        'href',
+        `https://porofessor.gg/live/na/${summonerName}`
+      )
+    })
+
+    it('should show the role filter for desktop but not mobile', () => {
+      getChampionRoleFilter().should('exist')
+
+      // switch to mobile viewport
+      cy.viewport('iphone-6')
+
+      getChampionRoleFilter().should('not.exist')
+    })
   })
 
-  it('should have 1 selected by default', () => {
-    getMasteryCards().should('exist')
-    getMasteryLevelFilter(1).should('have.attr', 'aria-pressed', 'true')
+  describe('mastery level filter', () => {
+    it('should have 1 selected by default', () => {
+      getMasteryLevelFilter(1).should('have.attr', 'aria-pressed', 'true')
+    })
+
+    it('should cards should respect the filter', () => {
+      getMasteryGridGroup(2).should('not.exist')
+      getMasteryLevelFilter(2).click()
+      getMasteryGridGroup(2).should('exist')
+      getMasteryLevelFilter(2).click()
+      getMasteryGridGroup(2).should('not.exist')
+    })
+
+    it('should require one to be selected', () => {
+      getMasteryLevelFilter(1).click()
+      getMasteryLevelFilter(1).should('have.attr', 'aria-pressed', 'true')
+      getMasteryLevelFilter(1).click()
+      getMasteryLevelFilter(1).should('have.attr', 'aria-pressed', 'true')
+    })
   })
 
-  it('should still remain selected if it is the only one', () => {
-    getMasteryCards().should('exist')
-    getMasteryLevelFilter(1).click()
-    getMasteryLevelFilter(1).should('have.attr', 'aria-pressed', 'true')
-    getMasteryLevelFilter(1).click()
-    getMasteryLevelFilter(1).should('have.attr', 'aria-pressed', 'true')
-  })
+  describe('layout views', () => {
+    it('should allow toggling between layout views', () => {
+      getLayoutSelector('list').should('have.attr', 'aria-pressed', 'false')
+      getLayoutSelector('module').should('have.attr', 'aria-pressed', 'true')
 
-  it('should allow toggling between layout views', () => {
-    getMasteryCards().should('exist')
-    getLayoutSelector('list').should('have.attr', 'aria-pressed', 'false')
-    getLayoutSelector('module').should('have.attr', 'aria-pressed', 'true')
+      // check that the module view has an item
+      getMasteryGridGroup(1).should('exist')
+      getMasteryList().should('not.exist')
 
-    // check that the module view has an item
-    getMasteryGridGroup(1).should('exist')
-    getMasteryList().should('not.exist')
+      // change the layout view
+      getLayoutSelector('list').click()
 
-    // change the layout view
-    getLayoutSelector('list').click()
+      // check that the module view has an item
+      getMasteryGridGroup(1).should('not.exist')
+      getMasteryList().should('exist')
+      getLayoutSelector('list').should('have.attr', 'aria-pressed', 'true')
+      getLayoutSelector('module').should('have.attr', 'aria-pressed', 'false')
+    })
 
-    // check that the module view has an item
-    getMasteryGridGroup(1).should('not.exist')
-    getMasteryList().should('exist')
-    getLayoutSelector('list').should('have.attr', 'aria-pressed', 'true')
-    getLayoutSelector('module').should('have.attr', 'aria-pressed', 'false')
+    it('should switch to grid view and hide layout selector on mobile', () => {
+      // first switch to list view and make sure it exists
+      getLayoutSelector('list').click()
+      getMasteryList().should('exist')
 
-    // switch back
-    getLayoutSelector('module').click()
+      // change the viewport to mobile
+      cy.viewport('iphone-6')
+
+      // check to see that list view and layout buttons are hidden
+      getLayoutSelector('list').should('not.exist')
+      getMasteryList().should('not.exist')
+
+      // check to see that the mastery cards are shoing
+      getMasteryCards().should('exist')
+    })
   })
 })

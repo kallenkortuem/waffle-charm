@@ -13,7 +13,7 @@ export const SUMMONER_FEATURE_KEY = 'summoner'
 /*
  * Update these interfaces according to your requirements.
  */
-export interface SummonerEntity extends SummonerDTO {}
+export type SummonerEntity = SummonerDTO
 
 export interface SummonerState extends EntityState<SummonerEntity> {
   loadingStatus: 'not loaded' | 'loading' | 'loaded' | 'error'

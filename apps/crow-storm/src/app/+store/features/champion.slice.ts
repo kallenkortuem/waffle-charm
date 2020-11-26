@@ -13,7 +13,7 @@ export const CHAMPION_FEATURE_KEY = 'champion'
 /*
  * Update these interfaces according to your requirements.
  */
-export interface ChampionEntity extends ChampionData {}
+export type ChampionEntity = ChampionData
 
 export interface ChampionState extends EntityState<ChampionEntity> {
   loadingStatus: 'not loaded' | 'loading' | 'loaded' | 'error'
@@ -43,9 +43,9 @@ export const championAdapter = createEntityAdapter<ChampionEntity>({
  */
 export const fetchChampion = createAsyncThunk(
   'champion/fetchStatus',
-  async (_, thunkAPI) => {
+  async (version: string, thunkAPI) => {
     const response: ChampionDataDragon = await fetch(
-      `/cdn/10.22.1/data/en_US/champion.json`
+      `/cdn/${version}/data/en_US/champion.json`
     ).then((_) => _.json())
 
     if (response.data) {

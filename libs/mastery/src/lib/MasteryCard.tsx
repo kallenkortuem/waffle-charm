@@ -35,7 +35,11 @@ export default function MasteryCard(
             {champion?.name}
           </Link>
         }
-        subheader={t('totalMasteryPoints') + ' ' + mastery?.championPoints?.toLocaleString() ?? 0}
+        subheader={
+          t('totalMasteryPoints') +
+            ' ' +
+            mastery?.championPoints?.toLocaleString() ?? 0
+        }
       />
       <CardContent>
         <MasteryProgress mastery={mastery} />

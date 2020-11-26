@@ -2,6 +2,7 @@ import {
   Card,
   CardContent,
   CardHeader,
+  Hidden,
   Link,
   Paper,
   Table,
@@ -27,14 +28,15 @@ import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import {
+  ChampionEntity,
   selectAllChampion,
   selectAllChampionTags,
   selectChampionEntities,
 } from '../+store/features/champion.slice'
 import {
   fetchMastery,
+  MasteryEntity,
   selectAllMastery,
-  selectMasteryLoadingStatus,
 } from '../+store/features/mastery.slice'
 import {
   createSelectSummonerByName,
@@ -56,7 +58,6 @@ export const Mastery = (props: {
     selectSummonerByName(state, summonerName)
   )
   const summonerLoading = useSelector(selectSummonerLoadingStatus)
-  const masteriesLoading = useSelector(selectMasteryLoadingStatus)
 
   const [tag, setTag] = useState('')
 
@@ -71,7 +72,7 @@ export const Mastery = (props: {
     if (summoner) {
       dispatch(fetchMastery(summoner?.id))
     }
-  }, [summoner])
+  }, [dispatch, summoner])
 
   return (
     <main>
@@ -100,7 +101,7 @@ export const Mastery = (props: {
 
 export default Mastery
 
-export const Masteries = (props: { tag?: string }) => {
+export const Masteries = (props: { tag?: string }): React.ReactElement => {
   const { tag } = props
   const [layout, setLayout] = useState(
     () => localStorage.getItem(MASTERY_LAYOUT) ?? 'module'
@@ -134,20 +135,24 @@ export const Masteries = (props: { tag?: string }) => {
         onLayoutChange={handleLayoutChange}
         onMasteryLevelsChange={handleSetMasteryLevels}
       />
-
-      {layout === 'module' ? (
-        <MasteryGridView
-          tag={tag}
-          masteryLevels={masteryLevels}
-          sortAscending={false}
-        />
-      ) : (
-        <MasteryListView
-          tag={tag}
-          masteryLevels={masteryLevels}
-          sortAscending={false}
-        />
-      )}
+      <Hidden only="xs">
+        {layout === 'module' ? (
+          <MasteryGridView
+            tag={tag}
+            masteryLevels={masteryLevels}
+            sortAscending={false}
+          />
+        ) : (
+          <MasteryListView
+            tag={tag}
+            masteryLevels={masteryLevels}
+            sortAscending={false}
+          />
+        )}
+      </Hidden>
+      <Hidden smUp>
+        <MasteryGridView masteryLevels={masteryLevels} sortAscending={false} />
+      </Hidden>
     </>
   )
 }
@@ -155,7 +160,7 @@ export const Masteries = (props: { tag?: string }) => {
 export interface MasteryViewProps {
   masteryLevels: string[]
   sortAscending: boolean
-  tag: string
+  tag?: string
 }
 
 export const MasteryGridView = (
@@ -262,80 +267,108 @@ function getProgress(current: number, total: number) {
   return Math.floor((current / total) * 100)
 }
 
+const getTotals = (
+  masteries: MasteryEntity[],
+  filteredChampions: ChampionEntity[]
+): {
+  totalLevel: number
+  totalPoints: number
+  totalCappedPoints: number
+} =>
+  (filteredChampions || []).reduce(
+    (acc, champion) => {
+      const mastery = masteries.find(
+        (m) => m.championId === parseInt(champion.key)
+      )
+      if (mastery) {
+        const cappedChampionPoints = [7, 6, 5].includes(mastery.championLevel)
+          ? maxPoints
+          : mastery.championPoints
+
+        acc.totalLevel += mastery.championLevel
+        acc.totalPoints += mastery.championPoints
+        acc.totalCappedPoints += cappedChampionPoints
+      }
+
+      return acc
+    },
+    {
+      totalLevel: 0,
+      totalPoints: 0,
+      totalCappedPoints: 0,
+    }
+  )
+
+export const TotalSubheader = (props: {
+  points: number
+  level: number
+  loaded: boolean
+}): React.ReactElement => {
+  const { t } = useTranslation()
+  return (
+    <>
+      <Typography>
+        {props.loaded ? (
+          t('totalMasteryPoints') + ' ' + props?.points?.toLocaleString() ?? 0
+        ) : (
+          <Skeleton width="40%" />
+        )}
+      </Typography>
+      <Typography>
+        {props.loaded ? (
+          t('totalChampionLevels') + ' ' + props.level?.toLocaleString() ?? 0
+        ) : (
+          <Skeleton width="30%" />
+        )}
+      </Typography>
+    </>
+  )
+}
+
 export interface MasteryTotalProgressProps {
   summonerName: string
   tag?: string
   onTagChange: (event: React.MouseEvent<HTMLElement>, tag: string) => void
 }
 
-export const MasteryTotalProgress = (props: MasteryTotalProgressProps) => {
+export const MasteryTotalProgress = (
+  props: MasteryTotalProgressProps
+): React.ReactElement => {
   const { tag, summonerName, onTagChange } = props
   const { t } = useTranslation()
-  const championEntries = useSelector(selectAllChampion)
+  const champions = useSelector(selectAllChampion)
   const masteries = useSelector(selectAllMastery)
   const selectSummonerByName = createSelectSummonerByName()
   const summoner = useSelector((state) =>
     selectSummonerByName(state, summonerName)
   )
   const allTags = useSelector(selectAllChampionTags)
-  const filteredChampions = React.useMemo(() => {
-    return championEntries.filter(
-      (champion) => !tag || champion.tags.includes(tag)
-    )
-  }, [championEntries, tag])
-  const masteriesLoading = useSelector(selectMasteryLoadingStatus)
-  const summonerLoading = useSelector(selectSummonerLoadingStatus)
-
-  const stats: {
-    totalLevel: number
-    totalPoints: number
-    totalCappedPoints: number
-  } = React.useMemo(
-    () =>
-      (championEntries || []).reduce(
-        (acc, champion) => {
-          if (!tag || champion.tags.includes(tag)) {
-            const mastery = masteries.find(
-              (m) => m.championId === parseInt(champion.key)
-            )
-            if (mastery) {
-              const cappedChampionPoints = [7, 6, 5].includes(
-                mastery.championLevel
-              )
-                ? maxPoints
-                : mastery.championPoints
-
-              acc.totalLevel += mastery.championLevel
-              acc.totalPoints += mastery.championPoints
-              acc.totalCappedPoints += cappedChampionPoints
-            }
-          }
-          return acc
-        },
-        {
-          totalLevel: 0,
-          totalPoints: 0,
-          totalCappedPoints: 0,
-        }
-      ),
-    [masteries, tag, championEntries]
+  const filteredChampions = React.useMemo(
+    () => champions.filter((champion) => !tag || champion.tags.includes(tag)),
+    [champions, tag]
   )
 
-  const championPointsProgress = getProgress(
-    stats.totalCappedPoints,
-    filteredChampions.length * ((1800 + 2400) * 5)
+  const totalStats = React.useMemo(() => getTotals(masteries, champions), [
+    masteries,
+    champions,
+  ])
+
+  const filteredTotalStats = React.useMemo(
+    () => getTotals(masteries, filteredChampions),
+    [masteries, filteredChampions]
   )
 
-  const subheader =
-    t('totalMasteryPoints', {
-      points: stats?.totalPoints?.toLocaleString() ?? 0,
-    }) +
-    '  |  ' +
-    t('totalChamoionLevels', {
-      levels: stats?.totalLevel?.toLocaleString() ?? 0,
-    })
+  const filteredPointsProgress = getProgress(
+    filteredTotalStats.totalCappedPoints,
+    filteredChampions.length * maxPoints
+  )
 
-  const loaded = summoner && masteries.length
+  const pointsProgress = getProgress(
+    totalStats.totalCappedPoints,
+    champions.length * maxPoints
+  )
+
+  const loaded = !!(summoner && masteries.length)
 
   return (
     <Card>
@@ -346,13 +379,14 @@ export const MasteryTotalProgress = (props: MasteryTotalProgressProps) => {
             underline="hover"
             color="textPrimary"
             href={getSummonerInfoUrl(summoner)}
+            data-cy="summoner-name"
           >
-            {loaded ? summoner.name : <Skeleton width="50%" />}
+            {loaded ? summoner.name : <Skeleton width="60%" />}
           </Link>
         }
         avatar={
           loaded ? (
-            <ProfileAvatar summoner={summoner} />
+            <ProfileAvatar summoner={summoner} data-cy="summoner-avatar" />
           ) : (
             <Skeleton variant="circle">
               <ProfileAvatar summoner={summoner} />
@@ -360,26 +394,52 @@ export const MasteryTotalProgress = (props: MasteryTotalProgressProps) => {
           )
         }
         subheader={
-          <Typography>
-            {loaded ? subheader : <Skeleton width="30%" />}
-          </Typography>
+          <>
+            <Hidden smUp>
+              <TotalSubheader
+                loaded={loaded}
+                points={totalStats?.totalPoints}
+                level={totalStats?.totalLevel}
+              />
+            </Hidden>
+            <Hidden only="xs">
+              <TotalSubheader
+                loaded={loaded}
+                points={filteredTotalStats?.totalPoints}
+                level={filteredTotalStats?.totalLevel}
+              />
+            </Hidden>
+          </>
         }
       />
       <CardContent>
-        <ChampionRoleFilter
-          tag={tag}
-          allTags={allTags}
-          onTagChange={onTagChange}
-        />
-        <MasteryLinearProgress
-          current={stats.totalCappedPoints}
-          total={filteredChampions.length * ((1800 + 2400) * 5)}
-          label={t('percentMasteryProgress', {
-            percent: championPointsProgress ?? 0,
-            level: 5,
-          })}
-          progress={championPointsProgress}
-        />
+        <Hidden smUp>
+          <MasteryLinearProgress
+            current={totalStats.totalCappedPoints}
+            total={champions.length * maxPoints}
+            label={t('percentMasteryProgress', {
+              percent: pointsProgress ?? 0,
+              level: 5,
+            })}
+            progress={pointsProgress}
+          />
+        </Hidden>
+        <Hidden only="xs">
+          <ChampionRoleFilter
+            tag={tag}
+            allTags={allTags}
+            onTagChange={onTagChange}
+          />
+          <MasteryLinearProgress
+            current={filteredTotalStats.totalCappedPoints}
+            total={filteredChampions.length * maxPoints}
+            label={t('percentMasteryProgress', {
+              percent: filteredPointsProgress ?? 0,
+              level: 5,
+            })}
+            progress={filteredPointsProgress}
+          />
+        </Hidden>
       </CardContent>
     </Card>
   )

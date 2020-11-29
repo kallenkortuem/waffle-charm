@@ -207,3 +207,5 @@ export const MasteryTotalProgress = (
     </Card>
   )
 }
+
+export default MasteryTotalProgress

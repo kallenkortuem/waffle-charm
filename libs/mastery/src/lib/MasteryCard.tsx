@@ -1,9 +1,19 @@
-import { createStyles, Link, makeStyles, Theme } from '@material-ui/core'
+import {
+  CardMedia,
+  createStyles,
+  Link,
+  makeStyles,
+  Theme,
+} from '@material-ui/core'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import CardHeader from '@material-ui/core/CardHeader'
 import { ChampionData, ChampionMasteryDTO } from '@waffle-charm/api-interfaces'
-import { ChampionAvatar, getChampionInfoUrl } from '@waffle-charm/champions'
+import {
+  ChampionAvatar,
+  getChampionInfoUrl,
+  getChampionSplashImageSrc,
+} from '@waffle-charm/champions'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { MasteryProgress } from './MasteryProgress'
@@ -15,11 +25,11 @@ export interface MasteryCardProps {
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: {
-      padding: theme.spacing(0, 2),
-      '&:last-child': {
-        paddingBottom: theme.spacing(2),
-      },
+    root: {},
+    header: {},
+    media: {
+      height: 0,
+      paddingTop: '56.25%', // 16:9
     },
   })
 )
@@ -32,11 +42,10 @@ export default function MasteryCard(
   const classes = useStyles()
 
   return (
-    <Card>
+    <Card className={classes.root}>
       <CardHeader
-        avatar={
-          <ChampionAvatar variant="square" size="small" champion={champion} />
-        }
+        className={classes.header}
+        avatar={<ChampionAvatar size="small" champion={champion} />}
         title={
           <Link
             variant="body2"
@@ -53,7 +62,12 @@ export default function MasteryCard(
             mastery?.championPoints?.toLocaleString() ?? 0
         }
       />
-      <CardContent className={classes.root}>
+      <CardMedia
+        className={classes.media}
+        image={getChampionSplashImageSrc(champion)}
+      ></CardMedia>
+
+      <CardContent>
         <MasteryProgress mastery={mastery} />
       </CardContent>
     </Card>

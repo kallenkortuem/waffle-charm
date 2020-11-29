@@ -14,7 +14,7 @@ function CSSGrid(props: { children: Array<ReactElement> }): React.ReactElement {
   return (
     <Grid container direction="row" spacing={2}>
       {children?.map((element) => (
-        <Grid item xs={12} sm={6} lg={4} key={element.key}>
+        <Grid item lg={4} md={4} sm={6} xs={12} key={element.key}>
           {element}
         </Grid>
       ))}

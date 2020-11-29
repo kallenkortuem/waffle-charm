@@ -5,9 +5,10 @@ import CssBaseline from '@material-ui/core/CssBaseline'
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
 import { PageContainer } from '@waffle-charm/material'
 import React, { Suspense } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Route, Switch } from 'react-router-dom'
 import { fetchChampion } from './+store/features/champion.slice'
+import { selectLolVersion } from './+store/features/lol-version.slice'
 import { fetchSummoner } from './+store/features/summoner.slice'
 import PrimarySearchBar, {
   SUMMONER_NAME_KEY,
@@ -25,7 +26,7 @@ export const App = (): React.ReactElement => {
   const [darkMode, setDarkMode] = React.useState(
     JSON.parse(localStorage.getItem(DARK_MODE_PREF)) ?? true
   )
-
+  const lolVersion = useSelector(selectLolVersion)
   const handleToggleDarkTheme = () => {
     const newValue = !darkMode
     setDarkMode(newValue)
@@ -49,8 +50,8 @@ export const App = (): React.ReactElement => {
   )
 
   React.useEffect(() => {
-    dispatch(fetchChampion())
-  }, [dispatch])
+    dispatch(fetchChampion(lolVersion))
+  }, [dispatch, lolVersion])
 
   React.useEffect(() => {
     dispatch(fetchSummoner(summonerName))

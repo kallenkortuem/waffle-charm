@@ -13,7 +13,7 @@ export const MASTERY_FEATURE_KEY = 'mastery'
 /*
  * Update these interfaces according to your requirements.
  */
-export interface MasteryEntity extends ChampionMasteryDTO {}
+export type MasteryEntity = ChampionMasteryDTO
 
 export interface MasteryState extends EntityState<MasteryEntity> {
   loadingStatus: 'not loaded' | 'loading' | 'loaded' | 'error'

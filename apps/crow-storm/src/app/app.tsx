@@ -22,7 +22,7 @@ export const DARK_MODE_PREF = 'darkModePref'
 export const App = (): React.ReactElement => {
   const query = useQuery()
   const dispatch = useDispatch()
-  const summonerName = query.get(SUMMONER_NAME_KEY)
+  const summonerName = query.get(SUMMONER_NAME_KEY)?.trim()
   const [darkMode, setDarkMode] = React.useState(
     JSON.parse(localStorage.getItem(DARK_MODE_PREF)) ?? true
   )

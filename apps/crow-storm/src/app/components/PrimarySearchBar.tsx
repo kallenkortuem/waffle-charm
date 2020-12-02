@@ -7,12 +7,15 @@ import { createStyles, fade, makeStyles, Theme } from '@material-ui/core/styles'
 import Toolbar from '@material-ui/core/Toolbar'
 import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
-import BrightnessMediumIcon from '@material-ui/icons/BrightnessMedium'
 import MoreIcon from '@material-ui/icons/MoreVert'
 import SearchIcon from '@material-ui/icons/Search'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useHistory, useLocation } from 'react-router-dom'
+import SettingsIcon from '@material-ui/icons/Settings'
+import { useDispatch } from 'react-redux'
+import { settingsActions } from '../+store/features/settings.slice'
+import Brightness2Icon from '@material-ui/icons/Brightness2'
 
 export const SUMMONER_NAME_KEY = 'summonerName'
 
@@ -94,6 +97,7 @@ export default function PrimarySearchBar(props: {
   const { t } = useTranslation()
   const { onToggleTheme } = props
   const history = useHistory()
+  const dispatch = useDispatch()
 
   const classes = useStyles()
   const [
@@ -110,6 +114,24 @@ export default function PrimarySearchBar(props: {
 
   const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setMobileMoreAnchorEl(event.currentTarget)
+  }
+
+  const handleOpenSettings = () => {
+    dispatch(settingsActions.open())
+    handleMobileMenuClose()
+  }
+
+  const handleSetSummonerName = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const { value } = event.target
+    setSummonerName(value)
+  }
+
+  const handleSearch = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    history.push(`/?${SUMMONER_NAME_KEY}=${summonerName}`)
+    setSummonerName('')
   }
 
   const mobileMenuId = 'primary-search-account-menu-mobile'
@@ -129,25 +151,23 @@ export default function PrimarySearchBar(props: {
           onClick={onToggleTheme}
           color="inherit"
         >
-          <BrightnessMediumIcon />
+          <Brightness2Icon />
         </IconButton>
         <p>{t('toggleDarkTheme')}</p>
       </MenuItem>
+      <MenuItem onClick={handleOpenSettings}>
+        <IconButton
+          aria-label={t('settingsOpen')}
+          onClick={handleOpenSettings}
+          color="inherit"
+          data-cy="settings-open"
+        >
+          <SettingsIcon></SettingsIcon>
+        </IconButton>
+        <p>{t('settingsOpen')}</p>
+      </MenuItem>
     </Menu>
   )
-
-  const handleSetSummonerName = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const { value } = event.target
-    setSummonerName(value)
-  }
-
-  const handleSearch = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    history.push(`/?${SUMMONER_NAME_KEY}=${summonerName}`)
-    setSummonerName('')
-  }
 
   return (
     <div className={classes.grow}>
@@ -182,12 +202,21 @@ export default function PrimarySearchBar(props: {
               aria-label={t('toggleDarkTheme')}
             >
               <IconButton
-                edge="end"
                 onClick={onToggleTheme}
                 color="inherit"
                 data-cy="dark-mode"
               >
-                <BrightnessMediumIcon />
+                <Brightness2Icon />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title={t('settingsOpen')} aria-label={t('settingsOpen')}>
+              <IconButton
+                edge="end"
+                onClick={handleOpenSettings}
+                color="inherit"
+                data-cy="settings-open"
+              >
+                <SettingsIcon></SettingsIcon>
               </IconButton>
             </Tooltip>
           </div>

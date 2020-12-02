@@ -2,11 +2,14 @@ import Grid from '@material-ui/core/Grid'
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import Skeleton from '@material-ui/lab/Skeleton'
-import { ChampionData, ChampionMasteryDTO } from '@waffle-charm/api-interfaces'
+import {
+  ChampionData,
+  ChampionMasteryDTO,
+  Vendors,
+} from '@waffle-charm/api-interfaces'
 import React, { lazy, ReactElement, Suspense } from 'react'
 import { useTranslation } from 'react-i18next'
-
-const MasteryCard = lazy(() => import('./MasteryCard'))
+import MasteryCard from './MasteryCard'
 
 function CSSGrid(props: { children: Array<ReactElement> }): React.ReactElement {
   const { children } = props
@@ -40,12 +43,21 @@ export interface MasteryGridGroupProps {
   tag: string
   groupedMasteries: Record<number, ChampionMasteryDTO[]>
   championMap: Record<number, ChampionData>
+  version: string
+  championVendor: Vendors
 }
 
 export const MasteryGridGroup = (
   props: MasteryGridGroupProps
 ): React.ReactElement => {
-  const { level, groupedMasteries, championMap, tag } = props
+  const {
+    level,
+    groupedMasteries,
+    championMap,
+    tag,
+    version,
+    championVendor,
+  } = props
   const { t } = useTranslation()
   const classes = useStyles()
 
@@ -73,12 +85,14 @@ export const MasteryGridGroup = (
             <div data-cy="mastery-card">
               <MasteryCard
                 mastery={mastery}
+                version={version}
+                championVendor={championVendor}
                 champion={championMap[mastery.championId]}
               />
             </div>
           </Suspense>
         )),
-    [tag, championMap, masteryGroup]
+    [tag, championMap, masteryGroup, version, championVendor]
   )
 
   return (

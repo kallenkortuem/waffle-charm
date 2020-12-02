@@ -65,7 +65,12 @@ describe('MasteryCard', () => {
 
   it('should render successfully', () => {
     const { baseElement } = render(
-      <MasteryCard champion={champion} mastery={mastery} />
+      <MasteryCard
+        version={'10.22.1'}
+        championVendor={'leagueofgraphs.com'}
+        champion={champion}
+        mastery={mastery}
+      />
     )
     expect(baseElement).toBeTruthy()
   })

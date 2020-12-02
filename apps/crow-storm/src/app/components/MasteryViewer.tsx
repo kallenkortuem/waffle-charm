@@ -20,7 +20,9 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { selectChampionEntities } from '../+store/features/champion.slice'
+import { selectLolVersion } from '../+store/features/lol-version.slice'
 import { selectAllMastery } from '../+store/features/mastery.slice'
+import { selectChampionVendor } from '../+store/features/settings.slice'
 
 export const MASTERY_LEVELS = 'masteryLevels'
 export const MASTERY_LAYOUT = 'masteryLayout'
@@ -99,6 +101,8 @@ export const MasteryGridView = (
 ): React.ReactElement => {
   const championEntities = useSelector(selectChampionEntities)
   const masteries = useSelector(selectAllMastery)
+  const championVendor = useSelector(selectChampionVendor)
+  const lolVersion = useSelector(selectLolVersion)
   const { masteryLevels, sortAscending, tag } = props
 
   const groupedMasteries: Record<number, ChampionMasteryDTO[]> = React.useMemo(
@@ -128,6 +132,8 @@ export const MasteryGridView = (
               groupedMasteries={groupedMasteries}
               tag={tag}
               championMap={championEntities}
+              version={lolVersion}
+              championVendor={championVendor}
             ></MasteryGridGroup>
           )
         })}
@@ -141,6 +147,7 @@ export const MasteryListView = (
   const { masteryLevels, sortAscending, tag } = props
   const championEntities = useSelector(selectChampionEntities)
   const masteries = useSelector(selectAllMastery)
+  const championVendor = useSelector(selectChampionVendor)
 
   const { t } = useTranslation()
 
@@ -172,7 +179,10 @@ export const MasteryListView = (
                 <TableCell>
                   <Link
                     variant="body2"
-                    href={getChampionInfoUrl(championEntities[row.championId])}
+                    href={getChampionInfoUrl(
+                      championEntities[row.championId],
+                      championVendor
+                    )}
                     underline="hover"
                     color="textPrimary"
                   >

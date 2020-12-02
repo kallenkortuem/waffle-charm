@@ -8,7 +8,11 @@ import {
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import CardHeader from '@material-ui/core/CardHeader'
-import { ChampionData, ChampionMasteryDTO } from '@waffle-charm/api-interfaces'
+import {
+  ChampionData,
+  ChampionMasteryDTO,
+  Vendors,
+} from '@waffle-charm/api-interfaces'
 import {
   ChampionAvatar,
   getChampionInfoUrl,
@@ -21,6 +25,8 @@ import { MasteryProgress } from './MasteryProgress'
 export interface MasteryCardProps {
   mastery: ChampionMasteryDTO
   champion: ChampionData
+  version: string
+  championVendor: Vendors
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -37,7 +43,7 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function MasteryCard(
   props: MasteryCardProps
 ): React.ReactElement {
-  const { champion, mastery } = props
+  const { champion, mastery, version, championVendor } = props
   const { t } = useTranslation()
   const classes = useStyles()
 
@@ -45,11 +51,13 @@ export default function MasteryCard(
     <Card className={classes.root}>
       <CardHeader
         className={classes.header}
-        avatar={<ChampionAvatar size="small" champion={champion} />}
+        avatar={
+          <ChampionAvatar version={version} size="small" champion={champion} />
+        }
         title={
           <Link
             variant="body2"
-            href={getChampionInfoUrl(champion)}
+            href={getChampionInfoUrl(champion, championVendor)}
             underline="hover"
             color="textPrimary"
           >

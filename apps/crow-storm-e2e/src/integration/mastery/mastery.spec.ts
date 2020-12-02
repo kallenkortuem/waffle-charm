@@ -29,7 +29,7 @@ describe('mastery grid group', () => {
       getSummonerName().should(
         'have.attr',
         'href',
-        `https://porofessor.gg/live/na/${summonerName}`
+        `https://porofessor.gg/live/na/${summonerName?.toLocaleLowerCase()}`
       )
     })
 

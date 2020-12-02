@@ -22,6 +22,7 @@ import {
   MasteryEntity,
   selectAllMastery,
 } from '../+store/features/mastery.slice'
+import { selectSummonerVendor } from '../+store/features/settings.slice'
 import { createSelectSummonerByName } from '../+store/features/summoner.slice'
 
 const maxPoints = (1800 + 2400) * 5
@@ -101,6 +102,7 @@ export const MasteryTotalProgress = (
   const { t } = useTranslation()
   const champions = useSelector(selectAllChampion)
   const masteries = useSelector(selectAllMastery)
+  const summonerVendor = useSelector(selectSummonerVendor)
   const selectSummonerByName = createSelectSummonerByName()
   const summoner = useSelector((state) =>
     selectSummonerByName(state, summonerName)
@@ -141,7 +143,7 @@ export const MasteryTotalProgress = (
             variant="h5"
             underline="hover"
             color="textPrimary"
-            href={getSummonerInfoUrl(summoner)}
+            href={getSummonerInfoUrl(summoner, summonerVendor)}
             data-cy="summoner-name"
           >
             {loaded ? summoner.name : <Skeleton width="60%" />}

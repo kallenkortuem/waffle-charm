@@ -712,3 +712,11 @@ export interface ChampionStats {
   attackspeedperlevel: number
   attackspeed: number
 }
+
+export type Vendors = 'op.gg' | 'leagueofgraphs.com' | 'porofessor.gg' | 'u.gg'
+export const Vendors = {
+  'op.gg': 'op.gg' as Vendors,
+  'leagueofgraphs.com': 'leagueofgraphs.com' as Vendors,
+  'porofessor.gg': 'porofessor.gg' as Vendors,
+  'u.gg': 'u.gg' as Vendors,
+}

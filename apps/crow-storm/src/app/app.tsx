@@ -10,12 +10,12 @@ import { Route, Switch } from 'react-router-dom'
 import { fetchChampion } from './+store/features/champion.slice'
 import { selectLolVersion } from './+store/features/lol-version.slice'
 import { fetchSummoner } from './+store/features/summoner.slice'
+import { Mastery } from './pages/Mastery'
 import PrimarySearchBar, {
   SUMMONER_NAME_KEY,
   useQuery,
 } from './components/PrimarySearchBar'
-
-const Mastery = React.lazy(() => import('./pages/Mastery'))
+import { SettingsDrawer } from './components/SettingsDrawer'
 
 export const DARK_MODE_PREF = 'darkModePref'
 
@@ -64,12 +64,17 @@ export const App = (): React.ReactElement => {
           <PrimarySearchBar
             onToggleTheme={handleToggleDarkTheme}
           ></PrimarySearchBar>
+          <Suspense fallback={<CircularProgress />}>
+            <SettingsDrawer />
+          </Suspense>
           {/**
            * Routes
            */}
           <Switch>
             <Route path="/">
-              <Mastery summonerName={summonerName} />
+              <Suspense fallback={<CircularProgress />}>
+                <Mastery summonerName={summonerName} />
+              </Suspense>
             </Route>
           </Switch>
           <PageContainer maxWidth="md">

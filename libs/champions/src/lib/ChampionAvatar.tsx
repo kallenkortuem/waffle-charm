@@ -7,6 +7,7 @@ import { getChampionImageSrc } from './utils'
 export interface ChampionAvatarProps extends AvatarProps {
   size: 'small' | 'large'
   champion: ChampionData
+  version: string
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -21,7 +22,7 @@ const useStyles = makeStyles((theme: Theme) =>
 export const ChampionAvatar = (
   props: ChampionAvatarProps
 ): React.ReactElement => {
-  const { size, champion, ...avatarProps } = props
+  const { size, champion, version, ...avatarProps } = props
   const classes = useStyles()
   return (
     <Avatar
@@ -30,7 +31,7 @@ export const ChampionAvatar = (
       variant="circle"
       className={size === 'large' ? classes.root : null}
       imgProps={{ width: '120px', height: '120px' }}
-      src={getChampionImageSrc(props.champion)}
+      src={getChampionImageSrc(props.champion, version)}
     />
   )
 }

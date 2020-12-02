@@ -1,13 +1,31 @@
-import { ChampionData } from '@waffle-charm/api-interfaces'
+import { ChampionData, Vendors } from '@waffle-charm/api-interfaces'
 
-export const getChampionInfoUrl = (champion: ChampionData) =>
-  `https://na.op.gg/champion/${champion?.name}/statistics`
+export const getChampionInfoUrl = (
+  champion: ChampionData,
+  vendor: Vendors
+): string => {
+  if (!champion) {
+    return ''
+  }
+
+  const name = champion?.id?.toLocaleLowerCase()
+
+  switch (vendor) {
+    case 'op.gg':
+      return `https://na.op.gg/champion/${name}/statistics`
+    case 'leagueofgraphs.com':
+      return `https://www.leagueofgraphs.com/champions/builds/${name}`
+    case 'u.gg':
+      return `https://u.gg/lol/champions/${name}/build`
+  }
+}
+
 export const getChampionImageSrc = (
   champion: ChampionData,
-  version = '10.22.1'
+  version: string
 ): string => `/cdn/${version}/img/champion/${champion?.image?.full}`
+
 export const getChampionSplashImageSrc = (
   champion: ChampionData,
-  version = '10.22.1',
   imageNumber = 0
 ): string => `/cdn/img/champion/splash/${champion?.id}_0.jpg`

@@ -33,6 +33,14 @@ export const resources = {
       welcomeHeader: 'Welcome to Fiddlestats',
       welcomeSubheader:
         'Search for a summoner name in the input above to view champion mastery stats.',
+      settingsOpen: 'Open Settings',
+      settingsClose: 'Close Settings',
+      championSettingsLink: 'Champion Links',
+      championSettingsLinkDescription:
+        "Select which site to redirect to when clicking on a champion's name",
+      summonerSettingsLink: 'Summoner Links',
+      summonerSettingsLinkDescription:
+        "Select which site to redirect to when clicking on a summoner's name",
     },
   },
 }

@@ -9,7 +9,8 @@ import {
   selectSummonerLoadingStatus,
 } from '../+store/features/summoner.slice'
 import { MasteryTotalProgress } from '../components/MasteryTotalProgress'
-const WelcomeBanner = React.lazy(() => import('../components/WelcomeBanner'))
+import { WelcomeBanner } from '../components/WelcomeBanner'
+
 const MasteryViewer = React.lazy(() => import('../components/MasteryViewer'))
 
 export const Mastery = (props: {

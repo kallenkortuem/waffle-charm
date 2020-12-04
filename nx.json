@@ -23,10 +23,10 @@
   },
   "projects": {
     "api": {
-      "tags": []
+      "tags": ["scope:api"]
     },
     "api-interfaces": {
-      "tags": []
+      "tags": ["scope:shared"]
     },
     "crow-storm": {
       "tags": []
@@ -36,22 +36,22 @@
       "implicitDependencies": ["crow-storm"]
     },
     "champions": {
-      "tags": []
+      "tags": ["scope:component"]
     },
     "mastery": {
-      "tags": []
+      "tags": ["scope:component"]
     },
     "material": {
-      "tags": []
+      "tags": ["scope:component"]
     },
     "summoner": {
-      "tags": []
+      "tags": ["scope:component"]
     },
     "testing-utils": {
-      "tags": []
+      "tags": ["scope:testing"]
     },
     "store": {
-      "tags": ["redux"]
+      "tags": ["scope:state"]
     }
   }
 }

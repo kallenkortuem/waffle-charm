@@ -1,13 +1,13 @@
 import Typography from '@material-ui/core/Typography'
 import { PageContainer } from '@waffle-charm/material'
+import {
+  createSelectSummonerByName,
+  fetchMastery,
+  selectSummonerLoadingStatus,
+} from '@waffle-charm/store'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchMastery } from '../+store/features/mastery.slice'
-import {
-  createSelectSummonerByName,
-  selectSummonerLoadingStatus,
-} from '../+store/features/summoner.slice'
 import { MasteryTotalProgress } from '../components/MasteryTotalProgress'
 import { WelcomeBanner } from '../components/WelcomeBanner'
 

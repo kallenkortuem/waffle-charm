@@ -1,0 +1,5 @@
+export * from './lib/champion.slice'
+export * from './lib/lol-version.slice'
+export * from './lib/mastery.slice'
+export * from './lib/settings.slice'
+export * from './lib/summoner.slice'

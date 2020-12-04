@@ -4,18 +4,20 @@ import { blue, green } from '@material-ui/core/colors'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
 import { PageContainer } from '@waffle-charm/material'
+import {
+  fetchChampion,
+  fetchSummoner,
+  selectLolVersion,
+} from '@waffle-charm/store'
 import React, { Suspense } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Route, Switch } from 'react-router-dom'
-import { fetchChampion } from './+store/features/champion.slice'
-import { selectLolVersion } from './+store/features/lol-version.slice'
-import { fetchSummoner } from './+store/features/summoner.slice'
-import { Mastery } from './pages/Mastery'
 import PrimarySearchBar, {
   SUMMONER_NAME_KEY,
   useQuery,
 } from './components/PrimarySearchBar'
 import { SettingsDrawer } from './components/SettingsDrawer'
+import { Mastery } from './pages/Mastery'
 
 export const DARK_MODE_PREF = 'darkModePref'
 

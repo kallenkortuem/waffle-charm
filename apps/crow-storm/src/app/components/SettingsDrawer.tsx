@@ -4,13 +4,10 @@ import Drawer from '@material-ui/core/Drawer'
 import IconButton from '@material-ui/core/IconButton'
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
 import CloseIcon from '@material-ui/icons/Close'
+import { getSettingsState, settingsActions } from '@waffle-charm/store'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-  getSettingsState,
-  settingsActions,
-} from '../+store/features/settings.slice'
 import ChampionSettings from '../components/ChampionSettings'
 import SummonerSettings from './SummonerSettings'
 

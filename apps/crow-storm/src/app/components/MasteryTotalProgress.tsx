@@ -9,21 +9,19 @@ import {
 import Skeleton from '@material-ui/lab/Skeleton'
 import { ChampionRoleFilter } from '@waffle-charm/champions'
 import { MasteryLinearProgress } from '@waffle-charm/mastery'
+import {
+  ChampionEntity,
+  createSelectSummonerByName,
+  MasteryEntity,
+  selectAllChampion,
+  selectAllChampionTags,
+  selectAllMastery,
+  selectSummonerVendor,
+} from '@waffle-charm/store'
 import { getSummonerInfoUrl, ProfileAvatar } from '@waffle-charm/summoner'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
-import {
-  ChampionEntity,
-  selectAllChampion,
-  selectAllChampionTags,
-} from '../+store/features/champion.slice'
-import {
-  MasteryEntity,
-  selectAllMastery,
-} from '../+store/features/mastery.slice'
-import { selectSummonerVendor } from '../+store/features/settings.slice'
-import { createSelectSummonerByName } from '../+store/features/summoner.slice'
 
 const maxPoints = (1800 + 2400) * 5
 

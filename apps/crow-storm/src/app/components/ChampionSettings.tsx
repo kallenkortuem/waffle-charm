@@ -4,13 +4,10 @@ import FormControlLabel from '@material-ui/core/FormControlLabel'
 import FormLabel from '@material-ui/core/FormLabel'
 import Radio from '@material-ui/core/Radio'
 import RadioGroup from '@material-ui/core/RadioGroup'
+import { selectChampionVendor, settingsActions } from '@waffle-charm/store'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-  selectChampionVendor,
-  settingsActions,
-} from '../+store/features/settings.slice'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

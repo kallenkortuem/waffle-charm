@@ -16,13 +16,15 @@ import {
   MasteryGridGroup,
   MasteryProgress,
 } from '@waffle-charm/mastery'
+import {
+  selectAllMastery,
+  selectChampionEntities,
+  selectChampionVendor,
+  selectLolVersion,
+} from '@waffle-charm/store'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
-import { selectChampionEntities } from '../+store/features/champion.slice'
-import { selectLolVersion } from '../+store/features/lol-version.slice'
-import { selectAllMastery } from '../+store/features/mastery.slice'
-import { selectChampionVendor } from '../+store/features/settings.slice'
 
 export const MASTERY_LEVELS = 'masteryLevels'
 export const MASTERY_LAYOUT = 'masteryLayout'

@@ -52,7 +52,7 @@ describe('ChampionAvatar', () => {
   }
   it('should render successfully', () => {
     const { baseElement } = render(
-      <ChampionAvatar size="small" champion={champion} />
+      <ChampionAvatar size="small" version="10.22.1" champion={champion} />
     )
     expect(baseElement).toBeTruthy()
   })

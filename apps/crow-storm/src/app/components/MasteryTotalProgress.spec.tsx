@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react'
 import React from 'react'
 import { Provider } from 'react-redux'
-import store from '../+store'
+import { store } from '../+store'
 import MasteryTotalProgress from './MasteryTotalProgress'
 
 describe('MasteryTotalProgress', () => {

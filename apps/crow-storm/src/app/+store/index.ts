@@ -12,6 +12,8 @@ import {
 } from '@waffle-charm/store'
 import { applyMiddleware, combineReducers, createStore } from 'redux'
 import { composeWithDevTools } from 'redux-devtools-extension'
+import { PersistConfig, persistReducer, persistStore } from 'redux-persist'
+import storage from 'redux-persist/lib/storage'
 import thunk from 'redux-thunk'
 
 const rootReducer = combineReducers({
@@ -22,7 +24,15 @@ const rootReducer = combineReducers({
   [SETTINGS_FEATURE_KEY]: settingsReducer,
 })
 
+const persistConfig: PersistConfig<any> = {
+  key: 'root',
+  storage,
+  whitelist: [SETTINGS_FEATURE_KEY],
+  version: 1,
+}
+
+const persistedReducer = persistReducer(persistConfig, rootReducer)
 const composedEnhancer = composeWithDevTools(applyMiddleware(thunk))
 
-const store = createStore(rootReducer, composedEnhancer)
-export default store
+export const store = createStore(persistedReducer, composedEnhancer)
+export const persistedStore = persistStore(store)

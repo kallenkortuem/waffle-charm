@@ -18,6 +18,7 @@ import {
 } from '@waffle-charm/mastery'
 import {
   selectAllMastery,
+  selectAllMasteryLevels,
   selectChampionEntities,
   selectChampionVendor,
   selectLolVersion,
@@ -26,7 +27,7 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 
-export const MASTERY_LEVELS = 'masteryLevels'
+export const MASTERY_LEVEL = 'masteryLevel'
 export const MASTERY_LAYOUT = 'masteryLayout'
 
 export interface MasteryViewerProps {
@@ -40,9 +41,11 @@ export const MasteryViewer = (
   const [layout, setLayout] = useState(
     () => localStorage.getItem(MASTERY_LAYOUT) ?? 'module'
   )
-  const [masteryLevels, setVisibleMasteryLevels] = useState(() =>
-    JSON.parse(localStorage.getItem(MASTERY_LEVELS) || '["1"]')
+  const masteryLevels = useSelector(selectAllMasteryLevels)
+  const [masteryLevel, setVisibleMasteryLevel] = useState(() =>
+    JSON.parse(localStorage.getItem(MASTERY_LEVEL) || '1')
   )
+
   const handleLayoutChange = (
     event: React.MouseEvent<HTMLElement>,
     value: string
@@ -52,13 +55,13 @@ export const MasteryViewer = (
       localStorage.setItem(MASTERY_LAYOUT, value ?? 'module')
     }
   }
-  const handleSetMasteryLevels = (
+  const handleSetMasteryLevel = (
     event: React.MouseEvent<HTMLElement>,
-    value: string[]
+    value: number
   ) => {
-    if (value?.length >= 1) {
-      setVisibleMasteryLevels(value)
-      localStorage.setItem(MASTERY_LEVELS, JSON.stringify(value))
+    if (value) {
+      setVisibleMasteryLevel(value)
+      localStorage.setItem(MASTERY_LEVEL, JSON.stringify(value))
     }
   }
 
@@ -67,34 +70,26 @@ export const MasteryViewer = (
       <MasteryFilter
         layout={layout}
         masteryLevels={masteryLevels}
+        selected={masteryLevel}
         onLayoutChange={handleLayoutChange}
-        onMasteryLevelsChange={handleSetMasteryLevels}
+        onMasteryLevelChange={handleSetMasteryLevel}
       />
       <Hidden only="xs">
         {layout === 'module' ? (
-          <MasteryGridView
-            tag={tag}
-            masteryLevels={masteryLevels}
-            sortAscending={false}
-          />
+          <MasteryGridView tag={tag} masteryLevel={masteryLevel} />
         ) : (
-          <MasteryListView
-            tag={tag}
-            masteryLevels={masteryLevels}
-            sortAscending={false}
-          />
+          <MasteryListView tag={tag} masteryLevel={masteryLevel} />
         )}
       </Hidden>
       <Hidden smUp>
-        <MasteryGridView masteryLevels={masteryLevels} sortAscending={false} />
+        <MasteryGridView masteryLevel={masteryLevel} />
       </Hidden>
     </>
   )
 }
 
 export interface MasteryViewProps {
-  masteryLevels: string[]
-  sortAscending: boolean
+  masteryLevel: number
   tag?: string
 }
 
@@ -105,7 +100,7 @@ export const MasteryGridView = (
   const masteries = useSelector(selectAllMastery)
   const championVendor = useSelector(selectChampionVendor)
   const lolVersion = useSelector(selectLolVersion)
-  const { masteryLevels, sortAscending, tag } = props
+  const { masteryLevel, tag } = props
 
   const groupedMasteries: Record<number, ChampionMasteryDTO[]> = React.useMemo(
     () =>
@@ -121,32 +116,21 @@ export const MasteryGridView = (
   )
 
   return (
-    <>
-      {masteryLevels
-        .sort((a, b) =>
-          sortAscending ? parseInt(a) - parseInt(b) : parseInt(b) - parseInt(a)
-        )
-        .map((level) => {
-          return (
-            <MasteryGridGroup
-              key={level}
-              level={level}
-              groupedMasteries={groupedMasteries}
-              tag={tag}
-              championMap={championEntities}
-              version={lolVersion}
-              championVendor={championVendor}
-            ></MasteryGridGroup>
-          )
-        })}
-    </>
+    <MasteryGridGroup
+      level={masteryLevel}
+      groupedMasteries={groupedMasteries}
+      tag={tag}
+      championMap={championEntities}
+      version={lolVersion}
+      championVendor={championVendor}
+    ></MasteryGridGroup>
   )
 }
 
 export const MasteryListView = (
   props: MasteryViewProps
 ): React.ReactElement => {
-  const { masteryLevels, sortAscending, tag } = props
+  const { masteryLevel, tag } = props
   const championEntities = useSelector(selectChampionEntities)
   const masteries = useSelector(selectAllMastery)
   const championVendor = useSelector(selectChampionVendor)
@@ -166,14 +150,9 @@ export const MasteryListView = (
         </TableHead>
         <TableBody>
           {masteries
-            .sort((a, b) =>
-              sortAscending
-                ? a.championLevel - b.championLevel
-                : b.championLevel - a.championLevel
-            )
             .filter(
               (row) =>
-                masteryLevels.includes(row.championLevel.toString()) &&
+                masteryLevel === row.championLevel &&
                 (!tag || championEntities[row.championId].tags.includes(tag))
             )
             .map((row: ChampionMasteryDTO, i) => (

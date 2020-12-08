@@ -140,6 +140,11 @@ export const selectMasteryEntities = createSelector(
   selectEntities
 )
 
+export const selectAllMasteryLevels = createSelector(
+  selectAllMastery,
+  (res) => [...new Set(res.map((x) => x.championLevel)).values()]
+)
+
 export const selectMasteryLoadingStatus = createSelector(
   getMasteryState,
   (state) => state.loadingStatus

@@ -7,7 +7,7 @@ import {
   ChampionMasteryDTO,
   Vendors,
 } from '@waffle-charm/api-interfaces'
-import React, { lazy, ReactElement, Suspense } from 'react'
+import React, { ReactElement, Suspense } from 'react'
 import { useTranslation } from 'react-i18next'
 import MasteryCard from './MasteryCard'
 
@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 /* eslint-disable-next-line */
 export interface MasteryGridGroupProps {
-  level: string
+  level: number
   tag: string
   groupedMasteries: Record<number, ChampionMasteryDTO[]>
   championMap: Record<number, ChampionData>

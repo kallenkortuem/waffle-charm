@@ -48,11 +48,11 @@ describe('mastery grid group', () => {
       getMasteryLevelFilter(1).should('have.attr', 'aria-pressed', 'true')
     })
 
-    it('should cards should respect the filter', () => {
+    it('should respect the filter', () => {
       getMasteryGridGroup(2).should('not.exist')
       getMasteryLevelFilter(2).click()
       getMasteryGridGroup(2).should('exist')
-      getMasteryLevelFilter(2).click()
+      getMasteryLevelFilter(1).click()
       getMasteryGridGroup(2).should('not.exist')
     })
 

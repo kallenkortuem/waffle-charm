@@ -26,10 +26,11 @@ const filterIcons = {
 }
 
 export interface MasteryFilterProps {
-  masteryLevels: string[]
-  onMasteryLevelsChange: (
+  masteryLevels: number[]
+  selected: number
+  onMasteryLevelChange: (
     event: React.MouseEvent<HTMLElement>,
-    newFormats: string[]
+    newLevel: number
   ) => void
   layout: string
   onLayoutChange: (
@@ -39,26 +40,31 @@ export interface MasteryFilterProps {
 }
 
 export function MasteryFilter(props: MasteryFilterProps): React.ReactElement {
-  const { layout, masteryLevels, onLayoutChange, onMasteryLevelsChange } = props
+  const {
+    layout,
+    masteryLevels,
+    selected,
+    onLayoutChange,
+    onMasteryLevelChange,
+  } = props
   const { t } = useTranslation()
   const masterLevelButtons = React.useMemo(
     () =>
-      Object.entries(filterIcons)
-        .sort(([a], [b]) => parseInt(b) - parseInt(a))
-        .map(([level, icon]) => {
-          const label = t('masteryLevelNumber', { level })
-          return (
-            <ToggleButton
-              key={level}
-              value={level}
-              aria-label={label}
-              data-cy={`mastery-level-filter-${level}`}
-            >
-              <Tooltip title={label}>{icon}</Tooltip>
-            </ToggleButton>
-          )
-        }),
-    [t]
+      masteryLevels.map((level) => {
+        const label = t('masteryLevelNumber', { level })
+        const icon = filterIcons[level] || <></>
+        return (
+          <ToggleButton
+            key={level}
+            value={level}
+            aria-label={label}
+            data-cy={`mastery-level-filter-${level}`}
+          >
+            <Tooltip title={label}>{icon}</Tooltip>
+          </ToggleButton>
+        )
+      }),
+    [t, masteryLevels]
   )
 
   return (
@@ -66,8 +72,9 @@ export function MasteryFilter(props: MasteryFilterProps): React.ReactElement {
       <Grid item xs={10} sm={6} md={4}>
         <ToggleButtonGroup
           size="small"
-          value={masteryLevels}
-          onChange={onMasteryLevelsChange}
+          value={selected}
+          exclusive
+          onChange={onMasteryLevelChange}
           aria-label={t('masteryLevelFilter')}
         >
           {masterLevelButtons}

@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme: Theme) =>
 export interface MasteryGridGroupProps {
   level: number
   tag: string
-  groupedMasteries: Record<number, ChampionMasteryDTO[]>
+  masteryGroup: ChampionMasteryDTO[]
   championMap: Record<number, ChampionData>
   version: string
   championVendor: Vendors
@@ -52,7 +52,7 @@ export const MasteryGridGroup = (
 ): React.ReactElement => {
   const {
     level,
-    groupedMasteries,
+    masteryGroup,
     championMap,
     tag,
     version,
@@ -60,8 +60,6 @@ export const MasteryGridGroup = (
   } = props
   const { t } = useTranslation()
   const classes = useStyles()
-
-  const masteryGroup = groupedMasteries?.[level]
   const numberOfChampions = masteryGroup?.length || 0
 
   const items = React.useMemo(

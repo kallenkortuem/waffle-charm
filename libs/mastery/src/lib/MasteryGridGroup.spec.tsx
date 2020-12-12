@@ -11,10 +11,12 @@ describe('MasteryGridGroup', () => {
   it('should render successfully', () => {
     const { baseElement } = render(
       <MasteryGridGroup
-        level={'7'}
+        level={7}
         tag="Assasin"
         championMap={championMap}
-        groupedMasteries={groupedMasteries}
+        masteryGroup={groupedMasteries[7]}
+        version={'10.22.1'}
+        championVendor={'leagueofgraphs.com'}
       />
     )
     expect(baseElement).toBeTruthy()

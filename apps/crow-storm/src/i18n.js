@@ -17,6 +17,7 @@ export const resources = {
       masteryLevel: 'Mastery Level',
       masteryLevelNumber: 'Mastery Level {{level}}',
       masteryLevelFilter: 'Champion Mastery Level Filter',
+      masteryLevelFilterAll: 'All',
       masteryTable: 'Champion Mastery Table',
       roleFilter: 'Champion Roles Filter',
       layout: 'Layout',

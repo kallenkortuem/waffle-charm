@@ -25,8 +25,9 @@ const filterIcons = {
   1: <Filter1Icon />,
 }
 
+export const SELECT_ALL_KEY = 'selectAll'
+
 export interface MasteryFilterProps {
-  masteryLevels: number[]
   selected: number
   onMasteryLevelChange: (
     event: React.MouseEvent<HTMLElement>,
@@ -40,19 +41,13 @@ export interface MasteryFilterProps {
 }
 
 export function MasteryFilter(props: MasteryFilterProps): React.ReactElement {
-  const {
-    layout,
-    masteryLevels,
-    selected,
-    onLayoutChange,
-    onMasteryLevelChange,
-  } = props
+  const { layout, selected, onLayoutChange, onMasteryLevelChange } = props
   const { t } = useTranslation()
   const masterLevelButtons = React.useMemo(
     () =>
-      masteryLevels.map((level) => {
+      [7, 6, 5, 4, 3, 2, 1].map((level) => {
         const label = t('masteryLevelNumber', { level })
-        const icon = filterIcons[level] || <></>
+        const icon = filterIcons[level]
         return (
           <ToggleButton
             key={level}
@@ -64,7 +59,7 @@ export function MasteryFilter(props: MasteryFilterProps): React.ReactElement {
           </ToggleButton>
         )
       }),
-    [t, masteryLevels]
+    [t]
   )
 
   return (
@@ -78,6 +73,13 @@ export function MasteryFilter(props: MasteryFilterProps): React.ReactElement {
           aria-label={t('masteryLevelFilter')}
         >
           {masterLevelButtons}
+          <ToggleButton
+            value={SELECT_ALL_KEY}
+            aria-label={t('masteryLevelFilterAll')}
+            data-cy={`mastery-level-filter-all`}
+          >
+            {t('masteryLevelFilterAll')}
+          </ToggleButton>
         </ToggleButtonGroup>
       </Grid>
       <Grid

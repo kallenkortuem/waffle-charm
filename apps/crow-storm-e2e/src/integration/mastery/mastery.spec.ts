@@ -62,6 +62,18 @@ describe('mastery grid group', () => {
       getMasteryLevelFilter(1).click()
       getMasteryLevelFilter(1).should('have.attr', 'aria-pressed', 'true')
     })
+
+    it('should be able to select all', () => {
+      getMasteryLevelFilter('all').click()
+      getMasteryLevelFilter('all').should('have.attr', 'aria-pressed', 'true')
+      getMasteryGridGroup(1).should('exist')
+      getMasteryGridGroup(2).should('exist')
+      getMasteryGridGroup(3).should('exist')
+      getMasteryGridGroup(4).should('exist')
+      getMasteryGridGroup(5).should('exist')
+      getMasteryGridGroup(6).should('exist')
+      getMasteryGridGroup(7).should('exist')
+    })
   })
 
   describe('layout views', () => {

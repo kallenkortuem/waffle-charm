@@ -143,6 +143,11 @@ export const selectChampionEntities = createSelector(
   selectEntities
 )
 
+export const selectChampionLoadingStatus = createSelector(
+  getChampionState,
+  (state) => state.loadingStatus
+)
+
 export const selectAllChampionTags = createSelector(
   selectAllChampion,
   (champions) =>

@@ -1,5 +1,6 @@
 import {
   CardMedia,
+  Collapse,
   createStyles,
   Link,
   makeStyles,
@@ -27,6 +28,7 @@ export interface MasteryCardProps {
   champion: ChampionData
   version: string
   championVendor: Vendors
+  hideFullImg?: boolean
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -41,7 +43,7 @@ const useStyles = makeStyles((theme: Theme) =>
 )
 
 export function MasteryCard(props: MasteryCardProps): React.ReactElement {
-  const { champion, mastery, version, championVendor } = props
+  const { champion, mastery, version, championVendor, hideFullImg } = props
   const { t } = useTranslation()
   const classes = useStyles()
 
@@ -68,10 +70,12 @@ export function MasteryCard(props: MasteryCardProps): React.ReactElement {
             mastery?.championPoints?.toLocaleString() ?? 0
         }
       />
-      <CardMedia
-        className={classes.media}
-        image={getChampionSplashImageSrc(champion)}
-      ></CardMedia>
+      <Collapse in={!hideFullImg}>
+        <CardMedia
+          className={classes.media}
+          image={getChampionSplashImageSrc(champion)}
+        ></CardMedia>
+      </Collapse>
 
       <CardContent>
         <MasteryProgress mastery={mastery} />

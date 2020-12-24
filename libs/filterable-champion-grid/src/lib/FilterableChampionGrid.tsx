@@ -5,7 +5,7 @@ import {
   createSelectSummonerByName,
   fetchMastery,
   selectAllChampion,
-  selectSummonerLoadingStatus,
+  selectMasteryEntities,
 } from '@waffle-charm/store'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
@@ -13,24 +13,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import ChampionGridContainer from './champion-grid-container/ChampionGridContainer'
 import {
   ChampionGridFilter,
+  ChampionGridFilterSortOption,
   sortOptions,
 } from './champion-grid-filter/ChampionGridFilter'
 
-const createSelectFilteredChampionIds = () =>
-  createSelector(
-    selectAllChampion,
-    (_, searchQuery: string) => searchQuery,
-    (_, role: string) => role,
-    (_, sortBy: string) => sortBy,
-    (champions, searchQuery, role, sortBy) => {
-      const substringRegex = new RegExp(searchQuery, 'i')
-      return champions
-        .filter(
-          (champion) => !searchQuery || substringRegex.test(champion.name)
-        )
-        .map((champion) => champion.key)
-    }
-  )
 /* eslint-disable-next-line */
 export interface FilterableChampionGridProps {
   summonerName?: string
@@ -41,27 +27,38 @@ export function FilterableChampionGrid(props: FilterableChampionGridProps) {
   const dispatch = useDispatch()
   const { t } = useTranslation()
 
-  const [tag, setTag] = React.useState('')
   const [role, setRole] = React.useState<string>()
-  const [sortBy, setSortyBy] = React.useState<string>(sortOptions[0])
+  const [sortBy, setSortyBy] = React.useState<ChampionGridFilterSortOption>(
+    sortOptions[0]
+  )
   const [searchQuery, setSearchQuery] = React.useState('')
-
+  const champions = useSelector(selectAllChampion)
+  const masteryEntities = useSelector(selectMasteryEntities)
   const selectSummonerByName = createSelectSummonerByName()
   const summoner = useSelector((state) =>
     selectSummonerByName(state, summonerName)
   )
-  const summonerLoading = useSelector(selectSummonerLoadingStatus)
-  const selectFilteredChampionIds = createSelectFilteredChampionIds()
-  const filteredChampionIds = useSelector((state) =>
-    selectFilteredChampionIds(state, searchQuery, role, sortBy)
-  )
 
-  const handleSetTag = (
-    event: React.MouseEvent<HTMLElement>,
-    value: string
-  ) => {
-    setTag(value)
-  }
+  const filteredChampionIds = React.useMemo(() => {
+    const substringRegex = new RegExp(searchQuery, 'i')
+    return champions
+      .filter((champion) => !searchQuery || substringRegex.test(champion.name))
+      .sort((a, b) => {
+        switch (sortBy) {
+          case 'mastery':
+            return (
+              (masteryEntities[parseInt(b.key)]?.championPoints ?? 0) -
+              (masteryEntities[parseInt(a.key)]?.championPoints ?? 0)
+            )
+          case 'favorite':
+          case 'ban':
+          case 'name':
+          default:
+            return 0
+        }
+      })
+      .map((champion) => champion.key)
+  }, [masteryEntities, champions, sortBy, searchQuery])
 
   React.useEffect(() => {
     if (summoner) {
@@ -77,7 +74,10 @@ export function FilterableChampionGrid(props: FilterableChampionGridProps) {
   }
 
   const handleSetSortBy = (
-    e: React.ChangeEvent<{ name?: string; value: string }>,
+    e: React.ChangeEvent<{
+      name?: string
+      value: ChampionGridFilterSortOption
+    }>,
     child: React.ReactNode
   ) => {
     setSortyBy(e.target.value)

@@ -1,11 +1,5 @@
-import {
-  Card,
-  createStyles,
-  makeStyles,
-  Theme,
-  Typography,
-} from '@material-ui/core'
-import { ChampionAvatar } from '@waffle-charm/champions'
+import { createStyles, makeStyles, Theme } from '@material-ui/core'
+import { MasteryCard } from '@waffle-charm/mastery'
 import {
   selectChampionEntities,
   selectChampionVendor,
@@ -44,18 +38,18 @@ export function ChampionGridItem(props: ChampionGridItemProps) {
   const masteries = useSelector(selectMasteryEntities)
   const mastery = masteries[parseInt(championId)]
 
+  if (!mastery || !champion) {
+    return null
+  }
+
   return (
-    <Card className={classes.root}>
-      <ChampionAvatar
-        className={classes.avatar}
-        champion={champion}
-        version={version}
-        size="small"
-      ></ChampionAvatar>
-      <Typography variant="body1" component="span">
-        {champion.name}
-      </Typography>
-    </Card>
+    <MasteryCard
+      champion={champion}
+      mastery={mastery}
+      version={version}
+      championVendor={championVendor}
+      hideFullImg
+    />
   )
 }
 

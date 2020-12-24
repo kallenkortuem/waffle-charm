@@ -13,7 +13,13 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-const columnCount = 6
+const columnCount = 3
+
+const itemKey = ({ columnIndex, data, rowIndex }) => {
+  const championIndex = rowIndex * columnCount + columnIndex
+  const item = data[championIndex] ?? `${columnIndex}-${rowIndex}`
+  return item
+}
 
 interface CellProps {
   columnIndex: number
@@ -22,18 +28,19 @@ interface CellProps {
   style: any
 }
 
-const Cell = (props: CellProps) => {
+const Cell = React.memo((props: CellProps) => {
   const { columnIndex, data, rowIndex, style } = props
   const classes = useStyles()
   const championIds = data
   const championIndex = rowIndex * columnCount + columnIndex
   const championId = championIds[championIndex]
+
   return (
-    <div className={classes.item} style={style} key={championId}>
+    <div className={classes.item} style={style}>
       {championId ? <ChampionGridItem championId={championId} /> : null}
     </div>
   )
-}
+})
 
 /* eslint-disable-next-line */
 export interface ChampionGridContainerProps {
@@ -44,14 +51,10 @@ export function ChampionGridContainer(props: ChampionGridContainerProps) {
   const { championIds } = props
   const classes = useStyles()
   const theme = useTheme()
-  const columnWidth = theme.spacing(19)
-  const rowHeight = theme.spacing(16)
-  const itemKey = ({ columnIndex, data, rowIndex }) => {
-    const championIndex = rowIndex * columnCount + columnIndex
-    const item = data[championIndex]
-    return item
-  }
+  const columnWidth = theme.spacing(38)
+  const rowHeight = theme.spacing(19)
 
+  // https://react-window.now.sh/#/api/FixedSizeGrid
   return (
     <FixedSizeGrid
       className={classes.root}
@@ -59,7 +62,7 @@ export function ChampionGridContainer(props: ChampionGridContainerProps) {
       columnWidth={columnWidth}
       itemKey={itemKey}
       itemData={championIds}
-      height={rowHeight * 4.5}
+      height={rowHeight * 3.5}
       rowCount={Math.ceil(championIds.length / columnCount)}
       rowHeight={rowHeight + theme.spacing(1)}
       width={912}

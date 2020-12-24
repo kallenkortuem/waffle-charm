@@ -11,7 +11,17 @@ import { SearchInput } from '@waffle-charm/material'
 import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 
-export const sortOptions = ['name', 'mastery', 'favorite', 'dislike']
+export type ChampionGridFilterSortOption =
+  | 'name'
+  | 'mastery'
+  | 'favorite'
+  | 'ban'
+export const sortOptions: ChampionGridFilterSortOption[] = [
+  'name',
+  'mastery',
+  'favorite',
+  'ban',
+]
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -92,6 +102,7 @@ export function ChampionGridFilter(props: ChampionGridFilterProps) {
         inputProps={{ 'aria-label': t('searchPlaceholder') }}
         value={searchQuery}
         onChange={handleSetQuery}
+        edge="end"
       />
     </div>
   )

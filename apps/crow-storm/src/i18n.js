@@ -42,6 +42,17 @@ export const resources = {
       summonerSettingsLink: 'Summoner Links',
       summonerSettingsLinkDescription:
         "Select which site to redirect to when clicking on a summoner's name",
+      roleToggleButtonGroup: 'Role Filter',
+      roleToggleButtonTop: 'Top',
+      roleToggleButtonJungle: 'Jungle',
+      roleToggleButtonMid: 'Mid',
+      roleToggleButtonAdc: 'ADC',
+      roleToggleButtonSupport: 'Sup',
+      championGridFilterSortOrder: 'Sort Order',
+      championGridFilterSortByName: 'Name',
+      championGridFilterSortByMastery: 'Mastery',
+      championGridFilterSortByFavorite: 'Favorite',
+      championGridFilterSortByDislike: 'Dislike',
     },
   },
 }

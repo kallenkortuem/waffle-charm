@@ -315,6 +315,29 @@
           }
         }
       }
+    },
+    "filterable-champion-grid": {
+      "root": "libs/filterable-champion-grid",
+      "sourceRoot": "libs/filterable-champion-grid/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/filterable-champion-grid/**/*.{ts,tsx,js,jsx}"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/filterable-champion-grid/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
     }
   },
   "cli": {
@@ -371,12 +394,12 @@
       "component": {
         "style": "none",
         "export": true,
-        "pascalCaseFiles": true,
-        "flat": true
+        "pascalCaseFiles": true
       },
       "library": {
         "style": "scss",
-        "linter": "eslint"
+        "linter": "eslint",
+        "pascalCaseFiles": true
       },
       "redux": {
         "project": "crow-storm",

@@ -21,6 +21,16 @@
                   "scope:state",
                   "scope:component",
                   "scope:shared",
+                  "scope:feature",
+                  "scope:testing"
+                ]
+              },
+              {
+                "sourceTag": "scope:feature",
+                "onlyDependOnLibsWithTags": [
+                  "scope:shared",
+                  "scope:component",
+                  "scope:state",
                   "scope:testing"
                 ]
               },

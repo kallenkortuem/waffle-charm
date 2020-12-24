@@ -129,12 +129,14 @@ export const championActions = championSlice.actions
  *
  * See: https://react-redux.js.org/next/api/hooks#useselector
  */
-const { selectAll, selectEntities } = championAdapter.getSelectors()
+const { selectAll, selectEntities, selectIds } = championAdapter.getSelectors()
 
 export const getChampionState = (rootState: unknown): ChampionState =>
   rootState[CHAMPION_FEATURE_KEY]
 
 export const selectAllChampion = createSelector(getChampionState, selectAll)
+
+export const selectChampionIds = createSelector(getChampionState, selectIds)
 
 export const selectChampionEntities = createSelector(
   getChampionState,

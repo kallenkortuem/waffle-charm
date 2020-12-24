@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
 import { PersistGate } from 'redux-persist/integration/react'
-import { persistedStore, store } from './app/+store'
+import { persistedStore, store } from '@waffle-charm/store'
 import App from './app/app'
 import './i18n'
 

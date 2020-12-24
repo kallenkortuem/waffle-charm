@@ -1,20 +1,13 @@
-import {
-  championReducer,
-  CHAMPION_FEATURE_KEY,
-  lolVersionReducer,
-  LOL_VERSION_FEATURE_KEY,
-  masteryReducer,
-  MASTERY_FEATURE_KEY,
-  settingsReducer,
-  SETTINGS_FEATURE_KEY,
-  summonerReducer,
-  SUMMONER_FEATURE_KEY,
-} from '@waffle-charm/store'
 import { applyMiddleware, combineReducers, createStore } from 'redux'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import { PersistConfig, persistReducer, persistStore } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 import thunk from 'redux-thunk'
+import { championReducer, CHAMPION_FEATURE_KEY } from './champion.slice'
+import { lolVersionReducer, LOL_VERSION_FEATURE_KEY } from './lol-version.slice'
+import { masteryReducer, MASTERY_FEATURE_KEY } from './mastery.slice'
+import { settingsReducer, SETTINGS_FEATURE_KEY } from './settings.slice'
+import { summonerReducer, SUMMONER_FEATURE_KEY } from './summoner.slice'
 
 const rootReducer = combineReducers({
   [CHAMPION_FEATURE_KEY]: championReducer,

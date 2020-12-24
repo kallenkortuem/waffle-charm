@@ -22,7 +22,10 @@
       "@waffle-charm/material": ["libs/material/src/index.ts"],
       "@waffle-charm/summoner": ["libs/summoner/src/index.ts"],
       "@waffle-charm/testing-utils": ["libs/testing-utils/src/index.ts"],
-      "@waffle-charm/store": ["libs/store/src/index.ts"]
+      "@waffle-charm/store": ["libs/store/src/index.ts"],
+      "@waffle-charm/filterable-champion-grid": [
+        "libs/filterable-champion-grid/src/index.ts"
+      ]
     }
   },
   "exclude": ["node_modules", "tmp"]

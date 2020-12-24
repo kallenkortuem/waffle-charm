@@ -9,5 +9,6 @@ module.exports = {
     '<rootDir>/libs/summoner',
     '<rootDir>/libs/testing-utils',
     '<rootDir>/libs/store',
+    '<rootDir>/libs/filterable-champion-grid',
   ],
 }

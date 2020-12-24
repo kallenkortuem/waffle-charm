@@ -26,12 +26,12 @@ export const ChampionAvatar = (
   const classes = useStyles()
   return (
     <Avatar
-      {...avatarProps}
       alt=""
       variant="circle"
       className={size === 'large' ? classes.root : null}
       imgProps={{ width: '120px', height: '120px' }}
       src={getChampionImageSrc(props.champion, version)}
+      {...avatarProps}
     />
   )
 }

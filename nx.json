@@ -52,6 +52,9 @@
     },
     "store": {
       "tags": ["scope:state"]
+    },
+    "filterable-champion-grid": {
+      "tags": ["scope:feature"]
     }
   }
 }

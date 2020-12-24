@@ -40,9 +40,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-export default function MasteryCard(
-  props: MasteryCardProps
-): React.ReactElement {
+export function MasteryCard(props: MasteryCardProps): React.ReactElement {
   const { champion, mastery, version, championVendor } = props
   const { t } = useTranslation()
   const classes = useStyles()
@@ -81,3 +79,5 @@ export default function MasteryCard(
     </Card>
   )
 }
+
+export default MasteryCard

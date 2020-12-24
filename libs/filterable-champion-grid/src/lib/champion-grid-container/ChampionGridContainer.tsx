@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-const numberOfChampionColumns = 6
+const columnCount = 6
 
 interface CellProps {
   columnIndex: number
@@ -26,7 +26,7 @@ const Cell = (props: CellProps) => {
   const { columnIndex, data, rowIndex, style } = props
   const classes = useStyles()
   const championIds = data
-  const championIndex = rowIndex * numberOfChampionColumns + columnIndex
+  const championIndex = rowIndex * columnCount + columnIndex
   const championId = championIds[championIndex]
   return (
     <div className={classes.item} style={style} key={championId}>
@@ -44,23 +44,24 @@ export function ChampionGridContainer(props: ChampionGridContainerProps) {
   const { championIds } = props
   const classes = useStyles()
   const theme = useTheme()
-  const width = theme.spacing(19)
-  const height = theme.spacing(15)
+  const columnWidth = theme.spacing(19)
+  const rowHeight = theme.spacing(16)
   const itemKey = ({ columnIndex, data, rowIndex }) => {
-    const championIndex = rowIndex * numberOfChampionColumns + columnIndex
+    const championIndex = rowIndex * columnCount + columnIndex
     const item = data[championIndex]
     return item
   }
+
   return (
     <FixedSizeGrid
       className={classes.root}
-      columnCount={numberOfChampionColumns}
-      columnWidth={width}
+      columnCount={columnCount}
+      columnWidth={columnWidth}
       itemKey={itemKey}
       itemData={championIds}
-      height={(height + theme.spacing(1)) * 4.5}
-      rowCount={Math.ceil(championIds.length / numberOfChampionColumns)}
-      rowHeight={height + theme.spacing(1)}
+      height={rowHeight * 4.5}
+      rowCount={Math.ceil(championIds.length / columnCount)}
+      rowHeight={rowHeight + theme.spacing(1)}
       width={912}
     >
       {Cell}

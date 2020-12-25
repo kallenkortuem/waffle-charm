@@ -25,9 +25,9 @@ export function ChampionGridSearch(props: ChampionGridSearchProps) {
   return (
     <SearchInput
       inputProps={{ 'aria-label': t('searchPlaceholder') }}
+      {...props}
       value={query}
       onChange={handleSetQuery}
-      edge="end"
     />
   )
 }

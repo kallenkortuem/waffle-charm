@@ -1,10 +1,10 @@
-import Typography from '@material-ui/core/Typography'
-import { RoleToggleButtonGroup } from '@waffle-charm/champions'
-import { PageContainer } from '@waffle-charm/material'
+import { Divider } from '@material-ui/core'
+import { ChipsArray, CustomChip, PageContainer } from '@waffle-charm/material'
 import {
   createSelectSummonerByName,
   fetchMastery,
   selectAllChampion,
+  selectAllChampionTags,
   selectMasteryEntities,
 } from '@waffle-charm/store'
 import React from 'react'
@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import ChampionGridContainer from './champion-grid-container/ChampionGridContainer'
 import { ChampionGridFilter } from './champion-grid-filter/ChampionGridFilter'
 import ChampionGridSearch from './champion-grid-search/ChampionGridSearch'
-import ChampionGridSortSelect, {
+import {
   ChampionGridFilterSortOption,
   sortOptions,
 } from './champion-grid-sort-select/ChampionGridSortSelect'
@@ -27,10 +27,11 @@ export function FilterableChampionGrid(props: FilterableChampionGridProps) {
   const dispatch = useDispatch()
   const { t } = useTranslation()
 
-  const [role, setRole] = React.useState<string>()
+  const [chip, setChip] = React.useState<CustomChip>()
   const [sortBy, setSortyBy] = React.useState<ChampionGridFilterSortOption>(
     sortOptions[1]
   )
+
   const [searchQuery, setSearchQuery] = React.useState('')
   const champions = useSelector(selectAllChampion)
   const masteryEntities = useSelector(selectMasteryEntities)
@@ -38,11 +39,38 @@ export function FilterableChampionGrid(props: FilterableChampionGridProps) {
   const summoner = useSelector((state) =>
     selectSummonerByName(state, summonerName)
   )
+  const allTags = useSelector(selectAllChampionTags)
+
+  const chips = React.useMemo(() => {
+    return [
+      { key: 1, label: t('masteryLevelNumber', { level: 1 }) },
+      { key: 2, label: t('masteryLevelNumber', { level: 2 }) },
+      { key: 3, label: t('masteryLevelNumber', { level: 3 }) },
+      { key: 4, label: t('masteryLevelNumber', { level: 4 }) },
+      { key: 5, label: t('masteryLevelNumber', { level: 5 }) },
+      { key: 6, label: t('masteryLevelNumber', { level: 6 }) },
+      { key: 7, label: t('masteryLevelNumber', { level: 7 }) },
+      ...allTags.map((tag) => ({ key: tag, label: tag })),
+    ]
+  }, [t, allTags])
 
   const filteredChampionIds = React.useMemo(() => {
     const substringRegex = new RegExp(searchQuery, 'i')
     return champions
-      .filter((champion) => !searchQuery || substringRegex.test(champion.name))
+      .filter((champion) => {
+        if (searchQuery) {
+          return substringRegex.test(champion.name)
+        }
+
+        if (chip) {
+          return (
+            masteryEntities[parseInt(champion.key)]?.championLevel ===
+              chip.key || champion.tags.includes(chip.key.toString())
+          )
+        }
+
+        return true
+      })
       .sort((a, b) => {
         switch (sortBy) {
           case 'mastery':
@@ -58,7 +86,7 @@ export function FilterableChampionGrid(props: FilterableChampionGridProps) {
         }
       })
       .map((champion) => champion.key)
-  }, [masteryEntities, champions, sortBy, searchQuery])
+  }, [masteryEntities, champions, sortBy, searchQuery, chip])
 
   React.useEffect(() => {
     if (summoner) {
@@ -66,44 +94,35 @@ export function FilterableChampionGrid(props: FilterableChampionGridProps) {
     }
   }, [dispatch, summoner])
 
-  const handleSetRole = (
-    event: React.MouseEvent<HTMLInputElement>,
-    value: any
-  ) => {
-    setRole(value)
-  }
-
-  const handleSetSortBy = (
-    e: React.ChangeEvent<{
-      name?: string
-      value: ChampionGridFilterSortOption
-    }>,
-    child: React.ReactNode
-  ) => {
-    setSortyBy(e.target.value)
-  }
-
   const handleSetSearchQuery = (query: string) => {
     setSearchQuery(query || '')
   }
 
+  const handleSetChip = React.useCallback((selectedChip: CustomChip) => {
+    setChip(selectedChip)
+  }, [])
+
   return (
     <main>
       <PageContainer maxWidth="md">
-        <Typography variant="h4" component="h1">
-          {t('championMastery')}
-        </Typography>
-        <ChampionGridFilter>
-          <RoleToggleButtonGroup value={role} onChange={handleSetRole} />
-          <ChampionGridSortSelect value={sortBy} onChange={handleSetSortBy} />
-          <ChampionGridSearch
-            inputProps={{ 'aria-label': t('searchPlaceholder') }}
-            value={searchQuery}
-            onSearhQueryChange={handleSetSearchQuery}
-            edge="end"
+        <div style={{}}>
+          <ChipsArray
+            chips={chips}
+            selected={chip}
+            onSelectChip={handleSetChip}
           />
-        </ChampionGridFilter>
-        <ChampionGridContainer championIds={filteredChampionIds} />
+          <Divider orientation="horizontal"></Divider>
+          <ChampionGridFilter>
+            <ChampionGridSearch
+              style={{ width: '100%' }}
+              inputProps={{ 'aria-label': t('searchPlaceholder') }}
+              value={searchQuery}
+              onSearhQueryChange={handleSetSearchQuery}
+              edge="start"
+            />
+          </ChampionGridFilter>
+          <ChampionGridContainer championIds={filteredChampionIds} />
+        </div>
       </PageContainer>
     </main>
   )

@@ -34,7 +34,6 @@ export function ChampionGridItem(props: ChampionGridItemProps) {
   const champion = useSelector(selectChampionEntities)[championId]
   const version = useSelector(selectLolVersion)
   const championVendor = useSelector(selectChampionVendor)
-
   const masteries = useSelector(selectMasteryEntities)
   const mastery = masteries[parseInt(championId)]
 

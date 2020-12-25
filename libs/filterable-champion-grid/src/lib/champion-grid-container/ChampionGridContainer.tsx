@@ -1,11 +1,19 @@
-import { createStyles, makeStyles, Theme, useTheme } from '@material-ui/core'
+import {
+  createStyles,
+  Grid,
+  makeStyles,
+  Theme,
+  useTheme,
+} from '@material-ui/core'
 import React from 'react'
 import { FixedSizeGrid } from 'react-window'
 import { ChampionGridItem } from '../champion-grid-item/ChampionGridItem'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: {},
+    root: {
+      margin: theme.spacing(0, -1),
+    },
     item: {
       padding: theme.spacing(1),
       whiteSpace: 'nowrap',
@@ -13,10 +21,10 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-const columnCount = 3
+const gridColumnCount = 3
 
 const itemKey = ({ columnIndex, data, rowIndex }) => {
-  const championIndex = rowIndex * columnCount + columnIndex
+  const championIndex = rowIndex * gridColumnCount + columnIndex
   const item = data[championIndex] ?? `${columnIndex}-${rowIndex}`
   return item
 }
@@ -32,7 +40,7 @@ const Cell = React.memo((props: CellProps) => {
   const { columnIndex, data, rowIndex, style } = props
   const classes = useStyles()
   const championIds = data
-  const championIndex = rowIndex * columnCount + columnIndex
+  const championIndex = rowIndex * gridColumnCount + columnIndex
   const championId = championIds[championIndex]
 
   return (
@@ -58,14 +66,14 @@ export function ChampionGridContainer(props: ChampionGridContainerProps) {
   return (
     <FixedSizeGrid
       className={classes.root}
-      columnCount={columnCount}
+      columnCount={gridColumnCount}
       columnWidth={columnWidth}
       itemKey={itemKey}
       itemData={championIds}
       height={rowHeight * 3.5}
-      rowCount={Math.ceil(championIds.length / columnCount)}
+      rowCount={Math.ceil(championIds.length / gridColumnCount)}
       rowHeight={rowHeight + theme.spacing(1)}
-      width={912}
+      width={912 + theme.spacing(1)}
     >
       {Cell}
     </FixedSizeGrid>

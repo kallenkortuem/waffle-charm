@@ -1,5 +1,5 @@
 import Typography from '@material-ui/core/Typography'
-import { createSelector } from '@reduxjs/toolkit'
+import { RoleToggleButtonGroup } from '@waffle-charm/champions'
 import { PageContainer } from '@waffle-charm/material'
 import {
   createSelectSummonerByName,
@@ -11,13 +11,13 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import ChampionGridContainer from './champion-grid-container/ChampionGridContainer'
-import {
-  ChampionGridFilter,
+import { ChampionGridFilter } from './champion-grid-filter/ChampionGridFilter'
+import ChampionGridSearch from './champion-grid-search/ChampionGridSearch'
+import ChampionGridSortSelect, {
   ChampionGridFilterSortOption,
   sortOptions,
-} from './champion-grid-filter/ChampionGridFilter'
+} from './champion-grid-sort-select/ChampionGridSortSelect'
 
-/* eslint-disable-next-line */
 export interface FilterableChampionGridProps {
   summonerName?: string
 }
@@ -93,14 +93,16 @@ export function FilterableChampionGrid(props: FilterableChampionGridProps) {
         <Typography variant="h4" component="h1">
           {t('championMastery')}
         </Typography>
-        <ChampionGridFilter
-          role={role}
-          sortBy={sortBy}
-          searchQuery={searchQuery}
-          onRoleChange={handleSetRole}
-          onSortByChange={handleSetSortBy}
-          onSearhQueryChange={handleSetSearchQuery}
-        />
+        <ChampionGridFilter>
+          <RoleToggleButtonGroup value={role} onChange={handleSetRole} />
+          <ChampionGridSortSelect value={sortBy} onChange={handleSetSortBy} />
+          <ChampionGridSearch
+            inputProps={{ 'aria-label': t('searchPlaceholder') }}
+            value={searchQuery}
+            onSearhQueryChange={handleSetSearchQuery}
+            edge="end"
+          />
+        </ChampionGridFilter>
         <ChampionGridContainer championIds={filteredChampionIds} />
       </PageContainer>
     </main>

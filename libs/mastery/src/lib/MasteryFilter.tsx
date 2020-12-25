@@ -1,10 +1,6 @@
 import { Hidden } from '@material-ui/core'
 import Grid from '@material-ui/core/Grid'
-import Tooltip from '@material-ui/core/Tooltip'
-import ViewListIcon from '@material-ui/icons/ViewList'
-import ViewModuleIcon from '@material-ui/icons/ViewModule'
-import ToggleButton from '@material-ui/lab/ToggleButton'
-import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup'
+import { LayoutToggleGroup } from '@waffle-charm/material'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { MasteryLevelToggleGroup } from './mastery-level-toggle-group/MasteryLevelToggleGroup'
@@ -47,32 +43,7 @@ export function MasteryFilter(props: MasteryFilterProps): React.ReactElement {
         md={2}
       >
         <Hidden only="xs">
-          <ToggleButtonGroup
-            size="small"
-            value={layout}
-            exclusive
-            aria-label={t('layout')}
-            onChange={onLayoutChange}
-          >
-            <ToggleButton
-              value="list"
-              aria-label={t('list')}
-              data-cy="layout-selector-list"
-            >
-              <Tooltip title={t('list')}>
-                <ViewListIcon />
-              </Tooltip>
-            </ToggleButton>
-            <ToggleButton
-              value="module"
-              aria-label={t('module')}
-              data-cy="layout-selector-module"
-            >
-              <Tooltip title={t('module')}>
-                <ViewModuleIcon />
-              </Tooltip>
-            </ToggleButton>
-          </ToggleButtonGroup>
+          <LayoutToggleGroup value={layout} onChange={onLayoutChange} />
         </Hidden>
       </Grid>
     </Grid>

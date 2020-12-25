@@ -1,3 +1,4 @@
+export * from './lib/layout-toggle-group/LayoutToggleGroup'
 export * from './lib/chips-array/ChipsArray'
 export * from './lib/search-input/SearchInput'
 export * from './lib/InfoPopover'

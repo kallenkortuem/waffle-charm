@@ -29,7 +29,7 @@ export function FilterableChampionGrid(props: FilterableChampionGridProps) {
 
   const [role, setRole] = React.useState<string>()
   const [sortBy, setSortyBy] = React.useState<ChampionGridFilterSortOption>(
-    sortOptions[0]
+    sortOptions[1]
   )
   const [searchQuery, setSearchQuery] = React.useState('')
   const champions = useSelector(selectAllChampion)

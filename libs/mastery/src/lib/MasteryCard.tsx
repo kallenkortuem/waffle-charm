@@ -48,7 +48,7 @@ export function MasteryCard(props: MasteryCardProps): React.ReactElement {
   const classes = useStyles()
 
   return (
-    <Card className={classes.root}>
+    <Card className={classes.root} elevation={3}>
       <CardHeader
         className={classes.header}
         avatar={

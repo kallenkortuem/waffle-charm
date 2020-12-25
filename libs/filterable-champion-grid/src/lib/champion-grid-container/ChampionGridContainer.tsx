@@ -1,19 +1,11 @@
-import {
-  createStyles,
-  Grid,
-  makeStyles,
-  Theme,
-  useTheme,
-} from '@material-ui/core'
+import { createStyles, makeStyles, Theme, useTheme } from '@material-ui/core'
 import React from 'react'
 import { FixedSizeGrid } from 'react-window'
 import { ChampionGridItem } from '../champion-grid-item/ChampionGridItem'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: {
-      margin: theme.spacing(0, -1),
-    },
+    root: {},
     item: {
       padding: theme.spacing(1),
       whiteSpace: 'nowrap',
@@ -70,10 +62,11 @@ export function ChampionGridContainer(props: ChampionGridContainerProps) {
       columnWidth={columnWidth}
       itemKey={itemKey}
       itemData={championIds}
-      height={rowHeight * 3.5}
+      height={rowHeight * 5.5}
       rowCount={Math.ceil(championIds.length / gridColumnCount)}
       rowHeight={rowHeight + theme.spacing(1)}
-      width={912 + theme.spacing(1)}
+      overscanRowCount={10}
+      width={912}
     >
       {Cell}
     </FixedSizeGrid>

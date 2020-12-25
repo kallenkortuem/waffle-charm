@@ -9,6 +9,12 @@ import {
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 
+export type LayoutOption = 'module' | 'list'
+export const LayoutOption = {
+  module: 'module' as LayoutOption,
+  list: 'list' as LayoutOption
+}
+
 /* eslint-disable-next-line */
 export interface LayoutToggleGroupProps extends ToggleButtonGroupProps {}
 
@@ -22,7 +28,7 @@ export function LayoutToggleGroup(props: LayoutToggleGroupProps) {
       {...props}
     >
       <ToggleButton
-        value="list"
+        value={LayoutOption.list}
         aria-label={t('list')}
         data-cy="layout-selector-list"
       >
@@ -31,7 +37,7 @@ export function LayoutToggleGroup(props: LayoutToggleGroupProps) {
         </Tooltip>
       </ToggleButton>
       <ToggleButton
-        value="module"
+        value={LayoutOption.module}
         aria-label={t('module')}
         data-cy="layout-selector-module"
       >

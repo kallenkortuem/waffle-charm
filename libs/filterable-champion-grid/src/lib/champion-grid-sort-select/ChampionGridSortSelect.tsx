@@ -1,4 +1,12 @@
-import { FormControl, MenuItem, Select, SelectProps } from '@material-ui/core'
+import {
+  createStyles,
+  FormControl,
+  makeStyles,
+  MenuItem,
+  Select,
+  SelectProps,
+  Theme,
+} from '@material-ui/core'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -14,14 +22,25 @@ export const sortOptions: ChampionGridFilterSortOption[] = [
   'ban',
 ]
 
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      '& .MuiFilledInput-input': {
+        paddingTop: theme.spacing(1),
+      },
+    },
+  })
+)
+
 /* eslint-disable-next-line */
 export interface ChampionGridSortSelectProps extends SelectProps {}
 
 export function ChampionGridSortSelect(props: ChampionGridSortSelectProps) {
   const { t } = useTranslation()
+  const classes = useStyles()
 
   return (
-    <FormControl>
+    <FormControl variant={'filled'} className={classes.root}>
       <Select label={t('championGridFilterSortOrder')} {...props}>
         <MenuItem value="name">{t('championGridFilterSortByName')}</MenuItem>
         <MenuItem value="mastery">

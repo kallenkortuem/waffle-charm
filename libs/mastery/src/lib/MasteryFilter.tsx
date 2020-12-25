@@ -1,29 +1,13 @@
 import { Hidden } from '@material-ui/core'
 import Grid from '@material-ui/core/Grid'
 import Tooltip from '@material-ui/core/Tooltip'
-import Filter1Icon from '@material-ui/icons/Filter1'
-import Filter2Icon from '@material-ui/icons/Filter2'
-import Filter3Icon from '@material-ui/icons/Filter3'
-import Filter4Icon from '@material-ui/icons/Filter4'
-import Filter5Icon from '@material-ui/icons/Filter5'
-import Filter6Icon from '@material-ui/icons/Filter6'
-import Filter7Icon from '@material-ui/icons/Filter7'
 import ViewListIcon from '@material-ui/icons/ViewList'
 import ViewModuleIcon from '@material-ui/icons/ViewModule'
 import ToggleButton from '@material-ui/lab/ToggleButton'
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-
-const filterIcons = {
-  7: <Filter7Icon />,
-  6: <Filter6Icon />,
-  5: <Filter5Icon />,
-  4: <Filter4Icon />,
-  3: <Filter3Icon />,
-  2: <Filter2Icon />,
-  1: <Filter1Icon />,
-}
+import { MasteryLevelToggleGroup } from './mastery-level-toggle-group/MasteryLevelToggleGroup'
 
 export const SELECT_ALL_KEY = 'selectAll'
 
@@ -43,44 +27,14 @@ export interface MasteryFilterProps {
 export function MasteryFilter(props: MasteryFilterProps): React.ReactElement {
   const { layout, selected, onLayoutChange, onMasteryLevelChange } = props
   const { t } = useTranslation()
-  const masterLevelButtons = React.useMemo(
-    () =>
-      [7, 6, 5, 4, 3, 2, 1].map((level) => {
-        const label = t('masteryLevelNumber', { level })
-        const icon = filterIcons[level]
-        return (
-          <ToggleButton
-            key={level}
-            value={level}
-            aria-label={label}
-            data-cy={`mastery-level-filter-${level}`}
-          >
-            <Tooltip title={label}>{icon}</Tooltip>
-          </ToggleButton>
-        )
-      }),
-    [t]
-  )
 
   return (
     <Grid container direction="row" justify="space-between">
       <Grid item xs={10} sm={6} md={4}>
-        <ToggleButtonGroup
-          size="small"
+        <MasteryLevelToggleGroup
           value={selected}
-          exclusive
           onChange={onMasteryLevelChange}
-          aria-label={t('masteryLevelFilter')}
-        >
-          {masterLevelButtons}
-          <ToggleButton
-            value={SELECT_ALL_KEY}
-            aria-label={t('masteryLevelFilterAll')}
-            data-cy={`mastery-level-filter-all`}
-          >
-            {t('masteryLevelFilterAll')}
-          </ToggleButton>
-        </ToggleButtonGroup>
+        />
       </Grid>
       <Grid
         item

@@ -24,7 +24,8 @@ const useStyles = makeStyles((theme: Theme) =>
       marginLeft: 0,
       width: '100%',
       [theme.breakpoints.up('sm')]: {
-        marginLeft: theme.spacing(3),
+        marginLeft: (props: SearchInputProps) =>
+          props.edge === 'start' ? theme.spacing(0) : theme.spacing(3),
         width: 'auto',
       },
     },

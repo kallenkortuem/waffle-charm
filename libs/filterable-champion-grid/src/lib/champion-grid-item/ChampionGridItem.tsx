@@ -11,9 +11,10 @@ import { useSelector } from 'react-redux'
 /* eslint-disable-next-line */
 export interface ChampionGridItemProps {
   championId: string
+  compact?: boolean
 }
 export function ChampionGridItem(props: ChampionGridItemProps) {
-  const { championId } = props
+  const { championId, compact } = props
   const champion = useSelector(selectChampionEntities)[championId]
   const version = useSelector(selectLolVersion)
   const championVendor = useSelector(selectChampionVendor)
@@ -31,6 +32,7 @@ export function ChampionGridItem(props: ChampionGridItemProps) {
       version={version}
       championVendor={championVendor}
       hideFullImg
+      compact={compact}
     />
   )
 }

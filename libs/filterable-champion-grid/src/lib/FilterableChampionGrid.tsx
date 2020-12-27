@@ -1,5 +1,11 @@
-import { Divider } from '@material-ui/core'
-import { ChipsArray, CustomChip, PageContainer } from '@waffle-charm/material'
+import { Divider, Typography } from '@material-ui/core'
+import {
+  ChipsArray,
+  CustomChip,
+  LayoutOption,
+  LayoutToggleGroup,
+  PageContainer,
+} from '@waffle-charm/material'
 import {
   createSelectSummonerByName,
   fetchMastery,
@@ -17,6 +23,9 @@ import {
   ChampionGridFilterSortOption,
   sortOptions,
 } from './champion-grid-sort-select/ChampionGridSortSelect'
+import ChampionListContainer from './champion-list-container/ChampionListContainer'
+
+export const MASTERY_LAYOUT = 'masteryLayout2'
 
 export interface FilterableChampionGridProps {
   summonerName?: string
@@ -31,6 +40,11 @@ export function FilterableChampionGrid(props: FilterableChampionGridProps) {
   const [sortBy, setSortyBy] = React.useState<ChampionGridFilterSortOption>(
     sortOptions[1]
   )
+  const [layout, setLayout] = React.useState<LayoutOption>(
+    () =>
+      (localStorage.getItem(MASTERY_LAYOUT) as LayoutOption) ??
+      LayoutOption.module
+  )
 
   const [searchQuery, setSearchQuery] = React.useState('')
   const champions = useSelector(selectAllChampion)
@@ -43,13 +57,13 @@ export function FilterableChampionGrid(props: FilterableChampionGridProps) {
 
   const chips = React.useMemo(() => {
     return [
-      { key: 1, label: t('masteryLevelNumber', { level: 1 }) },
-      { key: 2, label: t('masteryLevelNumber', { level: 2 }) },
-      { key: 3, label: t('masteryLevelNumber', { level: 3 }) },
-      { key: 4, label: t('masteryLevelNumber', { level: 4 }) },
-      { key: 5, label: t('masteryLevelNumber', { level: 5 }) },
-      { key: 6, label: t('masteryLevelNumber', { level: 6 }) },
       { key: 7, label: t('masteryLevelNumber', { level: 7 }) },
+      { key: 6, label: t('masteryLevelNumber', { level: 6 }) },
+      { key: 5, label: t('masteryLevelNumber', { level: 5 }) },
+      { key: 4, label: t('masteryLevelNumber', { level: 4 }) },
+      { key: 3, label: t('masteryLevelNumber', { level: 3 }) },
+      { key: 2, label: t('masteryLevelNumber', { level: 2 }) },
+      { key: 1, label: t('masteryLevelNumber', { level: 1 }) },
       ...allTags.map((tag) => ({ key: tag, label: tag })),
     ]
   }, [t, allTags])
@@ -102,6 +116,16 @@ export function FilterableChampionGrid(props: FilterableChampionGridProps) {
     setChip(selectedChip)
   }, [])
 
+  const handleLayoutChange = (
+    event: React.MouseEvent<HTMLElement>,
+    value: LayoutOption
+  ) => {
+    if (value) {
+      setLayout(value)
+      localStorage.setItem(MASTERY_LAYOUT, value ?? 'module')
+    }
+  }
+
   return (
     <main>
       <PageContainer maxWidth="md">
@@ -114,15 +138,20 @@ export function FilterableChampionGrid(props: FilterableChampionGridProps) {
           <Divider orientation="horizontal"></Divider>
           <ChampionGridFilter>
             <ChampionGridSearch
-              style={{ width: '100%' }}
               inputProps={{ 'aria-label': t('searchPlaceholder') }}
               value={searchQuery}
               onSearhQueryChange={handleSetSearchQuery}
               edge="start"
             />
+            <LayoutToggleGroup value={layout} onChange={handleLayoutChange} />
           </ChampionGridFilter>
-          <ChampionGridContainer championIds={filteredChampionIds} />
+          <Typography>{chip?.label}</Typography>
         </div>
+        {layout === 'module' ? (
+          <ChampionGridContainer championIds={filteredChampionIds} />
+        ) : (
+          <ChampionListContainer championIds={filteredChampionIds} />
+        )}
       </PageContainer>
     </main>
   )

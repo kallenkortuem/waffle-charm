@@ -80,7 +80,7 @@ export const MasteryProgress = (
   switch (props.mastery.championLevel) {
     case 7:
       return (
-        <Box display="flex" flexDirection="column">
+        <Box display="flex" flexDirection="column" justifyContent="flex-end">
           <MasteryLinearProgress
             color="secondary"
             current={uncappedPointsSinceLastLevel}
@@ -101,7 +101,7 @@ export const MasteryProgress = (
             total: 3,
           })}
         >
-          <Box display="flex">
+          <Box display="flex" justifyContent="flex-end">
             <MasteryToken mastery={mastery} threshold={1} />
             <MasteryToken mastery={mastery} threshold={2} />
             <MasteryToken mastery={mastery} threshold={3} />
@@ -116,7 +116,7 @@ export const MasteryProgress = (
             total: 2,
           })}
         >
-          <Box display="flex">
+          <Box display="flex" justifyContent="flex-end">
             <MasteryToken mastery={mastery} threshold={1} />
             <MasteryToken mastery={mastery} threshold={2} />
           </Box>

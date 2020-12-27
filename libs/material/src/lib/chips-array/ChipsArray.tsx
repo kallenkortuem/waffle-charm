@@ -41,7 +41,6 @@ export function ChipsArray(props: ChipsArrayProps) {
   )
 
   const chipArray = React.useMemo(() => {
-    console.log(chips)
     return chips.map((data) => {
       let icon
       return (

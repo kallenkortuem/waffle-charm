@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next'
 export type LayoutOption = 'module' | 'list'
 export const LayoutOption = {
   module: 'module' as LayoutOption,
-  list: 'list' as LayoutOption
+  list: 'list' as LayoutOption,
 }
 
 /* eslint-disable-next-line */

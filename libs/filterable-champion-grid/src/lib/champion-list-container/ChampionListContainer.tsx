@@ -1,13 +1,17 @@
 import { createStyles, makeStyles, Theme, useTheme } from '@material-ui/core'
 import React from 'react'
-import { FixedSizeGrid } from 'react-window'
+import { FixedSizeList } from 'react-window'
 import { ChampionGridItem } from '../champion-grid-item/ChampionGridItem'
+import { ChampionListItem } from '../champion-list-item/ChampionListItem'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {},
     item: {
       padding: theme.spacing(1),
+      '&:first-child': {
+        padding: theme.spacing(1),
+      },
       whiteSpace: 'nowrap',
       '& > *': {
         height: '100%',
@@ -16,31 +20,25 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-const gridColumnCount = 3
-
-const itemKey = ({ columnIndex, data, rowIndex }) => {
-  const championIndex = rowIndex * gridColumnCount + columnIndex
-  const item = data[championIndex] ?? `${columnIndex}-${rowIndex}`
+const itemKey = (index: number, data: string[]) => {
+  const item = data[index] ?? `row-${index}`
   return item
 }
 
 interface CellProps {
-  columnIndex: number
-  rowIndex: number
+  index: number
   data: string[]
   style: any
 }
 
 const Cell = React.memo((props: CellProps) => {
-  const { columnIndex, data, rowIndex, style } = props
+  const { data, index, style } = props
   const classes = useStyles()
-  const championIds = data
-  const championIndex = rowIndex * gridColumnCount + columnIndex
-  const championId = championIds[championIndex]
+  const championId = data[index]
 
   return (
     <div className={classes.item} style={style}>
-      {championId ? <ChampionGridItem championId={championId} /> : null}
+      {championId ? <ChampionGridItem championId={championId} compact /> : null}
     </div>
   )
 })
@@ -54,25 +52,22 @@ export function ChampionGridContainer(props: ChampionGridContainerProps) {
   const { championIds } = props
   const classes = useStyles()
   const theme = useTheme()
-  const columnWidth = theme.spacing(38)
-  const rowHeight = theme.spacing(19)
+  const rowHeight = theme.spacing(9)
 
-  // https://react-window.now.sh/#/api/FixedSizeGrid
+  // https://react-window.now.sh/#/api/FixedSizeList
   return (
-    <FixedSizeGrid
+    <FixedSizeList
       className={classes.root}
-      columnCount={gridColumnCount}
-      columnWidth={columnWidth}
       itemKey={itemKey}
       itemData={championIds}
-      height={rowHeight * 5.5}
-      rowCount={Math.ceil(championIds.length / gridColumnCount)}
-      rowHeight={rowHeight + theme.spacing(1)}
+      height={rowHeight * 10}
+      itemCount={Math.ceil(championIds.length)}
+      itemSize={rowHeight + theme.spacing(1)}
       overscanRowCount={10}
       width={912}
     >
       {Cell}
-    </FixedSizeGrid>
+    </FixedSizeList>
   )
 }
 

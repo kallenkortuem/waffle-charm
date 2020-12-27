@@ -29,12 +29,27 @@ export interface MasteryCardProps {
   version: string
   championVendor: Vendors
   hideFullImg?: boolean
+  compact?: boolean
 }
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: {},
+    root: {
+      display: 'flex',
+      flexDirection: (props: MasteryCardProps) =>
+        props.compact ? 'row' : 'column',
+      justifyContent: 'space-between',
+    },
     header: {},
+    content: {
+      padding: theme.spacing(2),
+      '&:last-child': {
+        paddingBottom: theme.spacing(2),
+      },
+      flexGrow: (props: MasteryCardProps) => (props.compact ? 0.5 : 0),
+      alignSelf: (props: MasteryCardProps) =>
+        props.compact ? 'flex-end' : 'unset',
+    },
     media: {
       height: 0,
       paddingTop: '56.25%', // 16:9
@@ -43,9 +58,16 @@ const useStyles = makeStyles((theme: Theme) =>
 )
 
 export function MasteryCard(props: MasteryCardProps): React.ReactElement {
-  const { champion, mastery, version, championVendor, hideFullImg } = props
+  const {
+    champion,
+    mastery,
+    version,
+    championVendor,
+    hideFullImg,
+    compact,
+  } = props
   const { t } = useTranslation()
-  const classes = useStyles()
+  const classes = useStyles(props)
 
   return (
     <Card className={classes.root} elevation={3}>
@@ -77,7 +99,7 @@ export function MasteryCard(props: MasteryCardProps): React.ReactElement {
         ></CardMedia>
       </Collapse>
 
-      <CardContent>
+      <CardContent className={classes.content}>
         <MasteryProgress mastery={mastery} />
       </CardContent>
     </Card>

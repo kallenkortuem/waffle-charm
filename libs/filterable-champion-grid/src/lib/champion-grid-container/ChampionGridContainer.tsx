@@ -55,7 +55,7 @@ export function ChampionGridContainer(props: ChampionGridContainerProps) {
   const classes = useStyles()
   const theme = useTheme()
   const columnWidth = theme.spacing(38)
-  const rowHeight = theme.spacing(19)
+  const rowHeight = theme.spacing(18)
 
   // https://react-window.now.sh/#/api/FixedSizeGrid
   return (

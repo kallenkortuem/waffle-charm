@@ -1,4 +1,10 @@
-import { Divider, Typography } from '@material-ui/core'
+import {
+  createStyles,
+  Divider,
+  makeStyles,
+  Theme,
+  Typography,
+} from '@material-ui/core'
 import {
   ChipsArray,
   CustomChip,
@@ -27,6 +33,16 @@ import ChampionListContainer from './champion-list-container/ChampionListContain
 
 export const MASTERY_LAYOUT = 'masteryLayout2'
 
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {},
+    heading: {
+      padding: theme.spacing(0, 1),
+    },
+    filter: {},
+  })
+)
+
 export interface FilterableChampionGridProps {
   summonerName?: string
 }
@@ -35,6 +51,7 @@ export function FilterableChampionGrid(props: FilterableChampionGridProps) {
   const { summonerName } = props
   const dispatch = useDispatch()
   const { t } = useTranslation()
+  const classes = useStyles()
 
   const [chip, setChip] = React.useState<CustomChip>()
   const [sortBy, setSortyBy] = React.useState<ChampionGridFilterSortOption>(
@@ -127,9 +144,15 @@ export function FilterableChampionGrid(props: FilterableChampionGridProps) {
   }
 
   return (
-    <main>
+    <main className={classes.root}>
       <PageContainer maxWidth="md">
-        <div style={{}}>
+        <div className={classes.heading}>
+          <Typography variant="h4" component="h1">
+            {t('championMastery')}
+          </Typography>
+        </div>
+        <div className={classes.filter}>
+          <Divider orientation="horizontal"></Divider>
           <ChipsArray
             chips={chips}
             selected={chip}
@@ -145,7 +168,16 @@ export function FilterableChampionGrid(props: FilterableChampionGridProps) {
             />
             <LayoutToggleGroup value={layout} onChange={handleLayoutChange} />
           </ChampionGridFilter>
-          <Typography>{chip?.label}</Typography>
+        </div>
+        <div className={classes.heading}>
+          <Typography variant="h5" component="h2">
+            {searchQuery || chip?.label || t('masteryLevelFilterAll')}
+          </Typography>
+          <Typography variant="caption" component="p">
+            {t('championWithCount', {
+              count: filteredChampionIds?.length ?? 0,
+            })}
+          </Typography>
         </div>
         {layout === 'module' ? (
           <ChampionGridContainer championIds={filteredChampionIds} />

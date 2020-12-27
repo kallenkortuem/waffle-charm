@@ -10,7 +10,7 @@ export const PageContainer = withStyles((theme: Theme) =>
       paddingTop: theme.spacing(1),
       flexGrow: 1,
       '& > *': {
-        margin: theme.spacing(2, 0),
+        margin: theme.spacing(1, 0),
         width: '100%',
       },
     },

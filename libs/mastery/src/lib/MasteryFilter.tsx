@@ -5,8 +5,6 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { MasteryLevelToggleGroup } from './mastery-level-toggle-group/MasteryLevelToggleGroup'
 
-export const SELECT_ALL_KEY = 'selectAll'
-
 export interface MasteryFilterProps {
   selected: number
   onMasteryLevelChange: (

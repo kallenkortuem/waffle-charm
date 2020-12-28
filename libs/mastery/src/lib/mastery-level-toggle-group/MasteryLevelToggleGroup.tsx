@@ -23,6 +23,8 @@ const filterIcons = {
   1: <Filter1Icon />,
 }
 
+export const SELECT_ALL_KEY = 'selectAll'
+
 /* eslint-disable-next-line */
 export interface MasteryLevelToggleGroupProps extends ToggleButtonGroupProps {}
 
@@ -55,6 +57,13 @@ export function MasteryLevelToggleGroup(props: MasteryLevelToggleGroupProps) {
       {...props}
     >
       {masterLevelButtons}
+      <ToggleButton
+        value={SELECT_ALL_KEY}
+        aria-label={t('masteryLevelFilterAll')}
+        data-cy={`mastery-level-filter-all`}
+      >
+        {t('masteryLevelFilterAll')}
+      </ToggleButton>
     </ToggleButtonGroup>
   )
 }

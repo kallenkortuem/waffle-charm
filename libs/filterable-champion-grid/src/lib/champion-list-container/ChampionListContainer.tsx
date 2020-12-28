@@ -2,7 +2,6 @@ import { createStyles, makeStyles, Theme, useTheme } from '@material-ui/core'
 import React from 'react'
 import { FixedSizeList } from 'react-window'
 import { ChampionGridItem } from '../champion-grid-item/ChampionGridItem'
-import { ChampionListItem } from '../champion-list-item/ChampionListItem'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

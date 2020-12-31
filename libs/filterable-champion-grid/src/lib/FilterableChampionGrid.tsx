@@ -15,9 +15,10 @@ import {
 import {
   createSelectSummonerByName,
   fetchMastery,
-  selectAllChampion,
+  masteryViewerActions,
   selectAllChampionTags,
-  selectMasteryEntities,
+  selectFilteredChampionIds,
+  selectSearchQuery,
 } from '@waffle-charm/store'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
@@ -63,9 +64,7 @@ export function FilterableChampionGrid(props: FilterableChampionGridProps) {
       LayoutOption.module
   )
 
-  const [searchQuery, setSearchQuery] = React.useState('')
-  const champions = useSelector(selectAllChampion)
-  const masteryEntities = useSelector(selectMasteryEntities)
+  const searchQuery = useSelector(selectSearchQuery)
   const selectSummonerByName = createSelectSummonerByName()
   const summoner = useSelector((state) =>
     selectSummonerByName(state, summonerName)
@@ -85,39 +84,7 @@ export function FilterableChampionGrid(props: FilterableChampionGridProps) {
     ]
   }, [t, allTags])
 
-  const filteredChampionIds = React.useMemo(() => {
-    const substringRegex = new RegExp(searchQuery, 'i')
-    return champions
-      .filter((champion) => {
-        if (searchQuery) {
-          return substringRegex.test(champion.name)
-        }
-
-        if (chip) {
-          return (
-            masteryEntities[parseInt(champion.key)]?.championLevel ===
-              chip.key || champion.tags.includes(chip.key.toString())
-          )
-        }
-
-        return true
-      })
-      .sort((a, b) => {
-        switch (sortBy) {
-          case 'mastery':
-            return (
-              (masteryEntities[parseInt(b.key)]?.championPoints ?? 0) -
-              (masteryEntities[parseInt(a.key)]?.championPoints ?? 0)
-            )
-          case 'favorite':
-          case 'ban':
-          case 'name':
-          default:
-            return 0
-        }
-      })
-      .map((champion) => champion.key)
-  }, [masteryEntities, champions, sortBy, searchQuery, chip])
+  const filteredChampionIds = useSelector(selectFilteredChampionIds)
 
   React.useEffect(() => {
     if (summoner) {
@@ -125,8 +92,17 @@ export function FilterableChampionGrid(props: FilterableChampionGridProps) {
     }
   }, [dispatch, summoner])
 
+  React.useEffect(() => {
+    if (typeof chip?.key === 'string') {
+      dispatch(masteryViewerActions.setTag(chip.key.toLocaleString()))
+    }
+    if (typeof chip?.key === 'number') {
+      dispatch(masteryViewerActions.setLevel(chip.key))
+    }
+  }, [chip, dispatch])
+
   const handleSetSearchQuery = (query: string) => {
-    setSearchQuery(query || '')
+    dispatch(masteryViewerActions.setSearchQuery(query))
   }
 
   const handleSetChip = React.useCallback((selectedChip: CustomChip) => {

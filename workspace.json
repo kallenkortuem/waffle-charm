@@ -402,8 +402,7 @@
         "pascalCaseFiles": true
       },
       "redux": {
-        "project": "crow-storm",
-        "directory": "+store/features"
+        "project": "store"
       }
     },
     "@nrwl/next": {

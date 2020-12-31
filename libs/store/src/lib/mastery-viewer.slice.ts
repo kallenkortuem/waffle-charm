@@ -92,7 +92,7 @@ export const selectFilteredChampionMastery = createSelector(
   (searchQuery, tag, level, joinedData) => {
     return joinedData.filter(({ champion, mastery }) => {
       const inQuery =
-        !searchQuery || new RegExp(searchQuery, 'g').test(champion.name)
+        !searchQuery || new RegExp(searchQuery, 'i').test(champion.name)
       const inTag = !tag || champion.tags.includes(tag)
       const inLevel = !level || mastery?.championLevel === level
       return inQuery && inTag && inLevel
@@ -102,5 +102,5 @@ export const selectFilteredChampionMastery = createSelector(
 
 export const selectFilteredChampionIds = createSelector(
   selectFilteredChampionMastery,
-  (data) => data.map((item) => item.champion.id)
+  (data) => data.map((item) => item.champion.key)
 )

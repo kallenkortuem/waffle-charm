@@ -8,10 +8,10 @@ import {
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import { MasteryTotalProgress } from '../components/MasteryTotalProgress'
 import { WelcomeBanner } from '../components/WelcomeBanner'
+import { MasteryTotalProgress } from '../containers/MasteryTotalProgress'
 
-const MasteryViewer = React.lazy(() => import('../components/MasteryViewer'))
+const MasteryViewer = React.lazy(() => import('../containers/MasteryViewer'))
 
 export const Mastery = (props: {
   summonerName: string

@@ -8,7 +8,7 @@ import { getSettingsState, settingsActions } from '@waffle-charm/store'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import ChampionSettings from '../components/ChampionSettings'
+import ChampionSettings from '../containers/ChampionSettings'
 import SummonerSettings from './SummonerSettings'
 
 const drawerWidth = 300

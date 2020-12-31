@@ -12,12 +12,12 @@ import {
 import React, { Suspense } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Route, Switch } from 'react-router-dom'
+import { Mastery } from './containers/Mastery'
 import PrimarySearchBar, {
   SUMMONER_NAME_KEY,
   useQuery,
-} from './components/PrimarySearchBar'
-import { SettingsDrawer } from './components/SettingsDrawer'
-import { Mastery } from './pages/Mastery'
+} from './containers/PrimarySearchBar'
+import { SettingsDrawer } from './containers/SettingsDrawer'
 
 const FilterableChampionGrid = React.lazy(
   () => import('@waffle-charm/filterable-champion-grid')

@@ -15,19 +15,21 @@ import {
   MasteryFilter,
   MasteryGridGroup,
   MasteryProgress,
-  SELECT_ALL_KEY,
 } from '@waffle-charm/mastery'
 import {
   ChampionEntity,
+  masteryViewerActions,
   selectAllMastery,
   selectAllMasteryLevels,
   selectChampionEntities,
   selectChampionVendor,
+  selectLayout,
+  selectLevel,
   selectLolVersion,
 } from '@waffle-charm/store'
-import React, { useState } from 'react'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 export const MASTERY_LEVEL = 'masteryLevel'
 export const MASTERY_LAYOUT = 'masteryLayout'
@@ -40,30 +42,21 @@ export const MasteryViewer = (
   props: MasteryViewerProps
 ): React.ReactElement => {
   const { tag } = props
-  const [layout, setLayout] = useState(
-    () => localStorage.getItem(MASTERY_LAYOUT) ?? 'module'
-  )
-  const [masteryLevel, setVisibleMasteryLevel] = useState(() =>
-    JSON.parse(localStorage.getItem(MASTERY_LEVEL) || '1')
-  )
+  const dispatch = useDispatch()
+  const layout = useSelector(selectLayout)
+  const masteryLevel = useSelector(selectLevel)
 
   const handleLayoutChange = (
     event: React.MouseEvent<HTMLElement>,
-    value: string
+    value: 'module' | 'list'
   ) => {
-    if (value) {
-      setLayout(value)
-      localStorage.setItem(MASTERY_LAYOUT, value ?? 'module')
-    }
+    dispatch(masteryViewerActions.setLayout(value))
   }
   const handleSetMasteryLevel = (
     event: React.MouseEvent<HTMLElement>,
     value: number
   ) => {
-    if (value) {
-      setVisibleMasteryLevel(value)
-      localStorage.setItem(MASTERY_LEVEL, JSON.stringify(value))
-    }
+    dispatch(masteryViewerActions.setLevel(value))
   }
 
   return (
@@ -120,9 +113,7 @@ export const MasteryGridView = (
     <>
       {allMasteryLevels
         .sort((a, b) => b - a)
-        .filter(
-          (level) => level === masteryLevel || masteryLevel === SELECT_ALL_KEY
-        )
+        .filter((level) => !masteryLevel || level === masteryLevel)
         .map((level) => {
           return (
             <MasteryGridGroup
@@ -171,7 +162,7 @@ const ChamptionTableRow = (props: { row: ChampionMasteryDTO }) => {
 const filterByMastery = (
   masteryLevel: number | string,
   championLevel: number
-) => masteryLevel === championLevel || masteryLevel === SELECT_ALL_KEY
+) => !masteryLevel || masteryLevel === championLevel
 
 const filterByTag = (champion: ChampionEntity, tag?: string) =>
   !tag || champion.tags.includes(tag)

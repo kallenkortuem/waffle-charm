@@ -1,6 +1,7 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { selectAllChampion } from './champion.slice'
-import { selectMasteryEntities } from './mastery.slice'
+import { ChampionMasteryDTO } from '@waffle-charm/api-interfaces'
+import { ChampionEntity, selectAllChampion } from './champion.slice'
+import { MasteryEntity, selectMasteryEntities } from './mastery.slice'
 
 export const MASTERY_VIEWER_FEATURE_KEY = 'masteryViewer'
 
@@ -8,12 +9,14 @@ export interface MasteryViewerState {
   searchQuery: string
   tag?: string
   level?: number
+  layout: 'module' | 'list'
 }
 
 export const initialMasteryViewerState: MasteryViewerState = {
   searchQuery: '',
   tag: null,
   level: null,
+  layout: 'module',
 }
 
 export const masteryViewerSlice = createSlice({
@@ -29,7 +32,12 @@ export const masteryViewerSlice = createSlice({
     setLevel(state: MasteryViewerState, action: PayloadAction<number>) {
       state.level = action.payload
     },
-    // ...
+    setLayout(
+      state: MasteryViewerState,
+      action: PayloadAction<'list' | 'module'>
+    ) {
+      state.layout = action.payload
+    },
   },
 })
 
@@ -73,34 +81,85 @@ export const selectLevel = createSelector(
   getMasteryViewerState,
   (state) => state.level
 )
+export const selectLayout = createSelector(
+  getMasteryViewerState,
+  (state) => state.layout
+)
 
-export const selectAllJoinedChampionMastery = createSelector(
+const defaultMastery: Partial<ChampionMasteryDTO> = {
+  championLevel: 0,
+  championPoints: 0,
+}
+
+const filterChampion = (
+  champion: ChampionEntity,
+  masteryEntities: Record<string, MasteryEntity>,
+  level?: number,
+  searchQueryExp?: RegExp,
+  tag?: string
+) =>
+  //
+  (!searchQueryExp &&
+    // tag match as a last resort
+    (level === null ||
+      level === undefined ||
+      (masteryEntities[champion.key] ?? defaultMastery).championLevel ===
+        level) &&
+    (!tag || champion.tags.includes(tag))) ||
+  // query match
+  searchQueryExp?.test(champion.name)
+
+const sortChampion = (masteryEntities: Record<string, MasteryEntity>) => (
+  championAKey: string,
+  championBKey: string
+) => {
+  const championA = masteryEntities[championAKey] ?? defaultMastery
+  const championB = masteryEntities[championBKey] ?? defaultMastery
+
+  if (championA.championLevel === championB.championLevel) {
+    if (championA.championPoints === championB.championPoints) {
+      return 0
+    }
+
+    return championB.championPoints - championA.championPoints
+  }
+  return championB.championLevel - championA.championLevel
+}
+
+/**
+ * Select all filtered `champion.key`.
+ */
+export const selectFilteredChampionIds = createSelector(
   selectAllChampion,
   selectMasteryEntities,
-  (champions, masteryEntities) =>
-    champions.map((champion) => ({
-      champion,
-      mastery: masteryEntities[parseInt(champion.key)],
-    }))
-)
-
-export const selectFilteredChampionMastery = createSelector(
+  selectLevel,
   selectSearchQuery,
   selectTag,
-  selectLevel,
-  selectAllJoinedChampionMastery,
-  (searchQuery, tag, level, joinedData) => {
-    return joinedData.filter(({ champion, mastery }) => {
-      const inQuery =
-        !searchQuery || new RegExp(searchQuery, 'i').test(champion.name)
-      const inTag = !tag || champion.tags.includes(tag)
-      const inLevel = !level || mastery?.championLevel === level
-      return inQuery && inTag && inLevel
-    })
-  }
-)
+  (
+    allChampions: ChampionEntity[],
+    masteryEntities: Record<string, MasteryEntity>,
+    level?: number,
+    searchQuery?: string,
+    tag?: string
+  ) => {
+    const searchQueryExp = searchQuery ? new RegExp(searchQuery, 'i') : null
+    const championIds = []
+    allChampions.forEach((champion) => {
+      const passedFilter = filterChampion(
+        champion,
+        masteryEntities,
+        level,
+        searchQueryExp,
+        tag
+      )
 
-export const selectFilteredChampionIds = createSelector(
-  selectFilteredChampionMastery,
-  (data) => data.map((item) => item.champion.key)
+      if (passedFilter) {
+        championIds.push(champion.key)
+      }
+    })
+
+    const sortedResults = championIds.sort(sortChampion(masteryEntities))
+
+    return sortedResults
+  }
 )

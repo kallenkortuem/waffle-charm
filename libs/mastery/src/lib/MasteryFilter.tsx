@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { MasteryLevelToggleGroup } from './mastery-level-toggle-group/MasteryLevelToggleGroup'
 
 export interface MasteryFilterProps {
+  children?: React.ReactNode
   selected: number
   onMasteryLevelChange: (
     event: React.MouseEvent<HTMLElement>,
@@ -19,31 +20,25 @@ export interface MasteryFilterProps {
 }
 
 export function MasteryFilter(props: MasteryFilterProps): React.ReactElement {
-  const { layout, selected, onLayoutChange, onMasteryLevelChange } = props
+  const {
+    layout,
+    selected,
+    children,
+    onLayoutChange,
+    onMasteryLevelChange,
+  } = props
   const { t } = useTranslation()
 
   return (
     <Grid container direction="row" justify="space-between">
-      <Grid item xs={10} sm={6} md={4}>
-        <MasteryLevelToggleGroup
-          value={selected}
-          onChange={onMasteryLevelChange}
-        />
-      </Grid>
-      <Grid
-        item
-        container
-        style={{ display: 'flex' }}
-        justify="flex-end"
-        direction="row"
-        xs={2}
-        sm={2}
-        md={2}
-      >
-        <Hidden only="xs">
-          <LayoutToggleGroup value={layout} onChange={onLayoutChange} />
-        </Hidden>
-      </Grid>
+      <MasteryLevelToggleGroup
+        value={selected}
+        onChange={onMasteryLevelChange}
+      />
+      {children}
+      <Hidden only="xs">
+        <LayoutToggleGroup value={layout} onChange={onLayoutChange} />
+      </Hidden>
     </Grid>
   )
 }

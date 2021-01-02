@@ -16,6 +16,7 @@ import {
   MasteryGridGroup,
   MasteryProgress,
 } from '@waffle-charm/mastery'
+import { DelayedSearchInput } from '@waffle-charm/material'
 import {
   ChampionEntity,
   masteryViewerActions,
@@ -26,6 +27,7 @@ import {
   selectLayout,
   selectLevel,
   selectLolVersion,
+  selectSearchQuery,
 } from '@waffle-charm/store'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
@@ -41,10 +43,12 @@ export interface MasteryViewerProps {
 export const MasteryViewer = (
   props: MasteryViewerProps
 ): React.ReactElement => {
+  const { t } = useTranslation()
   const { tag } = props
   const dispatch = useDispatch()
   const layout = useSelector(selectLayout)
   const masteryLevel = useSelector(selectLevel)
+  const searchQuery = useSelector(selectSearchQuery)
 
   const handleLayoutChange = (
     event: React.MouseEvent<HTMLElement>,
@@ -52,12 +56,20 @@ export const MasteryViewer = (
   ) => {
     dispatch(masteryViewerActions.setLayout(value))
   }
+
   const handleSetMasteryLevel = (
     event: React.MouseEvent<HTMLElement>,
     value: number
   ) => {
     dispatch(masteryViewerActions.setLevel(value))
   }
+
+  const handleSetSearchQuery = React.useMemo(
+    () => (query: string) => {
+      dispatch(masteryViewerActions.setSearchQuery(query))
+    },
+    [dispatch]
+  )
 
   return (
     <>
@@ -66,7 +78,14 @@ export const MasteryViewer = (
         selected={masteryLevel}
         onLayoutChange={handleLayoutChange}
         onMasteryLevelChange={handleSetMasteryLevel}
-      />
+      >
+        <DelayedSearchInput
+          inputProps={{ 'aria-label': t('searchPlaceholder') }}
+          value={searchQuery}
+          onSearhQueryChange={handleSetSearchQuery}
+          edge="start"
+        />
+      </MasteryFilter>
       <Hidden only="xs">
         {layout === 'module' ? (
           <MasteryGridView tag={tag} masteryLevel={masteryLevel} />

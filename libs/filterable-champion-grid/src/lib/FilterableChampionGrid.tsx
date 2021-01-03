@@ -8,6 +8,7 @@ import {
 import {
   ChipsArray,
   CustomChip,
+  DelayedSearchInput,
   LayoutOption,
   LayoutToggleGroup,
   PageContainer,
@@ -15,16 +16,17 @@ import {
 import {
   createSelectSummonerByName,
   fetchMastery,
-  selectAllChampion,
+  masteryViewerActions,
   selectAllChampionTags,
-  selectMasteryEntities,
+  selectFilteredChampionIds,
+  selectLayout,
+  selectSearchQuery,
 } from '@waffle-charm/store'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import ChampionGridContainer from './champion-grid-container/ChampionGridContainer'
 import { ChampionGridFilter } from './champion-grid-filter/ChampionGridFilter'
-import ChampionGridSearch from './champion-grid-search/ChampionGridSearch'
 import {
   ChampionGridFilterSortOption,
   sortOptions,
@@ -57,15 +59,8 @@ export function FilterableChampionGrid(props: FilterableChampionGridProps) {
   const [sortBy, setSortyBy] = React.useState<ChampionGridFilterSortOption>(
     sortOptions[1]
   )
-  const [layout, setLayout] = React.useState<LayoutOption>(
-    () =>
-      (localStorage.getItem(MASTERY_LAYOUT) as LayoutOption) ??
-      LayoutOption.module
-  )
-
-  const [searchQuery, setSearchQuery] = React.useState('')
-  const champions = useSelector(selectAllChampion)
-  const masteryEntities = useSelector(selectMasteryEntities)
+  const layout = useSelector(selectLayout)
+  const searchQuery = useSelector(selectSearchQuery)
   const selectSummonerByName = createSelectSummonerByName()
   const summoner = useSelector((state) =>
     selectSummonerByName(state, summonerName)
@@ -81,43 +76,12 @@ export function FilterableChampionGrid(props: FilterableChampionGridProps) {
       { key: 3, label: t('masteryLevelNumber', { level: 3 }) },
       { key: 2, label: t('masteryLevelNumber', { level: 2 }) },
       { key: 1, label: t('masteryLevelNumber', { level: 1 }) },
+      { key: 0, label: t('masteryLevelNumber', { level: 0 }) },
       ...allTags.map((tag) => ({ key: tag, label: tag })),
     ]
   }, [t, allTags])
 
-  const filteredChampionIds = React.useMemo(() => {
-    const substringRegex = new RegExp(searchQuery, 'i')
-    return champions
-      .filter((champion) => {
-        if (searchQuery) {
-          return substringRegex.test(champion.name)
-        }
-
-        if (chip) {
-          return (
-            masteryEntities[parseInt(champion.key)]?.championLevel ===
-              chip.key || champion.tags.includes(chip.key.toString())
-          )
-        }
-
-        return true
-      })
-      .sort((a, b) => {
-        switch (sortBy) {
-          case 'mastery':
-            return (
-              (masteryEntities[parseInt(b.key)]?.championPoints ?? 0) -
-              (masteryEntities[parseInt(a.key)]?.championPoints ?? 0)
-            )
-          case 'favorite':
-          case 'ban':
-          case 'name':
-          default:
-            return 0
-        }
-      })
-      .map((champion) => champion.key)
-  }, [masteryEntities, champions, sortBy, searchQuery, chip])
+  const filteredChampionIds = useSelector(selectFilteredChampionIds)
 
   React.useEffect(() => {
     if (summoner) {
@@ -125,9 +89,26 @@ export function FilterableChampionGrid(props: FilterableChampionGridProps) {
     }
   }, [dispatch, summoner])
 
-  const handleSetSearchQuery = (query: string) => {
-    setSearchQuery(query || '')
-  }
+  React.useEffect(() => {
+    if (!chip) {
+      dispatch(masteryViewerActions.setTag(null))
+      dispatch(masteryViewerActions.setLevel(null))
+      return
+    }
+    if (typeof chip?.key === 'string') {
+      dispatch(masteryViewerActions.setTag(chip.key.toLocaleString()))
+    }
+    if (typeof chip?.key === 'number') {
+      dispatch(masteryViewerActions.setLevel(chip.key))
+    }
+  }, [chip, dispatch])
+
+  const handleSetSearchQuery = React.useMemo(
+    () => (query: string) => {
+      dispatch(masteryViewerActions.setSearchQuery(query))
+    },
+    [dispatch]
+  )
 
   const handleSetChip = React.useCallback((selectedChip: CustomChip) => {
     setChip(selectedChip)
@@ -137,10 +118,7 @@ export function FilterableChampionGrid(props: FilterableChampionGridProps) {
     event: React.MouseEvent<HTMLElement>,
     value: LayoutOption
   ) => {
-    if (value) {
-      setLayout(value)
-      localStorage.setItem(MASTERY_LAYOUT, value ?? 'module')
-    }
+    dispatch(masteryViewerActions.setLayout(value))
   }
 
   return (
@@ -160,7 +138,7 @@ export function FilterableChampionGrid(props: FilterableChampionGridProps) {
           />
           <Divider orientation="horizontal"></Divider>
           <ChampionGridFilter>
-            <ChampionGridSearch
+            <DelayedSearchInput
               inputProps={{ 'aria-label': t('searchPlaceholder') }}
               value={searchQuery}
               onSearhQueryChange={handleSetSearchQuery}

@@ -5,6 +5,10 @@ import storage from 'redux-persist/lib/storage'
 import thunk from 'redux-thunk'
 import { championReducer, CHAMPION_FEATURE_KEY } from './champion.slice'
 import { lolVersionReducer, LOL_VERSION_FEATURE_KEY } from './lol-version.slice'
+import {
+  masteryViewerReducer,
+  MASTERY_VIEWER_FEATURE_KEY,
+} from './mastery-viewer.slice'
 import { masteryReducer, MASTERY_FEATURE_KEY } from './mastery.slice'
 import { settingsReducer, SETTINGS_FEATURE_KEY } from './settings.slice'
 import { summonerReducer, SUMMONER_FEATURE_KEY } from './summoner.slice'
@@ -15,6 +19,7 @@ const rootReducer = combineReducers({
   [SUMMONER_FEATURE_KEY]: summonerReducer,
   [LOL_VERSION_FEATURE_KEY]: lolVersionReducer,
   [SETTINGS_FEATURE_KEY]: settingsReducer,
+  [MASTERY_VIEWER_FEATURE_KEY]: masteryViewerReducer,
 })
 
 const persistConfig: PersistConfig<any> = {

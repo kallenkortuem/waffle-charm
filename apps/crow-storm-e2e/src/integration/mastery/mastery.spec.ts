@@ -55,25 +55,6 @@ describe('mastery grid group', () => {
       getMasteryLevelFilter(1).click()
       getMasteryGridGroup(2).should('not.exist')
     })
-
-    it('should require one to be selected', () => {
-      getMasteryLevelFilter(1).click()
-      getMasteryLevelFilter(1).should('have.attr', 'aria-pressed', 'true')
-      getMasteryLevelFilter(1).click()
-      getMasteryLevelFilter(1).should('have.attr', 'aria-pressed', 'true')
-    })
-
-    it('should be able to select all', () => {
-      getMasteryLevelFilter('all').click()
-      getMasteryLevelFilter('all').should('have.attr', 'aria-pressed', 'true')
-      getMasteryGridGroup(1).should('exist')
-      getMasteryGridGroup(2).should('exist')
-      getMasteryGridGroup(3).should('exist')
-      getMasteryGridGroup(4).should('exist')
-      getMasteryGridGroup(5).should('exist')
-      getMasteryGridGroup(6).should('exist')
-      getMasteryGridGroup(7).should('exist')
-    })
   })
 
   describe('layout views', () => {

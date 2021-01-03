@@ -1,3 +1,4 @@
+export * from './lib/mastery-viewer.slice'
 export * from './lib/champion.slice'
 export * from './lib/lol-version.slice'
 export * from './lib/mastery.slice'

@@ -6,6 +6,7 @@ import Filter4Icon from '@material-ui/icons/Filter4'
 import Filter5Icon from '@material-ui/icons/Filter5'
 import Filter6Icon from '@material-ui/icons/Filter6'
 import Filter7Icon from '@material-ui/icons/Filter7'
+import Filter0Icon from '@material-ui/icons/FilterNone'
 import ToggleButton from '@material-ui/lab/ToggleButton'
 import ToggleButtonGroup, {
   ToggleButtonGroupProps,
@@ -21,9 +22,8 @@ const filterIcons = {
   3: <Filter3Icon />,
   2: <Filter2Icon />,
   1: <Filter1Icon />,
+  0: <Filter0Icon />,
 }
-
-export const SELECT_ALL_KEY = 'selectAll'
 
 /* eslint-disable-next-line */
 export interface MasteryLevelToggleGroupProps extends ToggleButtonGroupProps {}
@@ -32,7 +32,7 @@ export function MasteryLevelToggleGroup(props: MasteryLevelToggleGroupProps) {
   const { t } = useTranslation()
   const masterLevelButtons = React.useMemo(
     () =>
-      [7, 6, 5, 4, 3, 2, 1].map((level) => {
+      [7, 6, 5, 4, 3, 2, 1, 0].map((level) => {
         const label = t('masteryLevelNumber', { level })
         const icon = filterIcons[level]
         return (
@@ -57,13 +57,6 @@ export function MasteryLevelToggleGroup(props: MasteryLevelToggleGroupProps) {
       {...props}
     >
       {masterLevelButtons}
-      <ToggleButton
-        value={SELECT_ALL_KEY}
-        aria-label={t('masteryLevelFilterAll')}
-        data-cy={`mastery-level-filter-all`}
-      >
-        {t('masteryLevelFilterAll')}
-      </ToggleButton>
     </ToggleButtonGroup>
   )
 }

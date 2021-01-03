@@ -9,6 +9,7 @@ import {
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import CardHeader from '@material-ui/core/CardHeader'
+import { Skeleton } from '@material-ui/lab'
 import {
   ChampionData,
   ChampionMasteryDTO,
@@ -25,6 +26,7 @@ import { MasteryProgress } from './MasteryProgress'
 
 export interface MasteryCardProps {
   mastery: ChampionMasteryDTO
+  loading: boolean
   champion: ChampionData
   version: string
   championVendor: Vendors
@@ -59,6 +61,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export function MasteryCard(props: MasteryCardProps): React.ReactElement {
   const {
+    loading,
     champion,
     mastery,
     version,
@@ -70,26 +73,42 @@ export function MasteryCard(props: MasteryCardProps): React.ReactElement {
   const classes = useStyles(props)
 
   return (
-    <Card className={classes.root} elevation={3}>
+    <Card className={classes.root} elevation={3} data-cy="mastery-card">
       <CardHeader
         className={classes.header}
         avatar={
-          <ChampionAvatar version={version} size="small" champion={champion} />
+          loading ? (
+            <Skeleton variant="circle" width={40} height={40} />
+          ) : (
+            <ChampionAvatar
+              version={version}
+              size="small"
+              champion={champion}
+            />
+          )
         }
         title={
-          <Link
-            variant="body2"
-            href={getChampionInfoUrl(champion, championVendor)}
-            underline="hover"
-            color="textPrimary"
-          >
-            {champion?.name}
-          </Link>
+          loading ? (
+            <Skeleton />
+          ) : (
+            <Link
+              variant="body2"
+              href={getChampionInfoUrl(champion, championVendor)}
+              underline="hover"
+              color="textPrimary"
+            >
+              {champion.name}
+            </Link>
+          )
         }
         subheader={
-          t('totalMasteryPoints') +
+          loading ? (
+            <Skeleton />
+          ) : (
+            t('totalMasteryPoints') +
             ' ' +
-            mastery?.championPoints?.toLocaleString() ?? 0
+            (mastery?.championPoints.toLocaleString() ?? 0)
+          )
         }
       />
       <Collapse in={!hideFullImg}>
@@ -98,9 +117,8 @@ export function MasteryCard(props: MasteryCardProps): React.ReactElement {
           image={getChampionSplashImageSrc(champion)}
         ></CardMedia>
       </Collapse>
-
       <CardContent className={classes.content}>
-        <MasteryProgress mastery={mastery} />
+        {mastery ? <MasteryProgress mastery={mastery} /> : null}
       </CardContent>
     </Card>
   )

@@ -106,8 +106,8 @@ export function MasteryCard(props: MasteryCardProps): React.ReactElement {
             <Skeleton />
           ) : (
             t('totalMasteryPoints') +
-              ' ' +
-              mastery?.championPoints.toLocaleString() ?? 0
+            ' ' +
+            (mastery?.championPoints.toLocaleString() ?? 0)
           )
         }
       />

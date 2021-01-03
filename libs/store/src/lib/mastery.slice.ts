@@ -15,6 +15,18 @@ export const MASTERY_FEATURE_KEY = 'mastery'
  */
 export type MasteryEntity = ChampionMasteryDTO
 
+export const defaultMastery: ChampionMasteryDTO = {
+  championPointsUntilNextLevel: 0,
+  chestGranted: false,
+  championId: null,
+  lastPlayTime: 0,
+  championLevel: 0,
+  summonerId: null,
+  championPoints: 0,
+  championPointsSinceLastLevel: 0,
+  tokensEarned: 0,
+}
+
 export interface MasteryState extends EntityState<MasteryEntity> {
   loadingStatus: 'not loaded' | 'loading' | 'loaded' | 'error'
   error: string

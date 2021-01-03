@@ -20,12 +20,16 @@ const useStyles = makeStyles((theme: Theme) =>
         backgroundColor: fade(theme.palette.common.white, 0.25),
       },
       marginRight: (props: SearchInputProps) =>
-        props.edge === 'end' ? theme.spacing(0) : theme.spacing(2),
+        props.edge === 'end' || props.edge === 'both'
+          ? theme.spacing(0)
+          : theme.spacing(2),
       marginLeft: 0,
       width: '100%',
       [theme.breakpoints.up('sm')]: {
         marginLeft: (props: SearchInputProps) =>
-          props.edge === 'start' ? theme.spacing(0) : theme.spacing(3),
+          props.edge === 'start' || props.edge === 'both'
+            ? theme.spacing(0)
+            : theme.spacing(3),
         width: 'auto',
       },
     },
@@ -62,7 +66,7 @@ export interface SearchInputProps extends InputBaseProps {
    * side of the input with content above or below, without ruining the border
    * size and shape).
    */
-  edge?: 'start' | 'end' | false
+  edge?: 'start' | 'end' | 'both' | false
 }
 
 export function SearchInput(props: SearchInputProps) {

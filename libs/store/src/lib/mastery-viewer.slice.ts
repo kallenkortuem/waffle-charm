@@ -1,7 +1,11 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { ChampionMasteryDTO } from '@waffle-charm/api-interfaces'
 import { ChampionEntity, selectAllChampion } from './champion.slice'
-import { MasteryEntity, selectMasteryEntities } from './mastery.slice'
+import {
+  defaultMastery,
+  MasteryEntity,
+  selectMasteryEntities,
+} from './mastery.slice'
 
 export const MASTERY_VIEWER_FEATURE_KEY = 'masteryViewer'
 
@@ -85,11 +89,6 @@ export const selectLayout = createSelector(
   getMasteryViewerState,
   (state) => state.layout
 )
-
-const defaultMastery: Partial<ChampionMasteryDTO> = {
-  championLevel: 0,
-  championPoints: 0,
-}
 
 const filterChampion = (
   champion: ChampionEntity,

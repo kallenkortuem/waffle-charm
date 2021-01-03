@@ -178,7 +178,6 @@ export const MasteryGridViewItem = (
         championVendor={championVendor}
         champion={champion}
         hideFullImg
-        data-cy="mastery-card"
       />
     </Grid>
   )

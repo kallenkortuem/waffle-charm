@@ -27,6 +27,7 @@ export function ChampionGridItem(props: ChampionGridItemProps) {
 
   return (
     <MasteryCard
+      loading={false}
       champion={champion}
       mastery={mastery}
       version={version}

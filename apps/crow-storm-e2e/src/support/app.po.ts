@@ -19,7 +19,7 @@ export const getMasteryGridGroup = (
   cy.get(`[data-cy=mastery-grid-group-${level}]`, { timeout: 5000 })
 
 export const getMasteryLevelFilter = (
-  level: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 'all'
+  level: 1 | 2 | 3 | 4 | 5 | 6 | 7
 ): Cypress.Chainable<JQuery<HTMLButtonElement>> =>
   cy.get(`[data-cy=mastery-level-filter-${level}]`, { timeout: 5000 })
 

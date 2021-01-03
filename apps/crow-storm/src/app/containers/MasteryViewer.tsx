@@ -1,28 +1,29 @@
 import {
+  createStyles,
   Grid,
   Hidden,
   Link,
+  makeStyles,
   Paper,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableRow,
+  Theme,
+  Typography,
 } from '@material-ui/core'
 import TableContainer from '@material-ui/core/TableContainer'
-import { ChampionMasteryDTO } from '@waffle-charm/api-interfaces'
 import { getChampionInfoUrl } from '@waffle-charm/champions'
 import {
-  MasteryGridGroup,
+  MasteryCard,
   MasteryLevelToggleGroup,
   MasteryProgress,
 } from '@waffle-charm/mastery'
 import { DelayedSearchInput, LayoutToggleGroup } from '@waffle-charm/material'
 import {
-  MasteryEntity,
+  createSelectFilteredChampion,
   masteryViewerActions,
-  selectAllMastery,
-  selectAllMasteryLevels,
   selectChampionEntities,
   selectChampionVendor,
   selectFilteredChampionIds,
@@ -32,6 +33,8 @@ import {
   selectMasteryEntities,
   selectMasteryLoadingStatus,
   selectSearchQuery,
+  selectSortedMasteryChampionIds,
+  selectTag,
 } from '@waffle-charm/store'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
@@ -40,19 +43,19 @@ import { useDispatch, useSelector } from 'react-redux'
 export const MASTERY_LEVEL = 'masteryLevel'
 export const MASTERY_LAYOUT = 'masteryLayout'
 
-export interface MasteryViewerProps {
-  tag?: string
-}
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface MasteryViewerProps {}
 
 export const MasteryViewer = (
   props: MasteryViewerProps
 ): React.ReactElement => {
   const { t } = useTranslation()
-  const { tag } = props
   const dispatch = useDispatch()
   const layout = useSelector(selectLayout)
-  const masteryLevel = useSelector(selectLevel)
   const searchQuery = useSelector(selectSearchQuery)
+  const level = useSelector(selectLevel)
+  const tag = useSelector(selectTag)
+  const filteredChampionIds = useSelector(selectFilteredChampionIds)
 
   const handleLayoutChange = (
     event: React.MouseEvent<HTMLElement>,
@@ -75,11 +78,32 @@ export const MasteryViewer = (
     [dispatch]
   )
 
+  const title = React.useMemo(() => {
+    if (searchQuery) {
+      return searchQuery
+    }
+
+    if ((level === null || level === undefined) && !tag) {
+      return t('masteryLevelFilterAll')
+    }
+
+    const results = []
+    if (level || level === 0) {
+      results.push(t('mastery') + ' ' + level)
+    }
+
+    if (tag) {
+      results.push(tag)
+    }
+
+    return results.join(' + ')
+  }, [searchQuery, level, tag, t])
+
   return (
     <>
       <Grid container direction="row" justify="space-between">
         <MasteryLevelToggleGroup
-          value={masteryLevel}
+          value={level}
           onChange={handleSetMasteryLevel}
         />
         <DelayedSearchInput
@@ -93,77 +117,127 @@ export const MasteryViewer = (
           <LayoutToggleGroup value={layout} onChange={handleLayoutChange} />
         </Hidden>
       </Grid>
+      <div>
+        <Typography
+          variant="h5"
+          component="h2"
+          style={{ textTransform: 'capitalize' }}
+        >
+          {title}
+        </Typography>
+        <Typography variant="caption" component="p">
+          {t('championWithCount', { count: filteredChampionIds?.length ?? 0 })}
+        </Typography>
+      </div>
       <Hidden only="xs">
-        {layout === 'module' ? (
-          <MasteryGridView tag={tag} masteryLevel={masteryLevel} />
-        ) : (
-          <MasteryListView />
-        )}
+        {layout === 'module' ? <MasteryGridView /> : <MasteryListView />}
       </Hidden>
       <Hidden smUp>
-        <MasteryGridView masteryLevel={masteryLevel} />
+        <MasteryGridView />
       </Hidden>
     </>
   )
 }
 
-export interface MasteryViewProps {
-  masteryLevel: number | string
-  tag?: string
+export interface MasteryViewerItem {
+  championId: string
 }
+export const MasteryGridViewItem = (
+  props: MasteryViewerItem
+): React.ReactElement => {
+  const { championId } = props
+  const { t } = useTranslation()
+  const champion = useSelector(selectChampionEntities)[championId]
+  const mastery = useSelector(selectMasteryEntities)[championId]
+  const championVendor = useSelector(selectChampionVendor)
+  const lolVersion = useSelector(selectLolVersion)
+  const masteryLoadingStatus = useSelector(selectMasteryLoadingStatus)
+  const selectFilteredChampion = createSelectFilteredChampion()
+  const filteredChampion = useSelector((state) =>
+    selectFilteredChampion(state, champion)
+  )
+
+  return (
+    <Grid
+      item
+      lg={4}
+      md={4}
+      sm={6}
+      xs={12}
+      style={{
+        display: filteredChampion ? 'block' : 'none',
+      }}
+    >
+      <MasteryCard
+        mastery={mastery}
+        loading={
+          masteryLoadingStatus === 'loading' ||
+          masteryLoadingStatus === 'not loaded'
+        }
+        version={lolVersion}
+        championVendor={championVendor}
+        champion={champion}
+        hideFullImg
+        data-cy="mastery-card"
+      />
+    </Grid>
+  )
+}
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      display: 'flex',
+      paddingTop: theme.spacing(1),
+      flexGrow: 1,
+    },
+  })
+)
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface MasteryViewProps {}
 
 export const MasteryGridView = (
   props: MasteryViewProps
 ): React.ReactElement => {
-  const championEntities = useSelector(selectChampionEntities)
-  const masteries = useSelector(selectAllMastery)
-  const championVendor = useSelector(selectChampionVendor)
-  const lolVersion = useSelector(selectLolVersion)
-  const allMasteryLevels = useSelector(selectAllMasteryLevels)
-  const { masteryLevel, tag } = props
+  const { t } = useTranslation()
+  const classes = useStyles()
+  const level = useSelector(selectLevel)
+  const sortedChampionIds = useSelector(selectSortedMasteryChampionIds)
 
-  const groupedMasteries: Record<number, ChampionMasteryDTO[]> = React.useMemo(
-    () =>
-      masteries.reduce((accum, current) => {
-        if (accum[current.championLevel]) {
-          accum[current.championLevel].push(current)
-        } else {
-          accum[current.championLevel] = [current]
-        }
-        return accum
-      }, {}),
-    [masteries]
-  )
+  const items = React.useMemo(() => {
+    return sortedChampionIds?.map((championId) => (
+      <MasteryGridViewItem key={championId} championId={championId} />
+    ))
+  }, [sortedChampionIds])
 
   return (
-    <>
-      {allMasteryLevels
-        .sort((a, b) => b - a)
-        .filter((level) => !masteryLevel || level === masteryLevel)
-        .map((level) => {
-          return (
-            <MasteryGridGroup
-              key={level}
-              level={level}
-              masteryGroup={groupedMasteries[level]}
-              tag={tag}
-              championMap={championEntities}
-              version={lolVersion}
-              championVendor={championVendor}
-            ></MasteryGridGroup>
-          )
-        })}
-    </>
+    <div className={classes.root} data-cy={`mastery-grid-group-${level}`}>
+      <Grid container direction="row" spacing={2}>
+        {items}
+      </Grid>
+    </div>
   )
 }
 
-const ChampionTableRow = (props: { championId: string }) => {
+const MasteryListViewItem = (props: MasteryViewerItem) => {
   const { championId } = props
   const champion = useSelector(selectChampionEntities)[championId]
   const mastery = useSelector(selectMasteryEntities)[championId]
   const championVendor = useSelector(selectChampionVendor)
+  const selectFilteredChampion = createSelectFilteredChampion()
+  const filteredChampion = useSelector((state) =>
+    selectFilteredChampion(state, champion)
+  )
+
   return (
-    <TableRow key={championId}>
+    <TableRow
+      key={championId}
+      style={{
+        display: filteredChampion ? 'table-row' : 'none',
+      }}
+    >
       <TableCell>
         <Link
           variant="body2"
@@ -185,7 +259,14 @@ const ChampionTableRow = (props: { championId: string }) => {
 
 export const MasteryListView = (): React.ReactElement => {
   const { t } = useTranslation()
-  const championIds = useSelector(selectFilteredChampionIds)
+
+  const sortedChampionIds = useSelector(selectSortedMasteryChampionIds)
+
+  const items = React.useMemo(() => {
+    return sortedChampionIds?.map((championId) => (
+      <MasteryListViewItem key={championId} championId={championId} />
+    ))
+  }, [sortedChampionIds])
 
   return (
     <TableContainer component={Paper} data-cy="mastery-list">
@@ -198,11 +279,7 @@ export const MasteryListView = (): React.ReactElement => {
             <TableCell>{t('progress')}</TableCell>
           </TableRow>
         </TableHead>
-        <TableBody>
-          {championIds.map((championId) => (
-            <ChampionTableRow key={championId} championId={championId} />
-          ))}
-        </TableBody>
+        <TableBody>{items}</TableBody>
       </Table>
     </TableContainer>
   )

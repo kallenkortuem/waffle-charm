@@ -1,6 +1,6 @@
+import { SearchInput, SearchInputProps } from '../search-input/SearchInput'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { SearchInput, SearchInputProps } from '../search-input/SearchInput'
 
 /* eslint-disable-next-line */
 export interface DelayedSearchInputProps extends SearchInputProps {
@@ -15,7 +15,7 @@ export function DelayedSearchInput(props: DelayedSearchInputProps) {
   React.useEffect(() => {
     const id = setTimeout(() => {
       onSearhQueryChange(query)
-    }, delay ?? 70)
+    }, delay ?? 200)
     return () => clearInterval(id)
   }, [delay, query, onSearhQueryChange])
 

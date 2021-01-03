@@ -25,15 +25,6 @@ export const Mastery = (props: {
   )
   const summonerLoading = useSelector(selectSummonerLoadingStatus)
 
-  const [tag, setTag] = useState('')
-
-  const handleSetTag = (
-    event: React.MouseEvent<HTMLElement>,
-    value: string
-  ) => {
-    setTag(value)
-  }
-
   useEffect(() => {
     if (summoner) {
       dispatch(fetchMastery(summoner?.id))
@@ -51,13 +42,9 @@ export const Mastery = (props: {
           <WelcomeBanner />
         ) : (
           <>
-            <MasteryTotalProgress
-              summonerName={summonerName}
-              onTagChange={handleSetTag}
-              tag={tag}
-            />
+            <MasteryTotalProgress summonerName={summonerName} />
 
-            <MasteryViewer tag={tag} />
+            <MasteryViewer />
           </>
         )}
       </PageContainer>

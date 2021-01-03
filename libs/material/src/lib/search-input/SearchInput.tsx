@@ -79,6 +79,7 @@ export function SearchInput(props: SearchInputProps) {
         <SearchIcon />
       </div>
       <InputBase
+        value={value}
         classes={{
           root: classes.inputRoot,
           input: classes.inputInput,

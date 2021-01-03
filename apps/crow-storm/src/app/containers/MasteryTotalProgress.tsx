@@ -13,15 +13,17 @@ import {
   ChampionEntity,
   createSelectSummonerByName,
   MasteryEntity,
+  masteryViewerActions,
   selectAllChampion,
   selectAllChampionTags,
   selectAllMastery,
   selectSummonerVendor,
+  selectTag,
 } from '@waffle-charm/store'
 import { getSummonerInfoUrl, ProfileAvatar } from '@waffle-charm/summoner'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 const maxPoints = (1800 + 2400) * 5
 
@@ -89,18 +91,18 @@ export const TotalSubheader = (props: {
 
 export interface MasteryTotalProgressProps {
   summonerName: string
-  tag?: string
-  onTagChange: (event: React.MouseEvent<HTMLElement>, tag: string) => void
 }
 
 export const MasteryTotalProgress = (
   props: MasteryTotalProgressProps
 ): React.ReactElement => {
-  const { tag, summonerName, onTagChange } = props
+  const { summonerName } = props
   const { t } = useTranslation()
+  const dispatch = useDispatch()
   const champions = useSelector(selectAllChampion)
   const masteries = useSelector(selectAllMastery)
   const summonerVendor = useSelector(selectSummonerVendor)
+  const tag = useSelector(selectTag)
   const selectSummonerByName = createSelectSummonerByName()
   const summoner = useSelector((state) =>
     selectSummonerByName(state, summonerName)
@@ -130,6 +132,13 @@ export const MasteryTotalProgress = (
     totalStats.totalCappedPoints,
     champions.length * maxPoints
   )
+
+  const handleSetTag = (
+    event: React.MouseEvent<HTMLElement>,
+    value: string
+  ) => {
+    dispatch(masteryViewerActions.setTag(value))
+  }
 
   const loaded = !!(summoner && masteries.length)
 
@@ -191,7 +200,7 @@ export const MasteryTotalProgress = (
           <ChampionRoleFilter
             tag={tag}
             allTags={allTags}
-            onTagChange={onTagChange}
+            onTagChange={handleSetTag}
           />
           <MasteryLinearProgress
             current={filteredTotalStats.totalCappedPoints}

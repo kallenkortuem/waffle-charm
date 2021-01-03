@@ -63,8 +63,8 @@ export const MasteryProgress = (
   const { t } = useTranslation()
   const { mastery } = props
   const progress = getMasteryLevelProgress(
-    mastery?.championPointsUntilNextLevel,
-    mastery?.championPointsSinceLastLevel
+    mastery.championPointsUntilNextLevel,
+    mastery.championPointsSinceLastLevel
   )
 
   const {

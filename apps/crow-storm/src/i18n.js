@@ -19,7 +19,7 @@ export const resources = {
       masteryLevelFilter: 'Champion Mastery Level Filter',
       masteryLevelFilterAll: 'All',
       masteryTable: 'Champion Mastery Table',
-      roleFilter: 'Champion Roles Filter',
+      rolesFilter: 'Champion Roles Filter',
       layout: 'Layout',
       list: 'List view',
       module: 'Module view',

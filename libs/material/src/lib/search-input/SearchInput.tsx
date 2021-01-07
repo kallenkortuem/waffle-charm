@@ -1,92 +1,66 @@
-import {
-  createStyles,
-  fade,
-  InputBase,
-  InputBaseProps,
-  makeStyles,
-  Theme,
-} from '@material-ui/core'
+import IconButton from '@material-ui/core/IconButton'
+import InputBase, { InputBaseProps } from '@material-ui/core/InputBase'
+import Paper from '@material-ui/core/Paper'
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
+import CloseIcon from '@material-ui/icons/Close'
 import SearchIcon from '@material-ui/icons/Search'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    search: {
-      position: 'relative',
-      borderRadius: theme.shape.borderRadius,
-      backgroundColor: fade(theme.palette.common.white, 0.15),
-      '&:hover': {
-        backgroundColor: fade(theme.palette.common.white, 0.25),
-      },
-      marginRight: (props: SearchInputProps) =>
-        props.edge === 'end' || props.edge === 'both'
-          ? theme.spacing(0)
-          : theme.spacing(2),
-      marginLeft: 0,
-      width: '100%',
-      [theme.breakpoints.up('sm')]: {
-        marginLeft: (props: SearchInputProps) =>
-          props.edge === 'start' || props.edge === 'both'
-            ? theme.spacing(0)
-            : theme.spacing(3),
-        width: 'auto',
-      },
-    },
-    searchIcon: {
-      padding: theme.spacing(0, 2),
-      height: '100%',
-      position: 'absolute',
-      pointerEvents: 'none',
+    root: {
+      padding: theme.spacing(0, 0.5),
       display: 'flex',
       alignItems: 'center',
-      justifyContent: 'center',
-    },
-    inputRoot: {
-      color: 'inherit',
-    },
-    inputInput: {
-      padding: theme.spacing(1, 1, 1, 0),
-      // vertical padding + font size from searchIcon
-      paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-      transition: theme.transitions.create('width'),
       width: '100%',
       [theme.breakpoints.up('md')]: {
-        width: '20ch',
+        width: 400,
       },
+    },
+    input: {
+      marginLeft: theme.spacing(1),
+      flex: 1,
+    },
+    iconButton: {
+      padding: theme.spacing(1),
+    },
+    searchIcon: {
+      display: 'flex',
+      padding: theme.spacing(1),
     },
   })
 )
 
-/* eslint-disable-next-line */
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface SearchInputProps extends InputBaseProps {
-  /**
-   * If given, uses a negative margin to counteract the padding on one
-   * side (this is often helpful for aligning the left or right
-   * side of the input with content above or below, without ruining the border
-   * size and shape).
-   */
-  edge?: 'start' | 'end' | 'both' | false
+  onClearSearch?: () => void
 }
 
 export function SearchInput(props: SearchInputProps) {
-  const { value, onChange, edge } = props
+  const { value, onChange, onClearSearch, inputProps } = props
   const classes = useStyles(props)
   const { t } = useTranslation()
+
   return (
-    <div className={classes.search}>
+    <Paper className={classes.root}>
       <div className={classes.searchIcon}>
         <SearchIcon />
       </div>
       <InputBase
         value={value}
-        classes={{
-          root: classes.inputRoot,
-          input: classes.inputInput,
-        }}
+        className={classes.input}
         onChange={onChange}
+        inputProps={inputProps}
       />
-    </div>
+      <IconButton
+        className={classes.iconButton}
+        onClick={onClearSearch}
+        aria-label={t('championInputSearch')}
+      >
+        <CloseIcon />
+      </IconButton>
+    </Paper>
   )
 }
 

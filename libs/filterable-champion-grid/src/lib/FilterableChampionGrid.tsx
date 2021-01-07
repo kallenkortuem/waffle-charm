@@ -142,7 +142,6 @@ export function FilterableChampionGrid(props: FilterableChampionGridProps) {
               inputProps={{ 'aria-label': t('searchPlaceholder') }}
               value={searchQuery}
               onSearhQueryChange={handleSetSearchQuery}
-              edge="start"
             />
             <LayoutToggleGroup value={layout} onChange={handleLayoutChange} />
           </ChampionGridFilter>

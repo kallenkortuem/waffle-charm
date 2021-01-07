@@ -53,6 +53,8 @@ export const resources = {
       championGridFilterSortByMastery: 'Mastery',
       championGridFilterSortByFavorite: 'Favorite',
       championGridFilterSortByDislike: 'Dislike',
+      championSearchFilter: 'Search Champion',
+      championInputSearch: 'Clear Input',
     },
   },
 }

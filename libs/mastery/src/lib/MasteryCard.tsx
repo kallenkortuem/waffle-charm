@@ -1,11 +1,4 @@
-import {
-  CardMedia,
-  Collapse,
-  createStyles,
-  Link,
-  makeStyles,
-  Theme,
-} from '@material-ui/core'
+import { createStyles, Link, makeStyles, Theme } from '@material-ui/core'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import CardHeader from '@material-ui/core/CardHeader'
@@ -15,11 +8,7 @@ import {
   ChampionMasteryDTO,
   Vendors,
 } from '@waffle-charm/api-interfaces'
-import {
-  ChampionAvatar,
-  getChampionInfoUrl,
-  getChampionSplashImageSrc,
-} from '@waffle-charm/champions'
+import { ChampionAvatar, getChampionInfoUrl } from '@waffle-charm/champions'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { MasteryProgress } from './MasteryProgress'
@@ -60,15 +49,7 @@ const useStyles = makeStyles((theme: Theme) =>
 )
 
 export function MasteryCard(props: MasteryCardProps): React.ReactElement {
-  const {
-    loading,
-    champion,
-    mastery,
-    version,
-    championVendor,
-    hideFullImg,
-    compact,
-  } = props
+  const { loading, champion, mastery, version, championVendor } = props
   const { t } = useTranslation()
   const classes = useStyles(props)
 
@@ -111,12 +92,6 @@ export function MasteryCard(props: MasteryCardProps): React.ReactElement {
           )
         }
       />
-      <Collapse in={!hideFullImg}>
-        <CardMedia
-          className={classes.media}
-          image={getChampionSplashImageSrc(champion)}
-        ></CardMedia>
-      </Collapse>
       <CardContent className={classes.content}>
         {mastery ? <MasteryProgress mastery={mastery} /> : null}
       </CardContent>

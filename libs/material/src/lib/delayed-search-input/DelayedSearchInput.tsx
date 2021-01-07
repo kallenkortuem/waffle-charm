@@ -23,12 +23,16 @@ export function DelayedSearchInput(props: DelayedSearchInputProps) {
     setQuery(event.target.value || '')
   }
 
+  const handleClearQuery = () => {
+    setQuery('')
+  }
+
   return (
     <SearchInput
-      inputProps={{ 'aria-label': t('searchPlaceholder') }}
       {...otherProps}
       value={query}
       onChange={handleSetQuery}
+      onClearSearch={handleClearQuery}
     />
   )
 }

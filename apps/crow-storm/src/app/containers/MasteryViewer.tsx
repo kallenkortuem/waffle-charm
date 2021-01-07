@@ -43,6 +43,15 @@ import { useDispatch, useSelector } from 'react-redux'
 export const MASTERY_LEVEL = 'masteryLevel'
 export const MASTERY_LAYOUT = 'masteryLayout'
 
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {},
+    filterItem: {
+      padding: theme.spacing(1, 0),
+    },
+  })
+)
+
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface MasteryViewerProps {}
 
@@ -51,6 +60,7 @@ export const MasteryViewer = (
 ): React.ReactElement => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
+  const classes = useStyles()
   const layout = useSelector(selectLayout)
   const searchQuery = useSelector(selectSearchQuery)
   const level = useSelector(selectLevel)
@@ -101,21 +111,33 @@ export const MasteryViewer = (
 
   return (
     <>
-      <Grid container direction="row" justify="space-between">
+      <Grid
+        container
+        direction="row"
+        justify="space-between"
+        alignItems="center"
+      >
         <MasteryLevelToggleGroup
+          className={classes.filterItem}
           value={level}
           onChange={handleSetMasteryLevel}
         />
+        <Hidden only="xs">
+          <LayoutToggleGroup
+            className={classes.filterItem}
+            value={layout}
+            onChange={handleLayoutChange}
+          />
+        </Hidden>
         <DelayedSearchInput
-          inputProps={{ 'aria-label': t('searchPlaceholder') }}
+          inputProps={{
+            'aria-label': t('championSearchFilter'),
+            placeholder: t('championSearchFilter'),
+          }}
           value={searchQuery}
           delay={300}
           onSearhQueryChange={handleSetSearchQuery}
-          edge={'start'}
         />
-        <Hidden only="xs">
-          <LayoutToggleGroup value={layout} onChange={handleLayoutChange} />
-        </Hidden>
       </Grid>
       <div>
         <Typography
@@ -183,7 +205,7 @@ export const MasteryGridViewItem = (
   )
 }
 
-const useStyles = makeStyles((theme: Theme) =>
+const useMasteryGridViewStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       flexDirection: 'row',
@@ -201,7 +223,7 @@ export const MasteryGridView = (
   props: MasteryViewProps
 ): React.ReactElement => {
   const { t } = useTranslation()
-  const classes = useStyles()
+  const classes = useMasteryGridViewStyles()
   const level = useSelector(selectLevel)
   const sortedChampionIds = useSelector(selectSortedMasteryChampionIds)
 

@@ -2,7 +2,6 @@ import {
   CardActions,
   Collapse,
   createStyles,
-  IconButton,
   Link,
   makeStyles,
   Theme,
@@ -10,7 +9,6 @@ import {
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import CardHeader from '@material-ui/core/CardHeader'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import { Skeleton } from '@material-ui/lab'
 import {
   ChampionData,
@@ -18,7 +16,7 @@ import {
   Vendors,
 } from '@waffle-charm/api-interfaces'
 import { ChampionAvatar, getChampionInfoUrl } from '@waffle-charm/champions'
-import clsx from 'clsx'
+import { ExpandButton } from '@waffle-charm/material'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { MasteryProgress } from './MasteryProgress'
@@ -127,16 +125,10 @@ export function MasteryCard(props: MasteryCardProps): React.ReactElement {
       />
       <CardActions disableSpacing>
         {actionCTAs}
-        <IconButton
-          className={clsx(classes.expand, {
-            [classes.expandOpen]: expanded,
-          })}
+        <ExpandButton
+          expanded={expanded}
           onClick={handleExpandClick}
-          aria-expanded={expanded}
-          aria-label="show more"
-        >
-          <ExpandMoreIcon />
-        </IconButton>
+        ></ExpandButton>
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent className={classes.content}>

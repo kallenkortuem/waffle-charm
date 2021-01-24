@@ -1,3 +1,4 @@
+import Typography from '@material-ui/core/Typography'
 import { PageContainer } from '@waffle-charm/material'
 import {
   createSelectSummonerByName,
@@ -34,10 +35,6 @@ export const Mastery = (props: {
   return (
     <main>
       <PageContainer maxWidth="md">
-        {/* <Typography variant="h4" component="h1">
-          {summoner?.name}
-        </Typography> */}
-
         {summonerLoading === 'not loaded' || summonerLoading === 'error' ? (
           <WelcomeBanner />
         ) : (

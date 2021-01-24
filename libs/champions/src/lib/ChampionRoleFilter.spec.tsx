@@ -5,19 +5,8 @@ import ChampionRoleFilter from './ChampionRoleFilter'
 
 enablei18nMocks()
 describe('ChampionRoleFilter', () => {
-  const allTags = ['Tank', 'Fighter', 'Support', 'Assasin', 'Mage', 'Marksman']
-  const tag = 'Assasin'
-  const handleSetTag = () => {
-    return null
-  }
   it('should render successfully', () => {
-    const { baseElement } = render(
-      <ChampionRoleFilter
-        tag={tag}
-        allTags={allTags}
-        onTagChange={handleSetTag}
-      />
-    )
+    const { baseElement } = render(<ChampionRoleFilter />)
     expect(baseElement).toBeTruthy()
   })
 })

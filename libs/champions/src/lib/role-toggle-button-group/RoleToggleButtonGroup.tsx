@@ -8,7 +8,7 @@ export const roleOptions = ['top', 'jungle', 'mid', 'bottom', 'support']
 /* eslint-disable-next-line */
 export interface RoleToggleButtonGroupProps {
   value?: string
-  onChange: (e: React.MouseEvent<HTMLInputElement>, value: any) => void
+  onChange?: (e: React.MouseEvent<HTMLInputElement>, value: any) => void
 }
 
 export function RoleToggleButtonGroup(props: RoleToggleButtonGroupProps) {

@@ -1,11 +1,16 @@
-import React from 'react'
 import { render } from '@testing-library/react'
-
+import { store } from '@waffle-charm/store'
+import React from 'react'
+import { Provider } from 'react-redux'
 import MasteryViewerLevelSelect from './MasteryViewerLevelSelect'
 
 describe('MasteryViewerLevelSelect', () => {
   it('should render successfully', () => {
-    const { baseElement } = render(<MasteryViewerLevelSelect />)
+    const { baseElement } = render(
+      <Provider store={store}>
+        <MasteryViewerLevelSelect />
+      </Provider>
+    )
     expect(baseElement).toBeTruthy()
   })
 })

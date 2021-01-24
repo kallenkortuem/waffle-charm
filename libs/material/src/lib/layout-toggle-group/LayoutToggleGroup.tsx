@@ -90,16 +90,10 @@ export function LayoutToggleGroup(props: LayoutToggleGroupProps) {
   }
   return (
     <>
-      <StyledToggleButtonGroup
-        size="small"
-        aria-label={t('layout')}
-        exclusive
-        onChange={handleSortByChange}
-      ></StyledToggleButtonGroup>
       {(isFavoriteFeatureEnabled || isBansFeatureEnabled) && (
         <StyledToggleButtonGroup
           size="small"
-          aria-label={t('layout')}
+          aria-label={t('championGridFilterSortOrder')}
           exclusive
           value={sortBy}
           onChange={handleSortByChange}
@@ -108,7 +102,6 @@ export function LayoutToggleGroup(props: LayoutToggleGroupProps) {
             <ToggleButton
               value={MasteryViewerSortOptions.favorite}
               aria-label={t('module')}
-              data-cy="layout-selector-module"
             >
               <Tooltip title={t('module')}>
                 <FavoriteIcon

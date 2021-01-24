@@ -3,18 +3,13 @@ import React from 'react'
 import { Provider } from 'react-redux'
 import { store } from '@waffle-charm/store'
 import MasteryTotalProgress from './MasteryTotalProgress'
+import '../../i18n'
 
 describe('MasteryTotalProgress', () => {
-  const onTagChange = (event: React.MouseEvent<HTMLElement>, tag: string) => {
-    return null
-  }
   it('should render successfully', () => {
     const { baseElement } = render(
       <Provider store={store}>
-        <MasteryTotalProgress
-          summonerName="fiddlesucx"
-          onTagChange={onTagChange}
-        />
+        <MasteryTotalProgress summonerName="fiddlesucx" />
       </Provider>
     )
     expect(baseElement).toBeTruthy()

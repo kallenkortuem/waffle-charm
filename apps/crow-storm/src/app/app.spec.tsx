@@ -26,16 +26,4 @@ describe('App', () => {
 
     expect(baseElement).toBeTruthy()
   })
-
-  it('should have a greeting as the title', () => {
-    const { getByText } = render(
-      <BrowserRouter>
-        <Provider store={store}>
-          <App />
-        </Provider>
-      </BrowserRouter>
-    )
-
-    expect(getByText('Champion Mastery')).toBeTruthy()
-  })
 })

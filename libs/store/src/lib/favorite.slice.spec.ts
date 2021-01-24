@@ -9,6 +9,7 @@ describe('favorite reducer', () => {
     const expected = favoriteAdapter.getInitialState({
       loadingStatus: 'not loaded',
       error: null,
+      featureEnabled: false,
     })
 
     expect(favoriteReducer(undefined, { type: '' })).toEqual(expected)
@@ -22,6 +23,7 @@ describe('favorite reducer', () => {
         loadingStatus: 'loading',
         error: null,
         entities: {},
+        featureEnabled: false,
       })
     )
 
@@ -35,6 +37,7 @@ describe('favorite reducer', () => {
         loadingStatus: 'loaded',
         error: null,
         entities: { 1: { id: 1 } },
+        featureEnabled: false,
       })
     )
 
@@ -48,6 +51,7 @@ describe('favorite reducer', () => {
         loadingStatus: 'error',
         error: 'Uh oh',
         entities: { 1: { id: 1 } },
+        featureEnabled: false,
       })
     )
   })

@@ -27,9 +27,9 @@ export function MasteryViewerTagSelect(
       <Select
         id="mastery-tag-select"
         variant="standard"
-        value={tag}
+        value={tag || ''}
         onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
-          dispatch(masteryViewerActions.setTag(event.target.value))
+          dispatch(masteryViewerActions.setTag(event.target.value || ''))
         }}
       >
         {allTags.map((x) => {

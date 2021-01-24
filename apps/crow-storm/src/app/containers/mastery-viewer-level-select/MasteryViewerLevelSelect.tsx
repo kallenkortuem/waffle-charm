@@ -14,7 +14,7 @@ export function MasteryViewerLevelSelect(
   const level = useSelector(selectLevel)
   const { t } = useTranslation()
   const handleOnChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    dispatch(masteryViewerActions.setLevel(parseInt(event.target.value)))
+    dispatch(masteryViewerActions.setLevel(parseInt(event.target.value || '')))
   }
 
   const items = [7, 6, 5, 4, 3, 2, 1, 0].map((level) => (
@@ -31,7 +31,7 @@ export function MasteryViewerLevelSelect(
       <Select
         id="mastery-level-select"
         variant="standard"
-        value={level}
+        value={level || ''}
         onChange={handleOnChange}
       >
         {items}

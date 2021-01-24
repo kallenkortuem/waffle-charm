@@ -98,6 +98,7 @@ export const masteryViewerSlice = createSlice({
       state.level = null
       state.tag = null
       state.searchQuery = ''
+      state.showAll = false
     },
   },
 })

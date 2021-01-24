@@ -1,12 +1,10 @@
-import Typography from '@material-ui/core/Typography'
-import { Skeleton } from '@material-ui/lab'
 import { PageContainer } from '@waffle-charm/material'
 import {
   createSelectSummonerByName,
   fetchMastery,
   selectSummonerLoadingStatus,
 } from '@waffle-charm/store'
-import React, { lazy, Suspense, useEffect, useState } from 'react'
+import React, { lazy, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { WelcomeBanner } from '../components/WelcomeBanner'
@@ -22,7 +20,6 @@ export const Mastery = (props: {
   const dispatch = useDispatch()
   const { t } = useTranslation()
   const selectSummonerByName = createSelectSummonerByName()
-  const [showTotal, setShowTotal] = useState(true)
   const summoner = useSelector((state) =>
     selectSummonerByName(state, summonerName)
   )
@@ -45,11 +42,7 @@ export const Mastery = (props: {
           <WelcomeBanner />
         ) : (
           <>
-            <Suspense fallback={<Skeleton variant="rect"></Skeleton>}>
-              {showTotal ? (
-                <MasteryTotalProgress summonerName={summonerName} />
-              ) : null}
-            </Suspense>
+            <MasteryTotalProgress summonerName={summonerName} />
 
             <MasteryViewer />
           </>

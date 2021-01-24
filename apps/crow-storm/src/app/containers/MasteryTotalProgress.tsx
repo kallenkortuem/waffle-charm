@@ -27,21 +27,6 @@ import { useSelector } from 'react-redux'
 
 const maxPoints = (1800 + 2400) * 5
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    expand: {
-      transform: 'rotate(0deg)',
-      marginLeft: 'auto',
-      transition: theme.transitions.create('transform', {
-        duration: theme.transitions.duration.shortest,
-      }),
-    },
-    expandOpen: {
-      transform: 'rotate(180deg)',
-    },
-  })
-)
-
 function getProgress(current: number, total: number) {
   return Math.floor((current / total) * 100)
 }

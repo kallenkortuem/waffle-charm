@@ -1,9 +1,15 @@
 import {
   Card,
+  CardActions,
   CardContent,
   CardHeader,
+  Collapse,
+  createStyles,
   Hidden,
+  IconButton,
   Link,
+  makeStyles,
+  Theme,
   Typography,
 } from '@material-ui/core'
 import Skeleton from '@material-ui/lab/Skeleton'
@@ -24,8 +30,25 @@ import { getSummonerInfoUrl, ProfileAvatar } from '@waffle-charm/summoner'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import clsx from 'clsx'
 
 const maxPoints = (1800 + 2400) * 5
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    expand: {
+      transform: 'rotate(0deg)',
+      marginLeft: 'auto',
+      transition: theme.transitions.create('transform', {
+        duration: theme.transitions.duration.shortest,
+      }),
+    },
+    expandOpen: {
+      transform: 'rotate(180deg)',
+    },
+  })
+)
 
 function getProgress(current: number, total: number) {
   return Math.floor((current / total) * 100)
@@ -98,7 +121,8 @@ export const MasteryTotalProgress = (
 ): React.ReactElement => {
   const { summonerName } = props
   const { t } = useTranslation()
-  const dispatch = useDispatch()
+  const classes = useStyles()
+
   const champions = useSelector(selectAllChampion)
   const masteries = useSelector(selectAllMastery)
   const summonerVendor = useSelector(selectSummonerVendor)
@@ -107,7 +131,7 @@ export const MasteryTotalProgress = (
   const summoner = useSelector((state) =>
     selectSummonerByName(state, summonerName)
   )
-  const allTags = useSelector(selectAllChampionTags)
+
   const filteredChampions = React.useMemo(
     () => champions.filter((champion) => !tag || champion.tags.includes(tag)),
     [champions, tag]
@@ -133,11 +157,10 @@ export const MasteryTotalProgress = (
     champions.length * maxPoints
   )
 
-  const handleSetTag = (
-    event: React.MouseEvent<HTMLElement>,
-    value: string
-  ) => {
-    dispatch(masteryViewerActions.setTag(value))
+  const [expanded, setExpanded] = React.useState(false)
+
+  const handleExpandClick = () => {
+    setExpanded(!expanded)
   }
 
   const loaded = !!(summoner && masteries.length)
@@ -184,35 +207,45 @@ export const MasteryTotalProgress = (
           </>
         }
       />
-      <CardContent>
-        <Hidden smUp>
-          <MasteryLinearProgress
-            current={totalStats.totalCappedPoints}
-            total={champions.length * maxPoints}
-            label={t('percentMasteryProgress', {
-              percent: pointsProgress ?? 0,
-              level: 5,
-            })}
-            progress={pointsProgress}
-          />
-        </Hidden>
-        <Hidden only="xs">
-          <ChampionRoleFilter
-            tag={tag}
-            allTags={allTags}
-            onTagChange={handleSetTag}
-          />
-          <MasteryLinearProgress
-            current={filteredTotalStats.totalCappedPoints}
-            total={filteredChampions.length * maxPoints}
-            label={t('percentMasteryProgress', {
-              percent: filteredPointsProgress ?? 0,
-              level: 5,
-            })}
-            progress={filteredPointsProgress}
-          />
-        </Hidden>
-      </CardContent>
+      <CardActions>
+        <IconButton
+          className={clsx(classes.expand, {
+            [classes.expandOpen]: expanded,
+          })}
+          onClick={handleExpandClick}
+          aria-expanded={expanded}
+          aria-label="show more"
+        >
+          <ExpandMoreIcon />
+        </IconButton>
+      </CardActions>
+      <Collapse in={expanded} timeout="auto" unmountOnExit>
+        <CardContent>
+          <Hidden smUp>
+            <MasteryLinearProgress
+              current={totalStats.totalCappedPoints}
+              total={champions.length * maxPoints}
+              label={t('percentMasteryProgress', {
+                percent: pointsProgress ?? 0,
+                level: 5,
+              })}
+              progress={pointsProgress}
+            />
+          </Hidden>
+          <Hidden only="xs">
+            <ChampionRoleFilter />
+            <MasteryLinearProgress
+              current={filteredTotalStats.totalCappedPoints}
+              total={filteredChampions.length * maxPoints}
+              label={t('percentMasteryProgress', {
+                percent: filteredPointsProgress ?? 0,
+                level: 5,
+              })}
+              progress={filteredPointsProgress}
+            />
+          </Hidden>
+        </CardContent>
+      </Collapse>
     </Card>
   )
 }

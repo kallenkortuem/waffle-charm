@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next'
 /* eslint-disable-next-line */
 export interface DelayedSearchInputProps extends SearchInputProps {
   delay?: number
+
   onSearhQueryChange: (query: string) => void
 }
 
@@ -23,18 +24,7 @@ export function DelayedSearchInput(props: DelayedSearchInputProps) {
     setQuery(event.target.value || '')
   }
 
-  const handleClearQuery = () => {
-    setQuery('')
-  }
-
-  return (
-    <SearchInput
-      {...otherProps}
-      value={query}
-      onChange={handleSetQuery}
-      onClearSearch={handleClearQuery}
-    />
-  )
+  return <SearchInput {...otherProps} value={query} onChange={handleSetQuery} />
 }
 
 export default DelayedSearchInput

@@ -11,8 +11,10 @@ import ToggleButton from '@material-ui/lab/ToggleButton'
 import ToggleButtonGroup, {
   ToggleButtonGroupProps,
 } from '@material-ui/lab/ToggleButtonGroup'
+import { masteryViewerActions, selectLevel } from '@waffle-charm/store'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
+import { useDispatch, useSelector } from 'react-redux'
 
 const filterIcons = {
   7: <Filter7Icon />,
@@ -30,6 +32,15 @@ export interface MasteryLevelToggleGroupProps extends ToggleButtonGroupProps {}
 
 export function MasteryLevelToggleGroup(props: MasteryLevelToggleGroupProps) {
   const { t } = useTranslation()
+  const dispatch = useDispatch()
+  const level = useSelector(selectLevel)
+  const handleSetMasteryLevel = (
+    event: React.MouseEvent<HTMLElement>,
+    value: number
+  ) => {
+    dispatch(masteryViewerActions.setLevel(value))
+  }
+
   const masterLevelButtons = React.useMemo(
     () =>
       [7, 6, 5, 4, 3, 2, 1, 0].map((level) => {
@@ -54,7 +65,8 @@ export function MasteryLevelToggleGroup(props: MasteryLevelToggleGroupProps) {
       size="small"
       exclusive
       aria-label={t('masteryLevelFilter')}
-      {...props}
+      value={level}
+      onChange={handleSetMasteryLevel}
     >
       {masterLevelButtons}
     </ToggleButtonGroup>

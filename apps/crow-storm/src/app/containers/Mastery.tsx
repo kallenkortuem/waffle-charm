@@ -1,17 +1,19 @@
 import Typography from '@material-ui/core/Typography'
+import { Skeleton } from '@material-ui/lab'
 import { PageContainer } from '@waffle-charm/material'
 import {
   createSelectSummonerByName,
   fetchMastery,
   selectSummonerLoadingStatus,
 } from '@waffle-charm/store'
-import React, { useEffect, useState } from 'react'
+import React, { lazy, Suspense, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { WelcomeBanner } from '../components/WelcomeBanner'
-import { MasteryTotalProgress } from '../containers/MasteryTotalProgress'
-
-const MasteryViewer = React.lazy(() => import('../containers/MasteryViewer'))
+import MasteryViewer from '../containers/MasteryViewer'
+const MasteryTotalProgress = lazy(
+  () => import('../containers/MasteryTotalProgress')
+)
 
 export const Mastery = (props: {
   summonerName: string
@@ -20,6 +22,7 @@ export const Mastery = (props: {
   const dispatch = useDispatch()
   const { t } = useTranslation()
   const selectSummonerByName = createSelectSummonerByName()
+  const [showTotal, setShowTotal] = useState(true)
   const summoner = useSelector((state) =>
     selectSummonerByName(state, summonerName)
   )
@@ -34,15 +37,19 @@ export const Mastery = (props: {
   return (
     <main>
       <PageContainer maxWidth="md">
-        <Typography variant="h4" component="h1">
-          {t('championMastery')}
-        </Typography>
+        {/* <Typography variant="h4" component="h1">
+          {summoner?.name}
+        </Typography> */}
 
         {summonerLoading === 'not loaded' || summonerLoading === 'error' ? (
           <WelcomeBanner />
         ) : (
           <>
-            <MasteryTotalProgress summonerName={summonerName} />
+            <Suspense fallback={<Skeleton variant="rect"></Skeleton>}>
+              {showTotal ? (
+                <MasteryTotalProgress summonerName={summonerName} />
+              ) : null}
+            </Suspense>
 
             <MasteryViewer />
           </>

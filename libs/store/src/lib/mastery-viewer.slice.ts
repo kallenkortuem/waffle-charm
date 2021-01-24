@@ -1,10 +1,12 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { BansEntity, selectBansEntities } from './bans.slice'
 import {
   ChampionEntity,
   selectAllChampion,
   selectChampionIds,
   selectChampionLoadingStatus,
 } from './champion.slice'
+import { FavoriteEntity, selectFavoriteEntities } from './favorite.slice'
 import {
   defaultMastery,
   MasteryEntity,
@@ -18,11 +20,33 @@ export const MASTERY_VIEWER_FEATURE_KEY = 'masteryViewer'
 const MASTERY_LEVEL = 'masteryLevel'
 const MASTERY_LAYOUT = 'masteryLayout'
 
+export type MasteryViewerSortOptions =
+  | 'mastery'
+  | 'bans'
+  | 'favorite'
+  | 'alphabetical'
+
+export const MasteryViewerSortOptions = {
+  mastery: 'mastery' as MasteryViewerSortOptions,
+  bans: 'bans' as MasteryViewerSortOptions,
+  favorite: 'favorite' as MasteryViewerSortOptions,
+  alphabetical: 'alphabetical' as MasteryViewerSortOptions,
+}
+
+export type MasteryViewerLayoutOption = 'module' | 'list' | 'compact'
+export const MasteryViewerLayoutOption = {
+  module: 'module' as MasteryViewerLayoutOption,
+  list: 'list' as MasteryViewerLayoutOption,
+  compact: 'compact' as MasteryViewerLayoutOption,
+}
+
 export interface MasteryViewerState {
   searchQuery: string
   tag?: string
   level?: number
-  layout: 'module' | 'list'
+  layout: MasteryViewerLayoutOption
+  sortBy: MasteryViewerSortOptions
+  showAll: boolean
 }
 
 export const initialMasteryViewerState: MasteryViewerState = {
@@ -31,6 +55,8 @@ export const initialMasteryViewerState: MasteryViewerState = {
   level: JSON.parse(localStorage.getItem(MASTERY_LEVEL) || '1'),
   layout:
     (localStorage.getItem(MASTERY_LAYOUT) as 'module' | 'list') ?? 'module',
+  sortBy: 'alphabetical',
+  showAll: false,
 }
 
 export const masteryViewerSlice = createSlice({
@@ -39,20 +65,39 @@ export const masteryViewerSlice = createSlice({
   reducers: {
     setSearchQuery(state: MasteryViewerState, action: PayloadAction<string>) {
       state.searchQuery = action.payload
+      state.showAll = false
     },
     setTag(state: MasteryViewerState, action: PayloadAction<string>) {
       state.tag = action.payload
+      state.showAll = false
     },
     setLevel(state: MasteryViewerState, action: PayloadAction<number>) {
       state.level = action.payload
+      state.showAll = false
       localStorage.setItem(MASTERY_LEVEL, JSON.stringify(action.payload))
     },
     setLayout(
       state: MasteryViewerState,
-      action: PayloadAction<'list' | 'module'>
+      action: PayloadAction<MasteryViewerLayoutOption>
     ) {
       state.layout = action.payload
+      state.showAll = false
       localStorage.setItem(MASTERY_LAYOUT, action.payload ?? 'module')
+    },
+    setSortBy(
+      state: MasteryViewerState,
+      action: PayloadAction<MasteryViewerSortOptions>
+    ) {
+      state.sortBy = action.payload
+      state.showAll = false
+    },
+    showAll(state: MasteryViewerState) {
+      state.showAll = true
+    },
+    resetFilters(state: MasteryViewerState) {
+      state.level = null
+      state.tag = null
+      state.searchQuery = ''
     },
   },
 })
@@ -101,6 +146,21 @@ export const selectLayout = createSelector(
   getMasteryViewerState,
   (state) => state.layout
 )
+export const selectSortBy = createSelector(
+  getMasteryViewerState,
+  (state) => state.sortBy
+)
+export const selectShowAll = createSelector(
+  getMasteryViewerState,
+  (state) => state.showAll
+)
+export const selectHasActiveFilters = createSelector(
+  getMasteryViewerState,
+  (state) => {
+    const { level, tag, searchQuery } = state
+    return tag || searchQuery || level || level === 0
+  }
+)
 
 const filterChampion = (
   champion: ChampionEntity,
@@ -108,19 +168,19 @@ const filterChampion = (
   level?: number,
   searchQueryExp?: RegExp,
   tag?: string
-) =>
-  //
-  (!searchQueryExp &&
-    // tag match as a last resort
-    (level === null ||
-      level === undefined ||
-      (masteryEntities[champion.key] ?? defaultMastery).championLevel ===
-        level) &&
-    (!tag || champion.tags.includes(tag))) ||
-  // query match
-  searchQueryExp?.test(champion.name)
+) => {
+  const levelFilter = () =>
+    level === null ||
+    level === undefined ||
+    (masteryEntities[champion.key] ?? defaultMastery).championLevel === level
 
-const sortChampion = (masteryEntities: Record<string, MasteryEntity>) => (
+  const tagFilter = () => !tag || champion.tags.includes(tag)
+  const searchFilter = () =>
+    !searchQueryExp || searchQueryExp?.test(champion.name)
+  return levelFilter() && tagFilter() && searchFilter()
+}
+
+const sortByMastery = (masteryEntities: Record<string, MasteryEntity>) => (
   championAKey: string,
   championBKey: string
 ) => {
@@ -137,11 +197,61 @@ const sortChampion = (masteryEntities: Record<string, MasteryEntity>) => (
   return championB.championLevel - championA.championLevel
 }
 
+const sortByFavorite = (favoriteEntities: Record<string, FavoriteEntity>) => (
+  championAKey: string,
+  championBKey: string
+) => {
+  const favoriteA = !!favoriteEntities[championAKey]
+  const favoriteB = !!favoriteEntities[championBKey]
+
+  if (favoriteA === favoriteB) {
+    return 0
+  }
+  return favoriteA ? -1 : 1
+}
+
+const sortByBans = (bansEntities: Record<string, BansEntity>) => (
+  championAKey: string,
+  championBKey: string
+) => {
+  const banA = !!bansEntities[championAKey]
+  const banB = !!bansEntities[championBKey]
+
+  if (banA === banB) {
+    return 0
+  }
+  return banA ? -1 : 1
+}
+
 export const selectSortedMasteryChampionIds = createSelector(
   selectChampionIds,
   selectMasteryEntities,
-  (championIds: string[], masteryEntities: Record<string, MasteryEntity>) => {
-    return [...championIds].sort(sortChampion(masteryEntities))
+  selectSortBy,
+  selectBansEntities,
+  selectFavoriteEntities,
+  (
+    championIds: string[],
+    masteryEntities: Record<string, MasteryEntity>,
+    sortBy: MasteryViewerSortOptions,
+    bansEntities: Record<string, BansEntity>,
+    favoriteEntities: Record<string, FavoriteEntity>
+  ) => {
+    let sortByFn: (a, b) => 0 | -1 | 1 | number
+    switch (sortBy) {
+      case 'bans':
+        sortByFn = sortByBans(bansEntities)
+        break
+      case 'favorite':
+        sortByFn = sortByFavorite(favoriteEntities)
+        break
+      case 'mastery':
+        sortByFn = sortByMastery(masteryEntities)
+        break
+      case 'alphabetical':
+      default:
+        sortByFn = (a, b) => 0
+    }
+    return [...championIds].sort(sortByFn)
   }
 )
 
@@ -151,12 +261,18 @@ export const selectSortedMasteryChampionIds = createSelector(
 export const selectFilteredChampionIds = createSelector(
   selectAllChampion,
   selectMasteryEntities,
+  selectSortBy,
+  selectBansEntities,
+  selectFavoriteEntities,
   selectLevel,
   selectSearchQuery,
   selectTag,
   (
     allChampions: ChampionEntity[],
     masteryEntities: Record<string, MasteryEntity>,
+    sortBy: MasteryViewerSortOptions,
+    bansEntities: Record<string, BansEntity>,
+    favoriteEntities: Record<string, FavoriteEntity>,
     level?: number,
     searchQuery?: string,
     tag?: string
@@ -177,9 +293,42 @@ export const selectFilteredChampionIds = createSelector(
       }
     })
 
-    const sortedResults = championIds.sort(sortChampion(masteryEntities))
+    let sortByFn: (a, b) => 0 | -1 | 1 | number
+    switch (sortBy) {
+      case 'bans':
+        sortByFn = sortByBans(bansEntities)
+        break
+      case 'favorite':
+        sortByFn = sortByFavorite(favoriteEntities)
+        break
+      case 'mastery':
+        sortByFn = sortByMastery(masteryEntities)
+        break
+      case 'alphabetical':
+      default:
+        sortByFn = (a, b) => 0
+    }
+
+    const sortedResults = championIds.sort(sortByFn)
 
     return sortedResults
+  }
+)
+
+export const selectVisibleChampionIds = createSelector(
+  selectFilteredChampionIds,
+  selectShowAll,
+  selectLayout,
+  (championIds, showAll, layout) => {
+    let take = 0
+    if (layout === 'compact') {
+      take = 35
+    } else if (layout === 'module') {
+      take = 12
+    } else if (layout === 'list') {
+      take = 25
+    }
+    return showAll ? championIds : championIds.slice(0, take)
   }
 )
 

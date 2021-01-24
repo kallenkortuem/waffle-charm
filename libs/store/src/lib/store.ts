@@ -3,7 +3,9 @@ import { composeWithDevTools } from 'redux-devtools-extension'
 import { PersistConfig, persistReducer, persistStore } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 import thunk from 'redux-thunk'
+import { bansReducer, BANS_FEATURE_KEY } from './bans.slice'
 import { championReducer, CHAMPION_FEATURE_KEY } from './champion.slice'
+import { favoriteReducer, FAVORITE_FEATURE_KEY } from './favorite.slice'
 import { lolVersionReducer, LOL_VERSION_FEATURE_KEY } from './lol-version.slice'
 import {
   masteryViewerReducer,
@@ -20,12 +22,14 @@ const rootReducer = combineReducers({
   [LOL_VERSION_FEATURE_KEY]: lolVersionReducer,
   [SETTINGS_FEATURE_KEY]: settingsReducer,
   [MASTERY_VIEWER_FEATURE_KEY]: masteryViewerReducer,
+  [BANS_FEATURE_KEY]: bansReducer,
+  [FAVORITE_FEATURE_KEY]: favoriteReducer,
 })
 
 const persistConfig: PersistConfig<any> = {
   key: 'root',
   storage,
-  whitelist: [SETTINGS_FEATURE_KEY],
+  whitelist: [SETTINGS_FEATURE_KEY, BANS_FEATURE_KEY, FAVORITE_FEATURE_KEY],
   version: 1,
 }
 

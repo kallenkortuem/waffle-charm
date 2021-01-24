@@ -7,7 +7,8 @@ import { useTranslation } from 'react-i18next'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: {
+    root: {},
+    icon: {
       transform: 'rotate(0deg)',
       marginLeft: 'auto',
       transition: theme.transitions.create('transform', {
@@ -23,23 +24,24 @@ const useStyles = makeStyles((theme: Theme) =>
 /* eslint-disable-next-line */
 export interface ExpandButtonProps {
   expanded?: boolean
+  className?: string
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void
 }
 
 export function ExpandButton(props: ExpandButtonProps) {
-  const { expanded, onClick } = props
+  const { expanded, className, onClick } = props
   const classes = useStyles()
   const { t } = useTranslation()
   return (
     <IconButton
-      className={clsx(classes.root, {
-        [classes.expandOpen]: expanded,
-      })}
+      className={clsx(classes.root, className)}
       onClick={onClick}
       aria-expanded={expanded}
       aria-label={t('expandIconButton')}
     >
-      <ExpandMoreIcon />
+      <ExpandMoreIcon
+        className={clsx(classes.icon, { [classes.expandOpen]: expanded })}
+      />
     </IconButton>
   )
 }

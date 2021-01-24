@@ -1,27 +1,21 @@
 import {
   Card,
-  CardActions,
   CardContent,
   CardHeader,
-  Collapse,
   createStyles,
   Hidden,
-  IconButton,
   Link,
   makeStyles,
   Theme,
   Typography,
 } from '@material-ui/core'
 import Skeleton from '@material-ui/lab/Skeleton'
-import { ChampionRoleFilter } from '@waffle-charm/champions'
 import { MasteryLinearProgress } from '@waffle-charm/mastery'
 import {
   ChampionEntity,
   createSelectSummonerByName,
   MasteryEntity,
-  masteryViewerActions,
   selectAllChampion,
-  selectAllChampionTags,
   selectAllMastery,
   selectSummonerVendor,
   selectTag,
@@ -29,9 +23,7 @@ import {
 import { getSummonerInfoUrl, ProfileAvatar } from '@waffle-charm/summoner'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import clsx from 'clsx'
+import { useSelector } from 'react-redux'
 
 const maxPoints = (1800 + 2400) * 5
 
@@ -121,8 +113,6 @@ export const MasteryTotalProgress = (
 ): React.ReactElement => {
   const { summonerName } = props
   const { t } = useTranslation()
-  const classes = useStyles()
-
   const champions = useSelector(selectAllChampion)
   const masteries = useSelector(selectAllMastery)
   const summonerVendor = useSelector(selectSummonerVendor)
@@ -152,21 +142,10 @@ export const MasteryTotalProgress = (
     filteredChampions.length * maxPoints
   )
 
-  const pointsProgress = getProgress(
-    totalStats.totalCappedPoints,
-    champions.length * maxPoints
-  )
-
-  const [expanded, setExpanded] = React.useState(false)
-
-  const handleExpandClick = () => {
-    setExpanded(!expanded)
-  }
-
   const loaded = !!(summoner && masteries.length)
 
   return (
-    <Card>
+    <Card variant="outlined">
       <CardHeader
         title={
           <Link
@@ -207,45 +186,17 @@ export const MasteryTotalProgress = (
           </>
         }
       />
-      <CardActions>
-        <IconButton
-          className={clsx(classes.expand, {
-            [classes.expandOpen]: expanded,
+      <CardContent>
+        <MasteryLinearProgress
+          current={filteredTotalStats.totalCappedPoints}
+          total={filteredChampions.length * maxPoints}
+          label={t('percentMasteryProgress', {
+            percent: filteredPointsProgress ?? 0,
+            level: 5,
           })}
-          onClick={handleExpandClick}
-          aria-expanded={expanded}
-          aria-label="show more"
-        >
-          <ExpandMoreIcon />
-        </IconButton>
-      </CardActions>
-      <Collapse in={expanded} timeout="auto" unmountOnExit>
-        <CardContent>
-          <Hidden smUp>
-            <MasteryLinearProgress
-              current={totalStats.totalCappedPoints}
-              total={champions.length * maxPoints}
-              label={t('percentMasteryProgress', {
-                percent: pointsProgress ?? 0,
-                level: 5,
-              })}
-              progress={pointsProgress}
-            />
-          </Hidden>
-          <Hidden only="xs">
-            <ChampionRoleFilter />
-            <MasteryLinearProgress
-              current={filteredTotalStats.totalCappedPoints}
-              total={filteredChampions.length * maxPoints}
-              label={t('percentMasteryProgress', {
-                percent: filteredPointsProgress ?? 0,
-                level: 5,
-              })}
-              progress={filteredPointsProgress}
-            />
-          </Hidden>
-        </CardContent>
-      </Collapse>
+          progress={filteredPointsProgress}
+        />
+      </CardContent>
     </Card>
   )
 }

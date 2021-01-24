@@ -3,11 +3,9 @@ import {
   createEntityAdapter,
   createSelector,
   createSlice,
-  Dictionary,
   EntityState,
   PayloadAction,
 } from '@reduxjs/toolkit'
-import { ChampionEntity } from './champion.slice'
 
 export const BANS_FEATURE_KEY = 'bans'
 
@@ -21,6 +19,7 @@ export interface BansEntity {
 export interface BansState extends EntityState<BansEntity> {
   loadingStatus: 'not loaded' | 'loading' | 'loaded' | 'error'
   error: string
+  featureEnabled: boolean
 }
 
 export const bansAdapter = createEntityAdapter<BansEntity>()
@@ -57,6 +56,7 @@ export const fetchBans = createAsyncThunk(
 export const initialBansState: BansState = bansAdapter.getInitialState({
   loadingStatus: 'not loaded',
   error: null,
+  featureEnabled: null,
 })
 
 export const bansSlice = createSlice({
@@ -142,3 +142,8 @@ export const createSelectBansById = () =>
       return bansEntities[id]
     }
   )
+
+export const selectBansFeatureEnabled = createSelector(
+  getBansState,
+  (state) => state.featureEnabled
+)

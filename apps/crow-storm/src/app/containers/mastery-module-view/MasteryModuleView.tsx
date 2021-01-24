@@ -1,9 +1,10 @@
 import {
   createStyles,
-  Grid,
   IconButton,
   makeStyles,
+  Paper,
   Theme,
+  Zoom,
 } from '@material-ui/core'
 import BanIcon from '@material-ui/icons/Block'
 import FavoriteIcon from '@material-ui/icons/FavoriteBorder'
@@ -12,15 +13,15 @@ import {
   bansActions,
   createSelectBansById,
   createSelectFavoriteById,
-  createSelectFilteredChampion,
   favoriteActions,
+  selectBansFeatureEnabled,
   selectChampionEntities,
   selectChampionVendor,
+  selectFavoriteFeatureEnabled,
   selectLevel,
   selectLolVersion,
   selectMasteryEntities,
   selectMasteryLoadingStatus,
-  selectSortedMasteryChampionIds,
   selectVisibleChampionIds,
 } from '@waffle-charm/store'
 import React from 'react'
@@ -42,10 +43,9 @@ const MasteryGridViewItem = (props: MasteryViewerItem): React.ReactElement => {
   const championVendor = useSelector(selectChampionVendor)
   const lolVersion = useSelector(selectLolVersion)
   const masteryLoadingStatus = useSelector(selectMasteryLoadingStatus)
-  const selectFilteredChampion = createSelectFilteredChampion()
-  const filteredChampion = useSelector((state) =>
-    selectFilteredChampion(state, champion)
-  )
+  const isFavoriteFeatureEnabled = useSelector(selectFavoriteFeatureEnabled)
+  const isBansFeatureEnabled = useSelector(selectBansFeatureEnabled)
+
   const selectBansById = createSelectBansById()
   const isBaned = useSelector((state) => selectBansById(state, champion.key))
 
@@ -72,32 +72,24 @@ const MasteryGridViewItem = (props: MasteryViewerItem): React.ReactElement => {
 
   const actionCTAs = (
     <>
-      <IconButton
-        aria-label={t('championFavoriteCTA')}
-        onClick={handleFavoriteClick}
-      >
-        <FavoriteIcon color={isFavorite ? 'secondary' : 'disabled'} />
-      </IconButton>
-      <IconButton aria-label={t('championBanCTA')} onClick={handleBanClick}>
-        <BanIcon color={isBaned ? 'error' : 'disabled'} />
-      </IconButton>
-      {/* <IconButton aria-label="share">
-        <ShareIcon />
-      </IconButton> */}
+      {isFavoriteFeatureEnabled && (
+        <IconButton
+          aria-label={t('championFavoriteCTA')}
+          onClick={handleFavoriteClick}
+        >
+          <FavoriteIcon color={isFavorite ? 'secondary' : 'disabled'} />
+        </IconButton>
+      )}
+      {isBansFeatureEnabled && (
+        <IconButton aria-label={t('championBanCTA')} onClick={handleBanClick}>
+          <BanIcon color={isBaned ? 'error' : 'disabled'} />
+        </IconButton>
+      )}
     </>
   )
 
   return (
-    <Grid
-      item
-      lg={4}
-      md={4}
-      sm={6}
-      xs={12}
-      style={{
-        display: filteredChampion ? 'block' : 'none',
-      }}
-    >
+    <Zoom in={true} style={{ transitionDelay: '200ms' }}>
       <MasteryCard
         mastery={mastery}
         loading={
@@ -110,18 +102,17 @@ const MasteryGridViewItem = (props: MasteryViewerItem): React.ReactElement => {
         actionCTAs={actionCTAs}
         hideFullImg
       />
-    </Grid>
+    </Zoom>
   )
 }
 
 const useMasteryGridViewStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      flexDirection: 'row',
-      flexWrap: 'wrap',
-      display: 'flex',
-      paddingTop: theme.spacing(1),
-      flexGrow: 1,
+      display: 'grid',
+      padding: theme.spacing(2),
+      gridGap: theme.spacing(2),
+      gridTemplateColumns: `repeat(auto-fill, minmax(300px, 1fr))`,
     },
   })
 )
@@ -143,11 +134,9 @@ export const MasteryModuleView = (
   }, [sortedChampionIds])
 
   return (
-    <div className={classes.root} data-cy={`mastery-grid-group-${level}`}>
-      <Grid container direction="row" spacing={2}>
-        {items}
-      </Grid>
-    </div>
+    <Paper className={classes.root} data-cy={`mastery-grid-group-${level}`}>
+      {items}
+    </Paper>
   )
 }
 

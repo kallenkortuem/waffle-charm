@@ -15,7 +15,7 @@ import {
   selectChampionEntities,
   selectChampionVendor,
   selectMasteryEntities,
-  selectSortedMasteryChampionIds,
+  selectVisibleChampionIds,
 } from '@waffle-charm/store'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
@@ -64,13 +64,13 @@ const MasteryListViewItem = (props: MasteryViewerItem) => {
 export const MasteryListView = (): React.ReactElement => {
   const { t } = useTranslation()
 
-  const sortedChampionIds = useSelector(selectSortedMasteryChampionIds)
+  const visibleChampionIds = useSelector(selectVisibleChampionIds)
 
   const items = React.useMemo(() => {
-    return sortedChampionIds?.map((championId) => (
+    return visibleChampionIds?.map((championId) => (
       <MasteryListViewItem key={championId} championId={championId} />
     ))
-  }, [sortedChampionIds])
+  }, [visibleChampionIds])
 
   return (
     <TableContainer component={Paper} data-cy="mastery-list">

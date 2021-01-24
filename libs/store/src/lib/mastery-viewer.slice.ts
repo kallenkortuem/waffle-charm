@@ -52,7 +52,7 @@ export interface MasteryViewerState {
 export const initialMasteryViewerState: MasteryViewerState = {
   searchQuery: '',
   tag: null,
-  level: JSON.parse(localStorage.getItem(MASTERY_LEVEL) || '1'),
+  level: null,
   layout:
     (localStorage.getItem(MASTERY_LAYOUT) as 'module' | 'list') ?? 'module',
   sortBy: 'alphabetical',

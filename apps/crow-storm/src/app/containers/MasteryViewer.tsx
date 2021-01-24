@@ -1,5 +1,6 @@
 import {
   Button,
+  Card,
   Collapse,
   createStyles,
   Grid,
@@ -60,7 +61,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     advancedFilter: {
       display: 'grid',
-      gridTemplateColumns: '1fr 1fr 1fr',
+      gridTemplateColumns: `repeat(auto-fill, minmax(300px, 1fr))`,
       gridGap: theme.spacing(2),
       padding: theme.spacing(2),
     },
@@ -85,8 +86,13 @@ export const MasteryViewer = (
   const visibleChampionIds = useSelector(selectVisibleChampionIds)
   const classes = useStyles()
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleExpand = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAdvancedFilterOpen((value) => !value)
+  }
+
+  const handleClear = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAdvancedFilterOpen(false)
+    dispatch(masteryViewerActions.resetFilters())
   }
 
   const [advancedFilterOpen, setAdvancedFilterOpen] = useState(false)
@@ -133,16 +139,15 @@ export const MasteryViewer = (
                 {hasFiltersActive && (
                   <IconButton
                     className={classes.iconButton}
-                    onClick={() =>
-                      dispatch(masteryViewerActions.resetFilters())
-                    }
-                    aria-label={t('championInputSearch')}
+                    onClick={handleClear}
+                    aria-label={t('clearFilter')}
                   >
                     <CloseIcon />
                   </IconButton>
                 )}
                 <ExpandButton
-                  onClick={handleClick}
+                  className={classes.iconButton}
+                  onClick={handleExpand}
                   expanded={advancedFilterOpen}
                 />
                 <LayoutToggleGroup />
@@ -158,12 +163,16 @@ export const MasteryViewer = (
           </Collapse>
         </Paper>
       </div>
+      <div>
+        <Typography variant="h5" component="h2">
+          {title}
+        </Typography>
+        <Typography variant="body2" component="span">
+          {t('championWithCount', { count: filteredChampionIds?.length ?? 0 })}
+        </Typography>
+      </div>
 
-      <Typography variant="caption" component="h2">
-        {t('championWithCount', { count: filteredChampionIds?.length ?? 0 })}
-      </Typography>
-
-      <Suspense fallback={<LinearProgress />}>
+      <Suspense fallback={<Paper style={{ minHeight: '500px' }} />}>
         {layout === 'module' && <MasteryModuleView />}
         {layout === 'list' && <MasteryListView />}
         {layout === 'compact' && <MasteryCompactView />}

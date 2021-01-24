@@ -2,6 +2,8 @@ import { FormControl, InputLabel, MenuItem, Select } from '@material-ui/core'
 import {
   masteryViewerActions,
   MasteryViewerSortOptions,
+  selectBansFeatureEnabled,
+  selectFavoriteFeatureEnabled,
   selectSortBy,
 } from '@waffle-charm/store'
 import React from 'react'
@@ -28,6 +30,9 @@ export function MasteryViewerSortSelect(
     [dispatch]
   )
 
+  const isBansFeatureEnabled = useSelector(selectBansFeatureEnabled)
+  const isFavoriteFeatureEnabled = useSelector(selectFavoriteFeatureEnabled)
+
   return (
     <FormControl>
       <InputLabel htmlFor="mastery-sort-select">
@@ -45,10 +50,14 @@ export function MasteryViewerSortSelect(
         <MenuItem value="mastery">
           {t('championGridFilterSortByMastery')}
         </MenuItem>
-        <MenuItem value="favorite">
-          {t('championGridFilterSortByFavorite')}
-        </MenuItem>
-        <MenuItem value="bans">{t('championGridFilterSortByBan')}</MenuItem>
+        {isFavoriteFeatureEnabled && (
+          <MenuItem value="favorite">
+            {t('championGridFilterSortByFavorite')}
+          </MenuItem>
+        )}
+        {isBansFeatureEnabled && (
+          <MenuItem value="bans">{t('championGridFilterSortByBan')}</MenuItem>
+        )}
       </Select>
     </FormControl>
   )

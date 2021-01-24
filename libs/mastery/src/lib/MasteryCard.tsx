@@ -1,6 +1,5 @@
 import {
   CardActions,
-  Collapse,
   createStyles,
   Link,
   makeStyles,
@@ -16,9 +15,9 @@ import {
   Vendors,
 } from '@waffle-charm/api-interfaces'
 import { ChampionAvatar, getChampionInfoUrl } from '@waffle-charm/champions'
-import { ExpandButton } from '@waffle-charm/material'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
+import { useSelector } from 'react-redux'
 import { MasteryProgress } from './MasteryProgress'
 
 export interface MasteryCardProps {
@@ -85,7 +84,7 @@ export function MasteryCard(props: MasteryCardProps): React.ReactElement {
   }
 
   return (
-    <Card className={classes.root} elevation={3} data-cy="mastery-card">
+    <Card className={classes.root} data-cy="mastery-card">
       <CardHeader
         className={classes.header}
         avatar={
@@ -123,18 +122,11 @@ export function MasteryCard(props: MasteryCardProps): React.ReactElement {
           )
         }
       />
-      <CardActions disableSpacing>
-        {actionCTAs}
-        <ExpandButton
-          expanded={expanded}
-          onClick={handleExpandClick}
-        ></ExpandButton>
-      </CardActions>
-      <Collapse in={expanded} timeout="auto" unmountOnExit>
-        <CardContent className={classes.content}>
-          {mastery ? <MasteryProgress mastery={mastery} /> : null}
-        </CardContent>
-      </Collapse>
+      <CardActions disableSpacing>{actionCTAs}</CardActions>
+
+      <CardContent className={classes.content}>
+        {mastery ? <MasteryProgress mastery={mastery} /> : null}
+      </CardContent>
     </Card>
   )
 }

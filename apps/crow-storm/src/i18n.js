@@ -60,6 +60,7 @@ export const resources = {
       championInputSearch: 'Clear Input',
       expandIconButton: 'Show More',
       showAll: 'Show All',
+      clearFilter: 'Clear Filter',
     },
   },
 }

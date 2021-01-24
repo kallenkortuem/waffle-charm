@@ -42,6 +42,14 @@ export const App = (): React.ReactElement => {
   const darkTheme = React.useMemo(
     () =>
       createMuiTheme({
+        props: {
+          MuiPaper: {
+            variant: 'outlined',
+          },
+          MuiCard: {
+            variant: 'outlined',
+          },
+        },
         palette: {
           type: darkMode ? 'dark' : 'light',
           primary: {

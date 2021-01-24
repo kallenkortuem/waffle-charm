@@ -53,8 +53,9 @@ export const initialMasteryViewerState: MasteryViewerState = {
   tag: null,
   level: null,
   layout:
-    (localStorage.getItem(MASTERY_LAYOUT) as 'module' | 'list') ?? 'module',
-  sortBy: 'alphabetical',
+    (localStorage.getItem(MASTERY_LAYOUT) as MasteryViewerLayoutOption) ??
+    'module',
+  sortBy: 'mastery',
   showAll: false,
 }
 

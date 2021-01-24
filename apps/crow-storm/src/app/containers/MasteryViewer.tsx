@@ -164,7 +164,7 @@ export const MasteryViewer = (
         </Paper>
       </div>
       <div>
-        <Typography variant="h5" component="h2">
+        <Typography variant="h5" component="h1">
           {title}
         </Typography>
         <Typography variant="body2" component="span">

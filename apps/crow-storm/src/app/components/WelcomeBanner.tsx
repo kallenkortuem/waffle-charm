@@ -27,7 +27,7 @@ export const WelcomeBanner = (
   const classes = useStyles()
   return (
     <Paper className={classes.root}>
-      <Typography variant="h5" component="h2">
+      <Typography variant="h5" component="h1">
         {t('welcomeHeader')}
       </Typography>
       <Typography variant="body1" component="p">

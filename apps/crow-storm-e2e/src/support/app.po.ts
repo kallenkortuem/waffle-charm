@@ -14,7 +14,7 @@ export const getLayoutSelector = (
   cy.get(`[data-cy=layout-selector-${mode}]`, { timeout: 5000 })
 
 export const getMasteryGridGroup = (
-  level: 1 | 2 | 3 | 4 | 5 | 6 | 7
+  level?: 1 | 2 | 3 | 4 | 5 | 6 | 7
 ): Cypress.Chainable<JQuery<HTMLButtonElement>> =>
   cy.get(`[data-cy=mastery-grid-group-${level}]`, { timeout: 5000 })
 

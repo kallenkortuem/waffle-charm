@@ -2,11 +2,8 @@ import {
   Card,
   CardContent,
   CardHeader,
-  createStyles,
   Hidden,
   Link,
-  makeStyles,
-  Theme,
   Typography,
 } from '@material-ui/core'
 import Skeleton from '@material-ui/lab/Skeleton'
@@ -133,15 +130,17 @@ export const MasteryTotalProgress = (
     <Card variant="outlined">
       <CardHeader
         title={
-          <Link
-            variant="h5"
-            underline="hover"
-            color="textPrimary"
-            href={getSummonerInfoUrl(summoner, summonerVendor)}
-            data-cy="summoner-name"
-          >
-            {loaded ? summoner.name : <Skeleton width="60%" />}
-          </Link>
+          <Typography variant="h5" component="h1">
+            <Link
+              variant="h5"
+              underline="hover"
+              color="textPrimary"
+              href={getSummonerInfoUrl(summoner, summonerVendor)}
+              data-cy="summoner-name"
+            >
+              {loaded ? summoner.name : <Skeleton width="60%" />}
+            </Link>
+          </Typography>
         }
         avatar={
           loaded ? (

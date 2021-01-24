@@ -56,7 +56,7 @@ export const fetchBans = createAsyncThunk(
 export const initialBansState: BansState = bansAdapter.getInitialState({
   loadingStatus: 'not loaded',
   error: null,
-  featureEnabled: null,
+  featureEnabled: false,
 })
 
 export const bansSlice = createSlice({

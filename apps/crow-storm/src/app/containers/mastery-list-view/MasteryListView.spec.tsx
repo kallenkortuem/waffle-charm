@@ -3,7 +3,7 @@ import { store } from '@waffle-charm/store'
 import React from 'react'
 import { Provider } from 'react-redux'
 import MasteryListView from './MasteryListView'
-
+import '../../i18n'
 describe('MasteryListView', () => {
   it('should render successfully', () => {
     const { baseElement } = render(

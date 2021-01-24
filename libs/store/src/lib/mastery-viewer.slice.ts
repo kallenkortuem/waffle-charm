@@ -3,7 +3,6 @@ import { BansEntity, selectBansEntities } from './bans.slice'
 import {
   ChampionEntity,
   selectAllChampion,
-  selectChampionIds,
   selectChampionLoadingStatus,
 } from './champion.slice'
 import { FavoriteEntity, selectFavoriteEntities } from './favorite.slice'
@@ -80,7 +79,7 @@ export const masteryViewerSlice = createSlice({
       state: MasteryViewerState,
       action: PayloadAction<MasteryViewerLayoutOption>
     ) {
-      state.layout = action.payload
+      state.layout = action.payload ?? 'module'
       state.showAll = false
       localStorage.setItem(MASTERY_LAYOUT, action.payload ?? 'module')
     },
@@ -223,38 +222,6 @@ const sortByBans = (bansEntities: Record<string, BansEntity>) => (
   }
   return banA ? -1 : 1
 }
-
-export const selectSortedMasteryChampionIds = createSelector(
-  selectChampionIds,
-  selectMasteryEntities,
-  selectSortBy,
-  selectBansEntities,
-  selectFavoriteEntities,
-  (
-    championIds: string[],
-    masteryEntities: Record<string, MasteryEntity>,
-    sortBy: MasteryViewerSortOptions,
-    bansEntities: Record<string, BansEntity>,
-    favoriteEntities: Record<string, FavoriteEntity>
-  ) => {
-    let sortByFn: (a, b) => 0 | -1 | 1 | number
-    switch (sortBy) {
-      case 'bans':
-        sortByFn = sortByBans(bansEntities)
-        break
-      case 'favorite':
-        sortByFn = sortByFavorite(favoriteEntities)
-        break
-      case 'mastery':
-        sortByFn = sortByMastery(masteryEntities)
-        break
-      case 'alphabetical':
-      default:
-        sortByFn = (a, b) => 0
-    }
-    return [...championIds].sort(sortByFn)
-  }
-)
 
 /**
  * Select all filtered `champion.key`.

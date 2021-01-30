@@ -1,10 +1,11 @@
 import { HttpModule, Module } from '@nestjs/common'
+import { ConfigModule } from '@nestjs/config'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
-import { ConfigModule } from '@nestjs/config'
-import { SummonerModule } from './summoner/summoner.module'
-import { MatchModule } from './match/match.module'
+import { MasteryViewerModule } from './mastery-viewer/mastery-viewer.module'
 import { MasteryModule } from './mastery/mastery.module'
+import { MatchModule } from './match/match.module'
+import { SummonerModule } from './summoner/summoner.module'
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { MasteryModule } from './mastery/mastery.module'
     SummonerModule,
     MatchModule,
     MasteryModule,
+    MasteryViewerModule,
   ],
   controllers: [AppController],
   providers: [AppService],

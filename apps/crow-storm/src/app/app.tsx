@@ -43,10 +43,8 @@ export const App = (): React.ReactElement => {
     () =>
       createMuiTheme({
         props: {
-          MuiPaper: {
-          },
-          MuiCard: {
-          },
+          MuiPaper: {},
+          MuiCard: {},
         },
         palette: {
           type: darkMode ? 'dark' : 'light',

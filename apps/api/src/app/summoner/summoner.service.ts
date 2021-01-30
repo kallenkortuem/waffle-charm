@@ -1,6 +1,7 @@
 import { HttpService, Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { SummonerDTO } from '@waffle-charm/api-interfaces'
+import { AxiosResponse } from 'axios'
 import { Observable } from 'rxjs'
 import { map } from 'rxjs/operators'
 
@@ -17,13 +18,15 @@ export class SummonerService {
   }
 
   getByName(summonerName: string): Observable<SummonerDTO> {
-    return this.httpService
-      .get<SummonerDTO>(
-        `https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/${summonerName}`,
-        {
-          headers: this.headers,
-        }
-      )
-      .pipe(map((resp) => resp.data))
+    return this.getByNameV2(summonerName).pipe(map((resp) => resp.data))
+  }
+
+  getByNameV2(summonerName: string): Observable<AxiosResponse<SummonerDTO>> {
+    return this.httpService.get<SummonerDTO>(
+      `https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/${summonerName}`,
+      {
+        headers: this.headers,
+      }
+    )
   }
 }

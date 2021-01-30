@@ -37,9 +37,7 @@ const useStyles = makeStyles((theme: Theme) =>
       padding: theme.spacing(2),
       gridGap: theme.spacing(1),
     },
-    paper: {
-
-    },
+    paper: {},
     paperExpanded: {
       display: 'grid',
       justifyItems: 'start',
@@ -101,8 +99,9 @@ const MasteryCompactViewItemV2 = (props: { championId: string }) => {
             champion={champion}
             variant="rounded"
             src={
-              masteryLoadingStatus === 'loaded' ?
-              getChampionImageSrc(champion, version): null
+              masteryLoadingStatus === 'loaded'
+                ? getChampionImageSrc(champion, version)
+                : null
             }
             imgProps={{ style: { width: 'unset', height: 'unset' } }}
           />

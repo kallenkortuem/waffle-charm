@@ -85,7 +85,6 @@ export const MasteryViewer = (
   const hasFiltersActive = useSelector(selectHasActiveFilters)
   const filteredChampionIds = useSelector(selectFilteredChampionIds)
   const visibleChampionIds = useSelector(selectVisibleChampionIds)
-  
 
   const [advancedFilterOpen, setAdvancedFilterOpen] = useState(false)
   const handleExpand = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -97,7 +96,6 @@ export const MasteryViewer = (
     dispatch(masteryViewerActions.resetFilters())
   }
 
-  
   const searchQuery = useSelector(selectSearchQuery)
   const handleSetQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(masteryViewerActions.setSearchQuery(event.target.value || ''))

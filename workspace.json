@@ -14,9 +14,7 @@
             "outputPath": "dist/apps/api",
             "main": "apps/api/src/main.ts",
             "tsConfig": "apps/api/tsconfig.app.json",
-            "assets": [
-              "apps/api/src/assets"
-            ]
+            "assets": ["apps/api/src/assets"]
           },
           "configurations": {
             "production": {
@@ -31,9 +29,7 @@
               ]
             }
           },
-          "outputs": [
-            "{options.outputPath}"
-          ]
+          "outputs": ["{options.outputPath}"]
         },
         "serve": {
           "builder": "@nrwl/node:execute",
@@ -48,10 +44,7 @@
               "apps/api/tsconfig.app.json",
               "apps/api/tsconfig.spec.json"
             ],
-            "exclude": [
-              "**/node_modules/**",
-              "!apps/api/**/*"
-            ]
+            "exclude": ["**/node_modules/**", "!apps/api/**/*"]
           }
         },
         "test": {
@@ -60,9 +53,7 @@
             "jestConfig": "apps/api/jest.config.js",
             "passWithNoTests": true
           },
-          "outputs": [
-            "coverage/apps/api"
-          ]
+          "outputs": ["coverage/apps/api"]
         }
       }
     },
@@ -79,10 +70,7 @@
               "libs/api-interfaces/tsconfig.lib.json",
               "libs/api-interfaces/tsconfig.spec.json"
             ],
-            "exclude": [
-              "**/node_modules/**",
-              "!libs/api-interfaces/**/*"
-            ]
+            "exclude": ["**/node_modules/**", "!libs/api-interfaces/**/*"]
           }
         },
         "test": {
@@ -91,9 +79,7 @@
             "jestConfig": "libs/api-interfaces/jest.config.js",
             "passWithNoTests": true
           },
-          "outputs": [
-            "coverage/libs/api-interfaces"
-          ]
+          "outputs": ["coverage/libs/api-interfaces"]
         }
       }
     },
@@ -115,9 +101,7 @@
               "apps/crow-storm/src/favicon.ico",
               "apps/crow-storm/src/assets"
             ],
-            "styles": [
-              "apps/crow-storm/src/styles.scss"
-            ],
+            "styles": ["apps/crow-storm/src/styles.scss"],
             "scripts": [],
             "webpackConfig": "@nrwl/react/plugins/webpack"
           },
@@ -145,9 +129,7 @@
               ]
             }
           },
-          "outputs": [
-            "{options.outputPath}"
-          ]
+          "outputs": ["{options.outputPath}"]
         },
         "serve": {
           "builder": "@nrwl/web:dev-server",
@@ -172,10 +154,7 @@
               "apps/crow-storm/tsconfig.app.json",
               "apps/crow-storm/tsconfig.spec.json"
             ],
-            "exclude": [
-              "**/node_modules/**",
-              "!apps/crow-storm/**/*"
-            ]
+            "exclude": ["**/node_modules/**", "!apps/crow-storm/**/*"]
           }
         },
         "test": {
@@ -184,9 +163,7 @@
             "jestConfig": "apps/crow-storm/jest.config.js",
             "passWithNoTests": true
           },
-          "outputs": [
-            "coverage/apps/crow-storm"
-          ]
+          "outputs": ["coverage/apps/crow-storm"]
         }
       }
     },
@@ -212,13 +189,8 @@
           "builder": "@nrwl/linter:lint",
           "options": {
             "linter": "eslint",
-            "tsConfig": [
-              "apps/crow-storm-e2e/tsconfig.e2e.json"
-            ],
-            "exclude": [
-              "**/node_modules/**",
-              "!apps/crow-storm-e2e/**/*"
-            ]
+            "tsConfig": ["apps/crow-storm-e2e/tsconfig.e2e.json"],
+            "exclude": ["**/node_modules/**", "!apps/crow-storm-e2e/**/*"]
           }
         }
       }
@@ -232,9 +204,7 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": [
-              "libs/champions/**/*.{ts,tsx,js,jsx}"
-            ]
+            "lintFilePatterns": ["libs/champions/**/*.{ts,tsx,js,jsx}"]
           }
         },
         "test": {
@@ -243,9 +213,7 @@
             "jestConfig": "libs/champions/jest.config.js",
             "passWithNoTests": true
           },
-          "outputs": [
-            "coverage/libs/champions"
-          ]
+          "outputs": ["coverage/libs/champions"]
         }
       }
     },
@@ -258,9 +226,7 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": [
-              "libs/mastery/**/*.{ts,tsx,js,jsx}"
-            ]
+            "lintFilePatterns": ["libs/mastery/**/*.{ts,tsx,js,jsx}"]
           }
         },
         "test": {
@@ -269,9 +235,7 @@
             "jestConfig": "libs/mastery/jest.config.js",
             "passWithNoTests": true
           },
-          "outputs": [
-            "coverage/libs/mastery"
-          ]
+          "outputs": ["coverage/libs/mastery"]
         }
       }
     },
@@ -284,9 +248,7 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": [
-              "libs/material/**/*.{ts,tsx,js,jsx}"
-            ]
+            "lintFilePatterns": ["libs/material/**/*.{ts,tsx,js,jsx}"]
           }
         },
         "test": {
@@ -295,9 +257,7 @@
             "jestConfig": "libs/material/jest.config.js",
             "passWithNoTests": true
           },
-          "outputs": [
-            "coverage/libs/material"
-          ]
+          "outputs": ["coverage/libs/material"]
         }
       }
     },
@@ -310,9 +270,7 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": [
-              "libs/summoner/**/*.{ts,tsx,js,jsx}"
-            ]
+            "lintFilePatterns": ["libs/summoner/**/*.{ts,tsx,js,jsx}"]
           }
         },
         "test": {
@@ -321,9 +279,7 @@
             "jestConfig": "libs/summoner/jest.config.js",
             "passWithNoTests": true
           },
-          "outputs": [
-            "coverage/libs/summoner"
-          ]
+          "outputs": ["coverage/libs/summoner"]
         }
       }
     },
@@ -336,9 +292,7 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": [
-              "libs/testing-utils/**/*.{ts,tsx,js,jsx}"
-            ]
+            "lintFilePatterns": ["libs/testing-utils/**/*.{ts,tsx,js,jsx}"]
           }
         },
         "test": {
@@ -347,9 +301,7 @@
             "jestConfig": "libs/testing-utils/jest.config.js",
             "passWithNoTests": true
           },
-          "outputs": [
-            "coverage/libs/testing-utils"
-          ]
+          "outputs": ["coverage/libs/testing-utils"]
         }
       }
     },
@@ -362,9 +314,7 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": [
-              "libs/store/**/*.{ts,tsx,js,jsx}"
-            ]
+            "lintFilePatterns": ["libs/store/**/*.{ts,tsx,js,jsx}"]
           }
         },
         "test": {
@@ -373,9 +323,7 @@
             "jestConfig": "libs/store/jest.config.js",
             "passWithNoTests": true
           },
-          "outputs": [
-            "coverage/libs/store"
-          ]
+          "outputs": ["coverage/libs/store"]
         }
       }
     },
@@ -399,9 +347,7 @@
             "jestConfig": "libs/filterable-champion-grid/jest.config.js",
             "passWithNoTests": true
           },
-          "outputs": [
-            "coverage/libs/filterable-champion-grid"
-          ]
+          "outputs": ["coverage/libs/filterable-champion-grid"]
         }
       }
     }

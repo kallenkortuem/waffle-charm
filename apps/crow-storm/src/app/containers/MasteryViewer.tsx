@@ -76,16 +76,18 @@ export const MasteryViewer = (
 ): React.ReactElement => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
+  const classes = useStyles()
+
   const layout = useSelector(selectLayout)
-  const searchQuery = useSelector(selectSearchQuery)
   const level = useSelector(selectLevel)
   const tag = useSelector(selectTag)
 
   const hasFiltersActive = useSelector(selectHasActiveFilters)
   const filteredChampionIds = useSelector(selectFilteredChampionIds)
   const visibleChampionIds = useSelector(selectVisibleChampionIds)
-  const classes = useStyles()
+  
 
+  const [advancedFilterOpen, setAdvancedFilterOpen] = useState(false)
   const handleExpand = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAdvancedFilterOpen((value) => !value)
   }
@@ -95,8 +97,8 @@ export const MasteryViewer = (
     dispatch(masteryViewerActions.resetFilters())
   }
 
-  const [advancedFilterOpen, setAdvancedFilterOpen] = useState(false)
-
+  
+  const searchQuery = useSelector(selectSearchQuery)
   const handleSetQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(masteryViewerActions.setSearchQuery(event.target.value || ''))
   }

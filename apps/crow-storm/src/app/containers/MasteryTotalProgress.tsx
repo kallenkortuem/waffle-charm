@@ -127,7 +127,7 @@ export const MasteryTotalProgress = (
   const loaded = !!(summoner && masteries.length)
 
   return (
-    <Card variant="outlined">
+    <Card>
       <CardHeader
         title={
           <Typography variant="h5" component="h1">

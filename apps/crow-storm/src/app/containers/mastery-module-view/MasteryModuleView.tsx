@@ -1,14 +1,19 @@
 import {
+  Card,
+  CardActions,
+  CardContent,
+  CardHeader,
   createStyles,
   IconButton,
+  Link,
   makeStyles,
-  Paper,
   Theme,
-  Zoom,
 } from '@material-ui/core'
 import BanIcon from '@material-ui/icons/Block'
 import FavoriteIcon from '@material-ui/icons/FavoriteBorder'
-import { MasteryCard } from '@waffle-charm/mastery'
+import { Skeleton } from '@material-ui/lab'
+import { ChampionAvatar, getChampionInfoUrl } from '@waffle-charm/champions'
+import { MasteryProgress } from '@waffle-charm/mastery'
 import {
   bansActions,
   createSelectBansById,
@@ -31,9 +36,48 @@ import { useDispatch, useSelector } from 'react-redux'
 export const MASTERY_LEVEL = 'masteryLevel'
 export const MASTERY_LAYOUT = 'masteryLayout'
 
+const useMasteryGridViewStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      display: 'grid',
+      gridGap: theme.spacing(2),
+      gridTemplateColumns: `repeat(auto-fill, minmax(300px, 1fr))`,
+    },
+  })
+)
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface MasteryViewProps {}
+
+export const MasteryModuleView = (
+  props: MasteryViewProps
+): React.ReactElement => {
+  const { t } = useTranslation()
+  const classes = useMasteryGridViewStyles()
+  const level = useSelector(selectLevel)
+  const sortedChampionIds = useSelector(selectVisibleChampionIds)
+
+  const items = React.useMemo(() => {
+    return sortedChampionIds?.map((championId, index) => (
+      <MasteryGridViewItem
+        index={index}
+        key={championId}
+        championId={championId}
+      />
+    ))
+  }, [sortedChampionIds])
+
+  return (
+    <div className={classes.root} data-cy={`mastery-grid-group-${level}`}>
+      {items}
+    </div>
+  )
+}
+
 export interface MasteryViewerItem {
   championId: string
+  index: number
 }
+
 const MasteryGridViewItem = (props: MasteryViewerItem): React.ReactElement => {
   const { championId } = props
   const { t } = useTranslation()
@@ -89,54 +133,54 @@ const MasteryGridViewItem = (props: MasteryViewerItem): React.ReactElement => {
   )
 
   return (
-    <Zoom in={true} style={{ transitionDelay: '200ms' }}>
-      <MasteryCard
-        mastery={mastery}
-        loading={
-          masteryLoadingStatus === 'loading' ||
-          masteryLoadingStatus === 'not loaded'
-        }
-        version={lolVersion}
-        championVendor={championVendor}
-        champion={champion}
-        actionCTAs={actionCTAs}
-        hideFullImg
-      />
-    </Zoom>
-  )
-}
+    <div>
+      <Card data-cy="mastery-card">
+        <CardHeader
+          avatar={
+            masteryLoadingStatus === 'loading' ||
+            masteryLoadingStatus === 'not loaded' ? (
+              <Skeleton variant="circle" width={40} height={40} />
+            ) : (
+              <ChampionAvatar
+                version={lolVersion}
+                size="small"
+                champion={champion}
+              />
+            )
+          }
+          title={
+            masteryLoadingStatus === 'loading' ||
+            masteryLoadingStatus === 'not loaded' ? (
+              <Skeleton />
+            ) : (
+              <Link
+                variant="body2"
+                href={getChampionInfoUrl(champion, championVendor)}
+                underline="hover"
+                color="textPrimary"
+              >
+                {champion.name}
+              </Link>
+            )
+          }
+          subheader={
+            masteryLoadingStatus === 'loading' ||
+            masteryLoadingStatus === 'not loaded' ? (
+              <Skeleton />
+            ) : (
+              t('totalMasteryPoints') +
+              ' ' +
+              (mastery?.championPoints.toLocaleString() ?? 0)
+            )
+          }
+        />
+        <CardActions disableSpacing>{actionCTAs}</CardActions>
 
-const useMasteryGridViewStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      display: 'grid',
-      padding: theme.spacing(2),
-      gridGap: theme.spacing(2),
-      gridTemplateColumns: `repeat(auto-fill, minmax(300px, 1fr))`,
-    },
-  })
-)
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface MasteryViewProps {}
-
-export const MasteryModuleView = (
-  props: MasteryViewProps
-): React.ReactElement => {
-  const { t } = useTranslation()
-  const classes = useMasteryGridViewStyles()
-  const level = useSelector(selectLevel)
-  const sortedChampionIds = useSelector(selectVisibleChampionIds)
-
-  const items = React.useMemo(() => {
-    return sortedChampionIds?.map((championId) => (
-      <MasteryGridViewItem key={championId} championId={championId} />
-    ))
-  }, [sortedChampionIds])
-
-  return (
-    <Paper className={classes.root} data-cy={`mastery-grid-group-${level}`}>
-      {items}
-    </Paper>
+        <CardContent>
+          {mastery ? <MasteryProgress mastery={mastery} /> : null}
+        </CardContent>
+      </Card>
+    </div>
   )
 }
 

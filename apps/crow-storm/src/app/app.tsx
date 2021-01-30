@@ -44,10 +44,8 @@ export const App = (): React.ReactElement => {
       createMuiTheme({
         props: {
           MuiPaper: {
-            variant: 'outlined',
           },
           MuiCard: {
-            variant: 'outlined',
           },
         },
         palette: {

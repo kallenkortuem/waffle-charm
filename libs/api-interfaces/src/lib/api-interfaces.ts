@@ -720,3 +720,8 @@ export const Vendors = {
   'porofessor.gg': 'porofessor.gg' as Vendors,
   'u.gg': 'u.gg' as Vendors,
 }
+
+export interface MasteryViewerDTO {
+  summoner: SummonerDTO
+  masteries: ChampionMasteryDTO[]
+}

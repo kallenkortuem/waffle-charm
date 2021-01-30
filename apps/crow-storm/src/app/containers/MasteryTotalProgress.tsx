@@ -7,15 +7,12 @@ import {
   Typography,
 } from '@material-ui/core'
 import Skeleton from '@material-ui/lab/Skeleton'
-import { ChampionRoleFilter } from '@waffle-charm/champions'
 import { MasteryLinearProgress } from '@waffle-charm/mastery'
 import {
   ChampionEntity,
   createSelectSummonerByName,
   MasteryEntity,
-  masteryViewerActions,
   selectAllChampion,
-  selectAllChampionTags,
   selectAllMastery,
   selectSummonerVendor,
   selectTag,
@@ -23,7 +20,7 @@ import {
 import { getSummonerInfoUrl, ProfileAvatar } from '@waffle-charm/summoner'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 
 const maxPoints = (1800 + 2400) * 5
 
@@ -98,7 +95,6 @@ export const MasteryTotalProgress = (
 ): React.ReactElement => {
   const { summonerName } = props
   const { t } = useTranslation()
-  const dispatch = useDispatch()
   const champions = useSelector(selectAllChampion)
   const masteries = useSelector(selectAllMastery)
   const summonerVendor = useSelector(selectSummonerVendor)
@@ -107,7 +103,7 @@ export const MasteryTotalProgress = (
   const summoner = useSelector((state) =>
     selectSummonerByName(state, summonerName)
   )
-  const allTags = useSelector(selectAllChampionTags)
+
   const filteredChampions = React.useMemo(
     () => champions.filter((champion) => !tag || champion.tags.includes(tag)),
     [champions, tag]
@@ -128,33 +124,23 @@ export const MasteryTotalProgress = (
     filteredChampions.length * maxPoints
   )
 
-  const pointsProgress = getProgress(
-    totalStats.totalCappedPoints,
-    champions.length * maxPoints
-  )
-
-  const handleSetTag = (
-    event: React.MouseEvent<HTMLElement>,
-    value: string
-  ) => {
-    dispatch(masteryViewerActions.setTag(value))
-  }
-
   const loaded = !!(summoner && masteries.length)
 
   return (
-    <Card>
+    <Card variant="outlined">
       <CardHeader
         title={
-          <Link
-            variant="h5"
-            underline="hover"
-            color="textPrimary"
-            href={getSummonerInfoUrl(summoner, summonerVendor)}
-            data-cy="summoner-name"
-          >
-            {loaded ? summoner.name : <Skeleton width="60%" />}
-          </Link>
+          <Typography variant="h5" component="h1">
+            <Link
+              variant="h5"
+              underline="hover"
+              color="textPrimary"
+              href={getSummonerInfoUrl(summoner, summonerVendor)}
+              data-cy="summoner-name"
+            >
+              {loaded ? summoner.name : <Skeleton width="60%" />}
+            </Link>
+          </Typography>
         }
         avatar={
           loaded ? (
@@ -185,33 +171,15 @@ export const MasteryTotalProgress = (
         }
       />
       <CardContent>
-        <Hidden smUp>
-          <MasteryLinearProgress
-            current={totalStats.totalCappedPoints}
-            total={champions.length * maxPoints}
-            label={t('percentMasteryProgress', {
-              percent: pointsProgress ?? 0,
-              level: 5,
-            })}
-            progress={pointsProgress}
-          />
-        </Hidden>
-        <Hidden only="xs">
-          <ChampionRoleFilter
-            tag={tag}
-            allTags={allTags}
-            onTagChange={handleSetTag}
-          />
-          <MasteryLinearProgress
-            current={filteredTotalStats.totalCappedPoints}
-            total={filteredChampions.length * maxPoints}
-            label={t('percentMasteryProgress', {
-              percent: filteredPointsProgress ?? 0,
-              level: 5,
-            })}
-            progress={filteredPointsProgress}
-          />
-        </Hidden>
+        <MasteryLinearProgress
+          current={filteredTotalStats.totalCappedPoints}
+          total={filteredChampions.length * maxPoints}
+          label={t('percentMasteryProgress', {
+            percent: filteredPointsProgress ?? 0,
+            level: 5,
+          })}
+          progress={filteredPointsProgress}
+        />
       </CardContent>
     </Card>
   )

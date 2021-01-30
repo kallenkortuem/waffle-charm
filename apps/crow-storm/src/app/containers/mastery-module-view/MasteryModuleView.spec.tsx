@@ -1,15 +1,15 @@
-import { render } from '@testing-library/react'
 import React from 'react'
+import { render } from '@testing-library/react'
+
+import MasteryModuleView from './MasteryModuleView'
 import { Provider } from 'react-redux'
 import { store } from '@waffle-charm/store'
-import MasteryTotalProgress from './MasteryTotalProgress'
 import '../../i18n'
-
-describe('MasteryTotalProgress', () => {
+describe('MasteryModuleView', () => {
   it('should render successfully', () => {
     const { baseElement } = render(
       <Provider store={store}>
-        <MasteryTotalProgress summonerName="fiddlesucx" />
+        <MasteryModuleView />
       </Provider>
     )
     expect(baseElement).toBeTruthy()

@@ -62,7 +62,6 @@ export function ChampionGridContainer(props: ChampionGridContainerProps) {
       height={rowHeight * 10}
       itemCount={Math.ceil(championIds.length)}
       itemSize={rowHeight + theme.spacing(1)}
-      overscanRowCount={10}
       width={912}
     >
       {Cell}

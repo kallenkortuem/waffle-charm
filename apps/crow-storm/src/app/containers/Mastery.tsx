@@ -5,13 +5,14 @@ import {
   fetchMastery,
   selectSummonerLoadingStatus,
 } from '@waffle-charm/store'
-import React, { useEffect, useState } from 'react'
+import React, { lazy, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { WelcomeBanner } from '../components/WelcomeBanner'
-import { MasteryTotalProgress } from '../containers/MasteryTotalProgress'
-
-const MasteryViewer = React.lazy(() => import('../containers/MasteryViewer'))
+import MasteryViewer from '../containers/MasteryViewer'
+const MasteryTotalProgress = lazy(
+  () => import('../containers/MasteryTotalProgress')
+)
 
 export const Mastery = (props: {
   summonerName: string
@@ -34,10 +35,6 @@ export const Mastery = (props: {
   return (
     <main>
       <PageContainer maxWidth="md">
-        <Typography variant="h4" component="h1">
-          {t('championMastery')}
-        </Typography>
-
         {summonerLoading === 'not loaded' || summonerLoading === 'error' ? (
           <WelcomeBanner />
         ) : (

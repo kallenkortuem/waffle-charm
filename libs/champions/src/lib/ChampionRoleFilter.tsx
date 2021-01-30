@@ -1,16 +1,30 @@
 import ToggleButton from '@material-ui/lab/ToggleButton'
-import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup'
+import ToggleButtonGroup, {
+  ToggleButtonGroupProps,
+} from '@material-ui/lab/ToggleButtonGroup'
+import {
+  masteryViewerActions,
+  selectAllChampionTags,
+  selectTag,
+} from '@waffle-charm/store'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
+import { useDispatch, useSelector } from 'react-redux'
 
-export interface ChampionRoleFilterProps {
-  allTags: string[]
-  tag: string
-  onTagChange: (event: React.MouseEvent<HTMLElement>, tag: string) => void
-}
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface ChampionRoleFilterProps extends ToggleButtonGroupProps {}
 
 export const ChampionRoleFilter = (props: ChampionRoleFilterProps) => {
-  const { allTags, tag, onTagChange } = props
+  const dispatch = useDispatch()
+  const tag = useSelector(selectTag)
+  const allTags = useSelector(selectAllChampionTags)
+  const handleSetTag = (
+    event: React.MouseEvent<HTMLElement>,
+    value: string
+  ) => {
+    dispatch(masteryViewerActions.setTag(value))
+  }
+
   const { t } = useTranslation()
   const roleButtons = React.useMemo(
     () =>
@@ -31,7 +45,7 @@ export const ChampionRoleFilter = (props: ChampionRoleFilterProps) => {
       size="small"
       value={tag}
       exclusive
-      onChange={onTagChange}
+      onChange={handleSetTag}
       aria-label={t('rolesFilter')}
       data-cy="champion-role-filter"
     >

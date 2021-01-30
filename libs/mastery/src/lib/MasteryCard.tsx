@@ -1,4 +1,10 @@
-import { createStyles, Link, makeStyles, Theme } from '@material-ui/core'
+import {
+  CardActions,
+  createStyles,
+  Link,
+  makeStyles,
+  Theme,
+} from '@material-ui/core'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import CardHeader from '@material-ui/core/CardHeader'
@@ -11,6 +17,7 @@ import {
 import { ChampionAvatar, getChampionInfoUrl } from '@waffle-charm/champions'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
+import { useSelector } from 'react-redux'
 import { MasteryProgress } from './MasteryProgress'
 
 export interface MasteryCardProps {
@@ -21,6 +28,7 @@ export interface MasteryCardProps {
   championVendor: Vendors
   hideFullImg?: boolean
   compact?: boolean
+  actionCTAs?: React.ReactNode
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -41,6 +49,16 @@ const useStyles = makeStyles((theme: Theme) =>
       alignSelf: (props: MasteryCardProps) =>
         props.compact ? 'flex-end' : 'unset',
     },
+    expand: {
+      transform: 'rotate(0deg)',
+      marginLeft: 'auto',
+      transition: theme.transitions.create('transform', {
+        duration: theme.transitions.duration.shortest,
+      }),
+    },
+    expandOpen: {
+      transform: 'rotate(180deg)',
+    },
     media: {
       height: 0,
       paddingTop: '56.25%', // 16:9
@@ -49,12 +67,24 @@ const useStyles = makeStyles((theme: Theme) =>
 )
 
 export function MasteryCard(props: MasteryCardProps): React.ReactElement {
-  const { loading, champion, mastery, version, championVendor } = props
+  const {
+    loading,
+    champion,
+    mastery,
+    version,
+    championVendor,
+    actionCTAs,
+  } = props
   const { t } = useTranslation()
   const classes = useStyles(props)
+  const [expanded, setExpanded] = React.useState(false)
+
+  const handleExpandClick = () => {
+    setExpanded(!expanded)
+  }
 
   return (
-    <Card className={classes.root} elevation={3} data-cy="mastery-card">
+    <Card className={classes.root} data-cy="mastery-card">
       <CardHeader
         className={classes.header}
         avatar={
@@ -92,6 +122,8 @@ export function MasteryCard(props: MasteryCardProps): React.ReactElement {
           )
         }
       />
+      <CardActions disableSpacing>{actionCTAs}</CardActions>
+
       <CardContent className={classes.content}>
         {mastery ? <MasteryProgress mastery={mastery} /> : null}
       </CardContent>

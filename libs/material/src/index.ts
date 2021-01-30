@@ -1,3 +1,4 @@
+export * from './lib/expand-button/ExpandButton'
 export * from './lib/BorderLinearProgress'
 export * from './lib/chips-array/ChipsArray'
 export * from './lib/delayed-search-input/DelayedSearchInput'

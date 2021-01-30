@@ -1,4 +1,4 @@
-import { Typography } from '@material-ui/core'
+import { LinearProgress, Typography } from '@material-ui/core'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import { blue, green } from '@material-ui/core/colors'
 import CssBaseline from '@material-ui/core/CssBaseline'
@@ -9,10 +9,9 @@ import {
   fetchSummoner,
   selectLolVersion,
 } from '@waffle-charm/store'
-import React, { Suspense } from 'react'
+import React, { lazy, Suspense } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Route, Switch } from 'react-router-dom'
-import { Mastery } from './containers/Mastery'
 import PrimarySearchBar, {
   SUMMONER_NAME_KEY,
   useQuery,
@@ -22,6 +21,7 @@ import { SettingsDrawer } from './containers/SettingsDrawer'
 const FilterableChampionGrid = React.lazy(
   () => import('@waffle-charm/filterable-champion-grid')
 )
+const Mastery = lazy(() => import('./containers/Mastery'))
 
 export const DARK_MODE_PREF = 'darkModePref'
 
@@ -42,6 +42,14 @@ export const App = (): React.ReactElement => {
   const darkTheme = React.useMemo(
     () =>
       createMuiTheme({
+        props: {
+          MuiPaper: {
+            variant: 'outlined',
+          },
+          MuiCard: {
+            variant: 'outlined',
+          },
+        },
         palette: {
           type: darkMode ? 'dark' : 'light',
           primary: {
@@ -81,7 +89,7 @@ export const App = (): React.ReactElement => {
               <FilterableChampionGrid summonerName={summonerName} />
             </Route>
             <Route path="/">
-              <Suspense fallback={<CircularProgress />}>
+              <Suspense fallback={<LinearProgress />}>
                 <Mastery summonerName={summonerName} />
               </Suspense>
             </Route>

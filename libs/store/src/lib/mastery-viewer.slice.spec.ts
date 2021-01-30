@@ -1,7 +1,10 @@
+import { BansEntity } from './bans.slice'
 import { ChampionEntity } from './champion.slice'
+import { FavoriteEntity } from './favorite.slice'
 import {
   masteryViewerActions,
   masteryViewerReducer,
+  MasteryViewerSortOptions,
   selectFilteredChampionIds,
 } from './mastery-viewer.slice'
 import { MasteryEntity } from './mastery.slice'
@@ -111,13 +114,21 @@ describe('masteryViewer reducer', () => {
 
 describe('selectFilteredChampionIds', () => {
   test('should always filter by searchQuery if present', () => {
+    const sortBy: MasteryViewerSortOptions = 'alphabetical'
+    const bansEntities: Record<string, BansEntity> = {}
+    const favoriteEntities: Record<string, FavoriteEntity> = {}
+    const level: number = null
     const searchQuery = 'ola' // search for Olaf
+    const tag: string = null
     const result = selectFilteredChampionIds.resultFunc(
       allChampions,
-      {},
-      7,
+      masteryEntities,
+      sortBy,
+      bansEntities,
+      favoriteEntities,
+      level,
       searchQuery,
-      'Assasin'
+      tag
     )
 
     expect(result.length).toBe(1)
@@ -125,12 +136,22 @@ describe('selectFilteredChampionIds', () => {
   })
 
   test('should require the tag and filter to both match if present', () => {
+    const sortBy: MasteryViewerSortOptions = 'alphabetical'
+    const bansEntities: Record<string, BansEntity> = {}
+    const favoriteEntities: Record<string, FavoriteEntity> = {}
+    const level = 5
+    const searchQuery = null
+    const tag = 'Tank'
+
     const result = selectFilteredChampionIds.resultFunc(
       allChampions,
       masteryEntities,
-      5,
-      undefined,
-      'Tank'
+      sortBy,
+      bansEntities,
+      favoriteEntities,
+      level,
+      searchQuery,
+      tag
     )
 
     expect(result.length).toBe(1)
@@ -138,12 +159,22 @@ describe('selectFilteredChampionIds', () => {
   })
 
   test('should sort by mastery level', () => {
+    const sortBy: MasteryViewerSortOptions = 'mastery'
+    const bansEntities: Record<string, BansEntity> = undefined
+    const favoriteEntities: Record<string, FavoriteEntity> = undefined
+    const level = undefined
+    const searchQuery = undefined
+    const tag = undefined
+
     const result = selectFilteredChampionIds.resultFunc(
       allChampions,
       masteryEntities,
-      undefined,
-      undefined,
-      undefined
+      sortBy,
+      bansEntities,
+      favoriteEntities,
+      level,
+      searchQuery,
+      tag
     )
 
     expect(result[0]).toBe(galio.key)

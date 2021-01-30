@@ -1,16 +1,14 @@
 import { render } from '@testing-library/react'
 import { store } from '@waffle-charm/store'
-import { enablei18nMocks } from '@waffle-charm/testing-utils'
 import React from 'react'
 import { Provider } from 'react-redux'
-import ChampionRoleFilter from './ChampionRoleFilter'
-
-enablei18nMocks()
-describe('ChampionRoleFilter', () => {
+import MasteryViewerLevelSelect from './MasteryViewerLevelSelect'
+import '../../i18n'
+describe('MasteryViewerLevelSelect', () => {
   it('should render successfully', () => {
     const { baseElement } = render(
       <Provider store={store}>
-        <ChampionRoleFilter />
+        <MasteryViewerLevelSelect />
       </Provider>
     )
     expect(baseElement).toBeTruthy()

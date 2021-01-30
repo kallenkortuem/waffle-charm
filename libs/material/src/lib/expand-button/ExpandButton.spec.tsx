@@ -1,12 +1,13 @@
-import { render } from '@testing-library/react'
-import { enablei18nMocks } from '@waffle-charm/testing-utils'
 import React from 'react'
-import ChampionGridSortSelect from './ChampionGridSortSelect'
+import { render } from '@testing-library/react'
+
+import ExpandButton from './ExpandButton'
+import { enablei18nMocks } from '@waffle-charm/testing-utils'
 
 enablei18nMocks()
-describe('ChampionGridSortSelect', () => {
+describe('ExpandButton', () => {
   it('should render successfully', () => {
-    const { baseElement } = render(<ChampionGridSortSelect value={`name`} />)
+    const { baseElement } = render(<ExpandButton />)
     expect(baseElement).toBeTruthy()
   })
 })

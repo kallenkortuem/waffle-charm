@@ -43,7 +43,8 @@
                 "onlyDependOnLibsWithTags": [
                   "scope:shared",
                   "scope:component",
-                  "scope:testing"
+                  "scope:testing",
+                  "scope:state"
                 ]
               },
               {

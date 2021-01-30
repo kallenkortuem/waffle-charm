@@ -3,15 +3,14 @@ import {
   CardActionArea,
   createStyles,
   makeStyles,
-  Paper,
   Theme,
   Typography,
-  Zoom,
 } from '@material-ui/core'
-import { ChampionAvatar } from '@waffle-charm/champions'
+import { ChampionAvatar, getChampionImageSrc } from '@waffle-charm/champions'
 import {
   selectChampionEntities,
   selectLolVersion,
+  selectMasteryLoadingStatus,
   selectVisibleChampionIds,
 } from '@waffle-charm/store'
 import clsx from 'clsx'
@@ -30,6 +29,7 @@ const useStyles = makeStyles((theme: Theme) =>
         17
       )}px, 1fr))`,
       gridTemplateRoles: `1fr 1fr`,
+      gridGap: theme.spacing(2),
     },
     compactItem: {
       display: 'grid',
@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme: Theme) =>
       gridGap: theme.spacing(1),
     },
     paper: {
-      margin: theme.spacing(1),
+
     },
     paperExpanded: {
       display: 'grid',
@@ -62,17 +62,18 @@ export function MasteryCompactView(
   }, [visibleChampionIds])
 
   return (
-    <Paper className={classes.root}>
+    <div className={classes.root}>
       <div className={classes.compactContainer}>{items}</div>
-    </Paper>
+    </div>
   )
 }
 
 const MasteryCompactViewItemV2 = (props: { championId: string }) => {
   const { championId } = props
+  const classes = useStyles()
   const champion = useSelector(selectChampionEntities)[championId]
   const version = useSelector(selectLolVersion)
-  const classes = useStyles()
+  const masteryLoadingStatus = useSelector(selectMasteryLoadingStatus)
 
   const [expanded, setExpanded] = React.useState(false)
 
@@ -82,9 +83,8 @@ const MasteryCompactViewItemV2 = (props: { championId: string }) => {
   }
 
   return (
-    <Zoom in={true} style={{ transitionDelay: '200ms' }}>
+    <div>
       <Card
-        variant="outlined"
         elevation={3}
         className={clsx(classes.paper, {
           [classes.paperExpanded]: expanded,
@@ -100,12 +100,16 @@ const MasteryCompactViewItemV2 = (props: { championId: string }) => {
             size={'large'}
             champion={champion}
             variant="rounded"
+            src={
+              masteryLoadingStatus === 'loaded' ?
+              getChampionImageSrc(champion, version): null
+            }
             imgProps={{ style: { width: 'unset', height: 'unset' } }}
           />
           <Typography variant="body2">{champion?.name}</Typography>
         </CardActionArea>
       </Card>
-    </Zoom>
+    </div>
   )
 }
 

@@ -7,5 +7,6 @@ import { MasteryService } from './mastery.service'
   imports: [ConfigModule, HttpModule],
   controllers: [MasteryController],
   providers: [MasteryService],
+  exports: [MasteryService],
 })
 export class MasteryModule {}

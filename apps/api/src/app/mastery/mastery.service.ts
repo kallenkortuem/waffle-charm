@@ -1,6 +1,7 @@
 import { HttpService, Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { ChampionMasteryDTO } from '@waffle-charm/api-interfaces'
+import { AxiosResponse } from 'axios'
 import { Observable } from 'rxjs'
 import { map } from 'rxjs/operators'
 
@@ -19,13 +20,19 @@ export class MasteryService {
   getMasteriesBySummoner(
     encryptedSummonerId: string
   ): Observable<ChampionMasteryDTO[]> {
-    return this.httpService
-      .get<ChampionMasteryDTO[]>(
-        `https://na1.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-summoner/${encryptedSummonerId}`,
-        {
-          headers: this.headers,
-        }
-      )
-      .pipe(map((resp) => resp.data))
+    return this.getMasteriesBySummonerV2(encryptedSummonerId).pipe(
+      map((resp) => resp.data)
+    )
+  }
+
+  getMasteriesBySummonerV2(
+    encryptedSummonerId: string
+  ): Observable<AxiosResponse<ChampionMasteryDTO[]>> {
+    return this.httpService.get<ChampionMasteryDTO[]>(
+      `https://na1.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-summoner/${encryptedSummonerId}`,
+      {
+        headers: this.headers,
+      }
+    )
   }
 }

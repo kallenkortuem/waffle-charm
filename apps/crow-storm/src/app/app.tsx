@@ -6,7 +6,7 @@ import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
 import { PageContainer } from '@waffle-charm/material'
 import {
   fetchChampion,
-  fetchSummoner,
+  fetchMasteryViewer,
   selectLolVersion,
 } from '@waffle-charm/store'
 import React, { lazy, Suspense } from 'react'
@@ -64,7 +64,7 @@ export const App = (): React.ReactElement => {
   }, [dispatch, lolVersion])
 
   React.useEffect(() => {
-    dispatch(fetchSummoner(summonerName))
+    dispatch(fetchMasteryViewer(summonerName))
   }, [dispatch, summonerName])
 
   return (

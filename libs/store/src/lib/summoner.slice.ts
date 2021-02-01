@@ -6,7 +6,8 @@ import {
   EntityState,
   PayloadAction,
 } from '@reduxjs/toolkit'
-import { SummonerDTO } from '@waffle-charm/api-interfaces'
+import { MasteryViewerDTO, SummonerDTO } from '@waffle-charm/api-interfaces'
+import { fetchMasteryViewer } from './fetch-mastery-viewer'
 
 export const SUMMONER_FEATURE_KEY = 'summoner'
 
@@ -92,6 +93,21 @@ export const summonerSlice = createSlice({
         state.loadingStatus = 'error'
         state.error = action.error.message
       })
+
+      .addCase(fetchMasteryViewer.pending, (state: SummonerState) => {
+        state.loadingStatus = 'loading'
+      })
+      .addCase(fetchMasteryViewer.rejected, (state: SummonerState, action) => {
+        state.loadingStatus = 'error'
+        state.error = action.error.message
+      })
+      .addCase(
+        fetchMasteryViewer.fulfilled,
+        (state: SummonerState, action: PayloadAction<MasteryViewerDTO>) => {
+          summonerAdapter.setAll(state, [action.payload.summoner])
+          state.loadingStatus = 'loaded'
+        }
+      )
   },
 })
 

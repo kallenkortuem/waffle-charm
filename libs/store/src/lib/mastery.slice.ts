@@ -6,7 +6,11 @@ import {
   EntityState,
   PayloadAction,
 } from '@reduxjs/toolkit'
-import { ChampionMasteryDTO } from '@waffle-charm/api-interfaces'
+import {
+  ChampionMasteryDTO,
+  MasteryViewerDTO,
+} from '@waffle-charm/api-interfaces'
+import { fetchMasteryViewer } from './fetch-mastery-viewer'
 
 export const MASTERY_FEATURE_KEY = 'mastery'
 
@@ -98,6 +102,20 @@ export const masterySlice = createSlice({
         state.loadingStatus = 'error'
         state.error = action.error.message
       })
+      .addCase(fetchMasteryViewer.pending, (state: MasteryState) => {
+        state.loadingStatus = 'loading'
+      })
+      .addCase(fetchMasteryViewer.rejected, (state: MasteryState, action) => {
+        state.loadingStatus = 'error'
+        state.error = action.error.message
+      })
+      .addCase(
+        fetchMasteryViewer.fulfilled,
+        (state: MasteryState, action: PayloadAction<MasteryViewerDTO>) => {
+          masteryAdapter.setAll(state, action.payload.masteries)
+          state.loadingStatus = 'loaded'
+        }
+      )
   },
 })
 

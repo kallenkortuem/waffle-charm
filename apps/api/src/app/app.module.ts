@@ -6,6 +6,7 @@ import { MasteryViewerModule } from './mastery-viewer/mastery-viewer.module'
 import { MasteryModule } from './mastery/mastery.module'
 import { MatchModule } from './match/match.module'
 import { SummonerModule } from './summoner/summoner.module'
+import { VersionModule } from './version/version.module'
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { SummonerModule } from './summoner/summoner.module'
     MatchModule,
     MasteryModule,
     MasteryViewerModule,
+    VersionModule,
   ],
   controllers: [AppController],
   providers: [AppService],

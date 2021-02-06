@@ -6,6 +6,7 @@ import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
 import { PageContainer } from '@waffle-charm/material'
 import {
   fetchChampion,
+  fetchLolVersion,
   fetchMasteryViewer,
   selectLolVersion,
 } from '@waffle-charm/store'
@@ -58,9 +59,14 @@ export const App = (): React.ReactElement => {
       }),
     [darkMode]
   )
+  React.useEffect(() => {
+    dispatch(fetchLolVersion())
+  }, [dispatch])
 
   React.useEffect(() => {
-    dispatch(fetchChampion(lolVersion))
+    if (lolVersion) {
+      dispatch(fetchChampion(lolVersion))
+    }
   }, [dispatch, lolVersion])
 
   React.useEffect(() => {

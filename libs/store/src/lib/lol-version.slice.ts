@@ -25,16 +25,17 @@ export const lolVersionAdapter = createEntityAdapter<LolVersionEntity>({
   selectId: (model) => model,
 })
 
-const setLolVersion = createAction('lolVersion/set', function prepare(
-  lolVersion: string
-) {
-  return {
-    payload: {
-      lolVersion,
-      createdAt: new Date().toISOString(),
-    },
+const setLolVersion = createAction(
+  'lolVersion/set',
+  function prepare(lolVersion: string) {
+    return {
+      payload: {
+        lolVersion,
+        createdAt: new Date().toISOString(),
+      },
+    }
   }
-})
+)
 /**
  * Export an effect using createAsyncThunk from
  * the Redux Toolkit: https://redux-toolkit.js.org/api/createAsyncThunk
@@ -60,7 +61,8 @@ export const fetchLolVersion = createAsyncThunk(
      * For example, `return myApi.getLolVersions()`;
      * Right now we just return an empty array.
      */
-    return Promise.resolve(['10.25.1'])
+    const result: string[] = await fetch('/api/version').then((_) => _.json())
+    return result
   }
 )
 
@@ -70,7 +72,7 @@ export const initialLolVersionState: LolVersionState = lolVersionAdapter.getInit
     error: null,
     entities: ['10.25.1'],
     keys: ['10.25.1'],
-    selected: '10.25.1',
+    selected: null,
   }
 )
 
@@ -90,7 +92,8 @@ export const lolVersionSlice = createSlice({
       .addCase(
         fetchLolVersion.fulfilled,
         (state: LolVersionState, action: PayloadAction<LolVersionEntity[]>) => {
-          lolVersionAdapter.setAll(state, action.payload)
+          state = lolVersionAdapter.setAll(state, action.payload)
+          state.selected = action.payload[0]
           state.loadingStatus = 'loaded'
         }
       )

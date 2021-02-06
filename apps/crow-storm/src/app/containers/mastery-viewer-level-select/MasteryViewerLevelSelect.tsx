@@ -18,7 +18,7 @@ export function MasteryViewerLevelSelect(
   }
 
   const items = [7, 6, 5, 4, 3, 2, 1, 0].map((level) => (
-    <MenuItem key={level} value={level}>
+    <MenuItem key={level} value={level.toString()}>
       {level}
     </MenuItem>
   ))
@@ -31,7 +31,7 @@ export function MasteryViewerLevelSelect(
       <Select
         id="mastery-level-select"
         variant="standard"
-        value={level || ''}
+        value={level?.toString() ?? ''}
         onChange={handleOnChange}
       >
         {items}

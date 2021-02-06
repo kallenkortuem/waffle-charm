@@ -1,4 +1,3 @@
-import { Test, TestingModule } from '@nestjs/testing'
 import { instance, mock } from 'ts-mockito'
 import { SummonerController } from './summoner.controller'
 import { SummonerService } from './summoner.service'

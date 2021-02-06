@@ -10,7 +10,6 @@ describe('lolVersion reducer', () => {
       loadingStatus: 'not loaded',
       error: null,
       entities: {},
-      keys: [],
       selected: null,
     })
 

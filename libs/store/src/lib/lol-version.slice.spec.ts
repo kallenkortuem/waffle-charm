@@ -9,9 +9,9 @@ describe('lolVersion reducer', () => {
     const expected = lolVersionAdapter.getInitialState({
       loadingStatus: 'not loaded',
       error: null,
-      entities: ['10.25.1'],
-      keys: ['10.25.1'],
-      selected: '10.25.1',
+      entities: [],
+      keys: [],
+      selected: null,
     })
 
     expect(lolVersionReducer(undefined, { type: '' })).toEqual(expected)

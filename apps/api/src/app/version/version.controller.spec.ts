@@ -1,15 +1,13 @@
-import { Test, TestingModule } from '@nestjs/testing'
+import { instance, mock } from 'ts-mockito'
 import { VersionController } from './version.controller'
+import { VersionService } from './version.service'
 
 describe('VersionController', () => {
   let controller: VersionController
+  const versionService = mock(VersionService)
 
   beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      controllers: [VersionController],
-    }).compile()
-
-    controller = module.get<VersionController>(VersionController)
+    controller = new VersionController(instance(versionService))
   })
 
   it('should be defined', () => {

@@ -1,9 +1,8 @@
 import { Controller, Get, HttpStatus, Param, Res } from '@nestjs/common'
 import { Response } from 'express'
-import { MasteryViewerDTO } from '@waffle-charm/api-interfaces'
-import { Observable, of, throwError } from 'rxjs'
-import { MasteryViewerService } from './mastery-viewer.service'
+import { of } from 'rxjs'
 import { catchError } from 'rxjs/operators'
+import { MasteryViewerService } from './mastery-viewer.service'
 
 @Controller('mastery-viewer')
 export class MasteryViewerController {

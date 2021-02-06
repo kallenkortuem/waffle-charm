@@ -70,8 +70,6 @@ export const initialLolVersionState: LolVersionState = lolVersionAdapter.getInit
   {
     loadingStatus: 'not loaded',
     error: null,
-    entities: ['10.25.1'],
-    keys: ['10.25.1'],
     selected: null,
   }
 )
@@ -92,7 +90,7 @@ export const lolVersionSlice = createSlice({
       .addCase(
         fetchLolVersion.fulfilled,
         (state: LolVersionState, action: PayloadAction<LolVersionEntity[]>) => {
-          state = lolVersionAdapter.setAll(state, action.payload)
+          state = lolVersionAdapter.setAll(state, [action.payload[0]])
           state.selected = action.payload[0]
           state.loadingStatus = 'loaded'
         }
@@ -156,4 +154,8 @@ export const selectLolVersion = createSelector(
 export const selectLolVersionEntities = createSelector(
   getLolVersionState,
   selectEntities
+)
+export const selectLolVersionLoadingStatus = createSelector(
+  getLolVersionState,
+  (state) => state.loadingStatus
 )

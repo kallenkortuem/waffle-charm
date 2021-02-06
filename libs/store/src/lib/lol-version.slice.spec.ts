@@ -9,7 +9,7 @@ describe('lolVersion reducer', () => {
     const expected = lolVersionAdapter.getInitialState({
       loadingStatus: 'not loaded',
       error: null,
-      entities: [],
+      entities: {},
       keys: [],
       selected: null,
     })

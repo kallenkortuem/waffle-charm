@@ -46,6 +46,7 @@ export const MasteryViewerLayoutOption = {
 
 export interface MasteryViewerState {
   searchQuery: string
+  selectedChampionId?: string
   tag?: string
   level?: number
   layout: MasteryViewerLayoutOption
@@ -127,6 +128,12 @@ export const masteryViewerSlice = createSlice({
       state.take = 1
       state.skip = 0
     },
+    setSelectedChampionId(
+      state: MasteryViewerState,
+      action: PayloadAction<string>
+    ) {
+      state.selectedChampionId = action.payload
+    },
   },
 })
 
@@ -201,6 +208,11 @@ export const selectSkip = createSelector(
   getMasteryViewerState,
   selectPageSize,
   (state, pageSize) => state.skip * pageSize
+)
+
+export const selectSelectedChampionId = createSelector(
+  getMasteryViewerState,
+  (state) => state.selectedChampionId
 )
 
 const filterChampion = (

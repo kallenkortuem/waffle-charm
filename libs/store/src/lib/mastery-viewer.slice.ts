@@ -32,11 +32,16 @@ export const MasteryViewerSortOptions = {
   alphabetical: 'alphabetical' as MasteryViewerSortOptions,
 }
 
-export type MasteryViewerLayoutOption = 'module' | 'list' | 'compact'
+export type MasteryViewerLayoutOption =
+  | 'module'
+  | 'list'
+  | 'compact'
+  | 'portrait'
 export const MasteryViewerLayoutOption = {
   module: 'module' as MasteryViewerLayoutOption,
   list: 'list' as MasteryViewerLayoutOption,
   compact: 'compact' as MasteryViewerLayoutOption,
+  portrait: 'portrait' as MasteryViewerLayoutOption,
 }
 
 export interface MasteryViewerState {
@@ -45,7 +50,14 @@ export interface MasteryViewerState {
   level?: number
   layout: MasteryViewerLayoutOption
   sortBy: MasteryViewerSortOptions
-  showAll: boolean
+  skip: number
+  take: number
+  pageSize: {
+    portrait: number
+    compact: number
+    module: number
+    list: number
+  }
 }
 
 export const initialMasteryViewerState: MasteryViewerState = {
@@ -56,7 +68,14 @@ export const initialMasteryViewerState: MasteryViewerState = {
     (localStorage.getItem(MASTERY_LAYOUT) as MasteryViewerLayoutOption) ??
     'module',
   sortBy: 'mastery',
-  showAll: false,
+  skip: 0,
+  take: 1,
+  pageSize: {
+    portrait: 5,
+    compact: 30,
+    module: 12,
+    list: 25,
+  },
 }
 
 export const masteryViewerSlice = createSlice({
@@ -65,15 +84,18 @@ export const masteryViewerSlice = createSlice({
   reducers: {
     setSearchQuery(state: MasteryViewerState, action: PayloadAction<string>) {
       state.searchQuery = action.payload
-      state.showAll = false
+      state.take = 1
+      state.skip = 0
     },
     setTag(state: MasteryViewerState, action: PayloadAction<string>) {
       state.tag = action.payload
-      state.showAll = false
+      state.take = 1
+      state.skip = 0
     },
     setLevel(state: MasteryViewerState, action: PayloadAction<number>) {
       state.level = action.payload
-      state.showAll = false
+      state.take = 1
+      state.skip = 0
       localStorage.setItem(MASTERY_LEVEL, JSON.stringify(action.payload))
     },
     setLayout(
@@ -81,24 +103,29 @@ export const masteryViewerSlice = createSlice({
       action: PayloadAction<MasteryViewerLayoutOption>
     ) {
       state.layout = action.payload ?? 'module'
-      state.showAll = false
+      state.take = 1
+      state.skip = 0
       localStorage.setItem(MASTERY_LAYOUT, action.payload ?? 'module')
+      state.take = state.take = 1
     },
     setSortBy(
       state: MasteryViewerState,
       action: PayloadAction<MasteryViewerSortOptions>
     ) {
       state.sortBy = action.payload
-      state.showAll = false
+      state.take = 1
+      state.skip = 0
     },
     showAll(state: MasteryViewerState) {
-      state.showAll = true
+      state.take = state.take + 1
+      state.skip = 0
     },
     resetFilters(state: MasteryViewerState) {
       state.level = null
       state.tag = null
       state.searchQuery = ''
-      state.showAll = false
+      state.take = 1
+      state.skip = 0
     },
   },
 })
@@ -151,16 +178,29 @@ export const selectSortBy = createSelector(
   getMasteryViewerState,
   (state) => state.sortBy
 )
-export const selectShowAll = createSelector(
-  getMasteryViewerState,
-  (state) => state.showAll
-)
 export const selectHasActiveFilters = createSelector(
   getMasteryViewerState,
   (state) => {
     const { level, tag, searchQuery } = state
     return tag || searchQuery || level || level === 0
   }
+)
+
+export const selectPageSize = createSelector(
+  getMasteryViewerState,
+  (state) => state.pageSize[state.layout]
+)
+
+export const selectTake = createSelector(
+  getMasteryViewerState,
+  selectPageSize,
+  (state, pageSize) => state.take * pageSize
+)
+
+export const selectSkip = createSelector(
+  getMasteryViewerState,
+  selectPageSize,
+  (state, pageSize) => state.skip * pageSize
 )
 
 const filterChampion = (
@@ -286,18 +326,10 @@ export const selectFilteredChampionIds = createSelector(
 
 export const selectVisibleChampionIds = createSelector(
   selectFilteredChampionIds,
-  selectShowAll,
-  selectLayout,
-  (championIds, showAll, layout) => {
-    let take = 0
-    if (layout === 'compact') {
-      take = 35
-    } else if (layout === 'module') {
-      take = 12
-    } else if (layout === 'list') {
-      take = 25
-    }
-    return showAll ? championIds : championIds.slice(0, take)
+  selectSkip,
+  selectTake,
+  (championIds, skip, take) => {
+    return championIds.slice(skip, take)
   }
 )
 

@@ -10,6 +10,7 @@ import BanIcon from '@material-ui/icons/Block'
 import FavoriteIcon from '@material-ui/icons/FavoriteBorder'
 import ViewComfyIcon from '@material-ui/icons/ViewComfy'
 import ViewListIcon from '@material-ui/icons/ViewList'
+import ViewColumnIcon from '@material-ui/icons/ViewColumn'
 import ViewModuleIcon from '@material-ui/icons/ViewModule'
 import {
   ToggleButton,
@@ -28,11 +29,12 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 
-export type LayoutOption = 'module' | 'list' | 'compact'
+export type LayoutOption = 'module' | 'list' | 'compact' | 'portrait'
 export const LayoutOption = {
   module: 'module' as LayoutOption,
   list: 'list' as LayoutOption,
   compact: 'compact' as LayoutOption,
+  portrait: 'portrait' as LayoutOption,
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -167,6 +169,15 @@ export function LayoutToggleGroup(props: LayoutToggleGroupProps) {
         >
           <Tooltip title={t('compact')}>
             <ViewComfyIcon />
+          </Tooltip>
+        </ToggleButton>
+        <ToggleButton
+          value={LayoutOption.portrait}
+          aria-label={t('layoutPortrait')}
+          data-cy="layout-selector-portrait"
+        >
+          <Tooltip title={t('layoutPortrait')}>
+            <ViewColumnIcon />
           </Tooltip>
         </ToggleButton>
       </StyledToggleButtonGroup>

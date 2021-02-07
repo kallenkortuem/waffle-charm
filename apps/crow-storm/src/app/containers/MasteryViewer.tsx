@@ -1,11 +1,8 @@
 import {
   Button,
-  Card,
   Collapse,
   createStyles,
-  Grid,
   IconButton,
-  LinearProgress,
   makeStyles,
   Paper,
   Theme,
@@ -23,6 +20,7 @@ import {
   selectHasActiveFilters,
   selectLayout,
   selectLevel,
+  selectPageSize,
   selectSearchQuery,
   selectTag,
   selectVisibleChampionIds,
@@ -30,6 +28,7 @@ import {
 import React, { lazy, Suspense, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
+import { MasteryPortraitView } from './mastery-portrait-view/MasteryPortraitView'
 import MasteryViewerLevelSelect from './mastery-viewer-level-select/MasteryViewerLevelSelect'
 import MasteryViewerSortSelect from './mastery-viewer-sort-select/MasteryViewerSortSelect'
 import MasteryViewerTagSelect from './mastery-viewer-tag-select/MasteryViewerTagSelect'
@@ -81,6 +80,7 @@ export const MasteryViewer = (
   const layout = useSelector(selectLayout)
   const level = useSelector(selectLevel)
   const tag = useSelector(selectTag)
+  const pageSize = useSelector(selectPageSize)
 
   const hasFiltersActive = useSelector(selectHasActiveFilters)
   const filteredChampionIds = useSelector(selectFilteredChampionIds)
@@ -176,9 +176,10 @@ export const MasteryViewer = (
         {layout === 'module' && <MasteryModuleView />}
         {layout === 'list' && <MasteryListView />}
         {layout === 'compact' && <MasteryCompactView />}
+        {layout === 'portrait' && <MasteryPortraitView />}
         {visibleChampionIds.length < filteredChampionIds.length ? (
           <Button onClick={() => dispatch(masteryViewerActions.showAll())}>
-            {t('showAll')}
+            {t('showMore', { pageSize })}
           </Button>
         ) : null}
       </Suspense>

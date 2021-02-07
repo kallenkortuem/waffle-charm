@@ -1,4 +1,5 @@
 export * from './lib/bans.slice'
+export * from './lib/champion-detail.slice'
 export * from './lib/champion.slice'
 export * from './lib/favorite.slice'
 export * from './lib/fetch-mastery-viewer'

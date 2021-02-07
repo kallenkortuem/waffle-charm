@@ -7,13 +7,16 @@ import {
 } from '@material-ui/core'
 import { getChampionLoadingSplashImageSrc } from '@waffle-charm/champions'
 import {
+  fetchChampionDetail,
+  selectChampionDetailEntities,
+  selectChampionDetailLoadingStatus,
   selectChampionEntities,
   selectLolVersion,
   selectMasteryLoadingStatus,
   selectVisibleChampionIds,
 } from '@waffle-charm/store'
 import React, { ReactElement, useMemo, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 /* eslint-disable-next-line */
 export interface MasteryPortraitViewProps {}
@@ -62,13 +65,21 @@ export function MasteryPortraitView(
 
 function MasteryPortraitViewItem(props: { championId: string }): ReactElement {
   const { championId } = props
+  const dispatch = useDispatch()
   const classes = useStyles()
   const champion = useSelector(selectChampionEntities)[championId]
   const version = useSelector(selectLolVersion)
   const masteryLoadingStatus = useSelector(selectMasteryLoadingStatus)
+  const championDetailLoadingStatus = useSelector(
+    selectChampionDetailLoadingStatus
+  )
+  const championDetail = useSelector(selectChampionDetailEntities)[championId]
   const [num, setNum] = useState(0)
+
   const handleClick = () => {
-    setNum(num + 1)
+    if (!championDetail) {
+      dispatch(fetchChampionDetail({ version, name: champion?.id }))
+    }
   }
 
   return (

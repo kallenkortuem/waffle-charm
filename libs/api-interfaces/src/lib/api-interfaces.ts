@@ -632,36 +632,165 @@ export interface ChampionMasteryDTO {
 export interface ChampionDataDragon {
   type: 'champion'
   format: 'standAloneComplex'
-  version: '10.22.1'
+  version: string
   data: {
     [key: string]: ChampionData
   }
+}
+
+export interface ChampionFullDataDragon {
+  type: 'champion'
+  format: 'standAloneComplex'
+  version: string
+  data: {
+    /**
+     * Key matches champion 'name'
+     * e.g. 'Aatrox'
+     */
+    [key: string]: ChampionFullData
+  }
+}
+
+export interface ChampionSpellLevelTip {
+  /**
+   * Spell keywords
+   * e.g. 'Cooldown', 'Damage', 'Total AD Ratio'
+   */
+  label: string[]
+  /**
+   * Effect templates
+   * e.g.
+   * '{{ cooldown }} -> {{ cooldownNL }}',
+   * '{{ qbasedamage }} -> {{ qbasedamageNL }}',
+   * '{{ qtotaladratio*100.000000 }}% -> {{ qtotaladrationl*100.000000 }}%'
+   */
+  effect: string[]
+}
+
+export interface ChampionSpell {
+  /**
+   * Champion name and ability button.
+   * e.g. AatroxQ
+   */
+  id: string
+  /**
+   * The spell name
+   */
+  name: string
+  description: string
+  /**
+   * Tooltip template
+   * e.g. 'Aatrox slams his greatsword, dealing <physicalDamage>{{ qdamage }} physical damage</physicalDamage>. If they are hit on the edge, they are briefly <status>Knocked Up</status> and they take <physicalDamage>{{ qedgedamage }}</physicalDamage> instead. This Ability can be <recast>Recast</recast> twice, each one changing shape and dealing 25% more damage than the previous one.'
+   */
+  tooltip: string
+  leveltip: ChampionSpellLevelTip
+  maxrank: number
+  /**
+   * Array of cooldown per rank
+   * e.g. [14, 12, 10, 8, 6]
+   */
+  cooldown: number[]
+  /**
+   * String view of cooldown per rank
+   * e.g. 14/12/10/8/6
+   */
+  cooldownBurn: string
+  /**
+   * Spell cost per rank
+   * e.g. [0, 0, 0, 0, 0]
+   */
+  cost: number[]
+  /**
+   * String view of cost per rank
+   * e.g. '0'
+   */
+  costBurn: string
+  datavalues: {}
+  /**
+   * Not really sure what this does yet.
+   */
+  effect: number[][]
+  effectBurn: string[]
+  vars: []
+  /**
+   * Cost type template
+   * e.g. {{ abilityresourcename }}
+   */
+  costType: string
+  /**
+   * Ammo count as string
+   * e.g. '-1'
+   */
+  maxammo: string
+  /**
+   * Ranges by rank
+   * e.g. [25000, 25000, 25000, 25000, 25000]
+   */
+  range: number[]
+  /**
+   * Range text
+   * e.g. 2500
+   */
+  rangeBurn: string
+  image: ImageSprite
+  /**
+   * Template for resource cost
+   * e.g. '{{ cost }} {{ abilityresourcename }}' or 'No Cost'
+   */
+  resource: string
 }
 
 export interface ChampionData {
   version: string
   /**
    * Champion name that matches the key.
+   * e.g. 'Aatrox'
    */
   id: string
   /**
    * Champion number but represented as a string.
+   * e.g. '266'
    */
   key: string
   /**
-   * Champion name that matches the id.
+   * Champion name that matches the id. Used for looking up images
+   * e.g. 'Aatrox'
    */
   name: string
+  /**
+   * Lore friendly champion title
+   * e.g. 'the Darkin Blade'
+   */
   title: string
+  /**
+   * Substring of lore
+   */
   blurb: string
   info: ChampionInfo
-  image: ChampionImage
+  image: ImageSprite
   tags: string[]
   partype: string
   stats: ChampionStats
 }
 
-export interface ChampionImage {
+export interface ChampionFullData extends ChampionData {
+  skins: ChampionSkin[]
+  lore: string
+  allytips: string[]
+  enemytips: string[]
+  spells: ChampionSpell[]
+  passive: {
+    name: string
+    /**
+     * Description template
+     * e.g. "Periodically, Aatrox's next basic attack deals bonus <physicalDamage>physical damage</physicalDamage> and heals him, based on the target's max health. "
+     */
+    description: string
+    image: ImageSprite
+  }
+  recommended: ChampionItemSet[]
+}
+export interface ImageSprite {
   /**
    * File name with PNG extension
    */
@@ -670,9 +799,9 @@ export interface ChampionImage {
    * Sprit file name with PNG extension
    */
   sprite: string
-  group: 'champion'
-  x: 0
-  y: 0
+  group: 'champion' | 'spell' | 'passive'
+  x: number
+  y: number
   /**
    * Width in pixels
    */
@@ -681,6 +810,55 @@ export interface ChampionImage {
    * Height in pixels
    */
   h: 48
+}
+
+export interface ChampionSkin {
+  /**
+   * Skid ID.
+   * string of digits
+   */
+  id: string
+  /**
+   * The skin number used to look up images
+   */
+  num: number
+  /**
+   * Display name
+   */
+  name: 'default' | string
+  chromas: boolean
+}
+
+export interface ChampionItemSetBlock {
+  type: string
+  recMath: boolean
+  recSteps: boolean
+  minSummonerLevel: number
+  maxSummonerLevel: number
+  showIfSummonerSpell: 'SummonerSmite' | ''
+  hideIfSummonerSpell: 'SummonerSmite' | ''
+  appendAfterSection?: string
+  visibleWithAllOf?: ['']
+  hiddenWithAnyOf?: ['']
+  items: { id: string; count: number; hideCount: boolean }[]
+}
+
+export interface ChampionItemSet {
+  /**
+   * Champion name
+   * e.g. 'Aatrox'
+   */
+  champion: string
+  title: string
+  map: 'HA' | 'SR' | 'NB'
+  mode: 'ARAM' | 'INTRO' | 'CLASSIC' | 'NEXUSBLITZ' | 'FIRSTBLOOD' | 'KINGPORO'
+  type: 'riot'
+  customTag: ''
+  sortrank?: 0
+  extensionPage: false
+  useObviousCheckmark?: false
+  customPanel: null
+  blocks: ChampionItemSetBlock[]
 }
 
 export interface ChampionInfo {

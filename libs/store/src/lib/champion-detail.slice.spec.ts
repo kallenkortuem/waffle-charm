@@ -1,7 +1,8 @@
+import { ChampionFullData } from '@waffle-charm/api-interfaces'
 import {
-  fetchChampionDetail,
   championDetailAdapter,
   championDetailReducer,
+  fetchChampionDetail,
 } from './champion-detail.slice'
 
 describe('championDetail reducer', () => {
@@ -30,14 +31,18 @@ describe('championDetail reducer', () => {
 
     state = championDetailReducer(
       state,
-      fetchChampionDetail.fulfilled([{ id: 1 }], null, null)
+      fetchChampionDetail.fulfilled(
+        { key: '123' } as ChampionFullData,
+        null,
+        null
+      )
     )
 
     expect(state).toEqual(
       expect.objectContaining({
         loadingStatus: 'loaded',
+        entities: { '123': { key: '123' } },
         error: null,
-        entities: { 1: { id: 1 } },
       })
     )
 
@@ -50,7 +55,7 @@ describe('championDetail reducer', () => {
       expect.objectContaining({
         loadingStatus: 'error',
         error: 'Uh oh',
-        entities: { 1: { id: 1 } },
+        entities: { '123': { key: '123' } },
       })
     )
   })

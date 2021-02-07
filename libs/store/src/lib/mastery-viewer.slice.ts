@@ -117,7 +117,7 @@ export const masteryViewerSlice = createSlice({
       state.take = 1
       state.skip = 0
     },
-    showAll(state: MasteryViewerState) {
+    nextPage(state: MasteryViewerState) {
       state.take = state.take + 1
       state.skip = 0
     },

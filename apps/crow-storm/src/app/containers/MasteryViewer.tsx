@@ -178,7 +178,7 @@ export const MasteryViewer = (
         {layout === 'compact' && <MasteryCompactView />}
         {layout === 'portrait' && <MasteryPortraitView />}
         {visibleChampionIds.length < filteredChampionIds.length ? (
-          <Button onClick={() => dispatch(masteryViewerActions.showAll())}>
+          <Button onClick={() => dispatch(masteryViewerActions.nextPage())}>
             {t('showMore', { pageSize })}
           </Button>
         ) : null}

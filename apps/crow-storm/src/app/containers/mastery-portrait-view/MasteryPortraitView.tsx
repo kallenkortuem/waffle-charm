@@ -27,6 +27,7 @@ import {
 } from '@waffle-charm/store'
 import clsx from 'clsx'
 import React, { ReactElement, useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 
 /* eslint-disable-next-line */
@@ -102,6 +103,7 @@ function MasteryPortraitViewContent(props: {
   championId: string
 }): ReactElement {
   const { championId } = props
+  const { t } = useTranslation()
   const classes = useStyles()
   const dispatch = useDispatch()
   const championDetail = useSelector(selectChampionDetailEntities)[championId]
@@ -158,19 +160,28 @@ function MasteryPortraitViewContent(props: {
         </div>
         <div>
           <Typography variant="caption">
-            Mastery {mastery?.championLevel}
+            {t('masteryLevelNumber', { level: mastery?.championLevel })}
             {bull}
             {mastery?.championPoints?.toLocaleString()}
           </Typography>
         </div>
       </CardContent>
       <CardActions className={classes.floatingActions}>
-        <Tooltip color="inherit" placement="top" title={'Previous'}>
+        <Tooltip
+          color="inherit"
+          placement="top"
+          title={t('previousSkin')}
+          aria-label={t('previousSkin')}
+        >
           <IconButton size="small" onClick={handlePrevSkin}>
             <NavigateBeforeIcon />
           </IconButton>
         </Tooltip>
-        <Tooltip placement="top" title={'Next'}>
+        <Tooltip
+          placement="top"
+          title={t('nextSkin')}
+          aria-label={t('nextSkin')}
+        >
           <IconButton color="inherit" size="small" onClick={handleNextSkin}>
             <NavigateNextIcon />
           </IconButton>

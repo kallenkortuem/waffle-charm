@@ -28,4 +28,9 @@ export const getChampionImageSrc = (
 export const getChampionSplashImageSrc = (
   champion: ChampionData,
   imageNumber = 0
-): string => `/cdn/img/champion/splash/${champion?.id}_0.jpg`
+): string => `/cdn/img/champion/splash/${champion?.id}_${imageNumber}.jpg`
+
+export const getChampionLoadingSplashImageSrc = (
+  champion: ChampionData,
+  imageNumber = 0
+): string => `/cdn/img/champion/loading/${champion?.id}_${imageNumber}.jpg`

@@ -1,3 +1,4 @@
+export * from './lib/tag.slice'
 export * from './lib/bans.slice'
 export * from './lib/champion-detail.slice'
 export * from './lib/champion.slice'

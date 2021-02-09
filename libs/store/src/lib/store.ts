@@ -22,6 +22,7 @@ import {
   SKIN_PREFERENCE_FEATURE_KEY,
 } from './skin-preference.slice'
 import { summonerReducer, SUMMONER_FEATURE_KEY } from './summoner.slice'
+import { tagReducer, TAG_FEATURE_KEY } from './tag.slice'
 
 const rootReducer = combineReducers({
   [CHAMPION_FEATURE_KEY]: championReducer,
@@ -34,6 +35,7 @@ const rootReducer = combineReducers({
   [FAVORITE_FEATURE_KEY]: favoriteReducer,
   [CHAMPION_DETAIL_FEATURE_KEY]: championDetailReducer,
   [SKIN_PREFERENCE_FEATURE_KEY]: skinPreferenceReducer,
+  [TAG_FEATURE_KEY]: tagReducer,
 })
 
 const persistConfig: PersistConfig<any> = {
@@ -44,6 +46,7 @@ const persistConfig: PersistConfig<any> = {
     BANS_FEATURE_KEY,
     FAVORITE_FEATURE_KEY,
     SKIN_PREFERENCE_FEATURE_KEY,
+    TAG_FEATURE_KEY,
   ],
   version: 1,
 }

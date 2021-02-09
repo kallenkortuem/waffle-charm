@@ -72,7 +72,7 @@ export const initialMasteryViewerState: MasteryViewerState = {
   skip: 0,
   take: 1,
   pageSize: {
-    portrait: 5,
+    portrait: 10,
     compact: 30,
     module: 12,
     list: 25,

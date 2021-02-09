@@ -1,14 +1,9 @@
 {
   "npmScope": "waffle-charm",
-  "affected": {
-    "defaultBase": "master"
-  },
+  "affected": { "defaultBase": "master" },
   "implicitDependencies": {
     "angular.json": "*",
-    "package.json": {
-      "dependencies": "*",
-      "devDependencies": "*"
-    },
+    "package.json": { "dependencies": "*", "devDependencies": "*" },
     "tsconfig.base.json": "*",
     "tslint.json": "*",
     "nx.json": "*"
@@ -16,45 +11,19 @@
   "tasksRunnerOptions": {
     "default": {
       "runner": "@nrwl/workspace/tasks-runners/default",
-      "options": {
-        "cacheableOperations": ["build", "lint", "test", "e2e"]
-      }
+      "options": { "cacheableOperations": ["build", "lint", "test", "e2e"] }
     }
   },
   "projects": {
-    "api": {
-      "tags": ["scope:api"]
-    },
-    "api-interfaces": {
-      "tags": ["scope:shared"]
-    },
-    "crow-storm": {
-      "tags": []
-    },
-    "crow-storm-e2e": {
-      "tags": [],
-      "implicitDependencies": ["crow-storm"]
-    },
-    "champions": {
-      "tags": ["scope:component"]
-    },
-    "mastery": {
-      "tags": ["scope:component"]
-    },
-    "material": {
-      "tags": ["scope:component"]
-    },
-    "summoner": {
-      "tags": ["scope:component"]
-    },
-    "testing-utils": {
-      "tags": ["scope:testing"]
-    },
-    "store": {
-      "tags": ["scope:state"]
-    },
-    "filterable-champion-grid": {
-      "tags": ["scope:feature"]
-    }
+    "api": { "tags": ["scope:api"] },
+    "api-interfaces": { "tags": ["scope:shared"] },
+    "crow-storm": { "tags": [] },
+    "crow-storm-e2e": { "tags": [], "implicitDependencies": ["crow-storm"] },
+    "champions": { "tags": ["scope:component"] },
+    "mastery": { "tags": ["scope:component"] },
+    "material": { "tags": ["scope:component"] },
+    "summoner": { "tags": ["scope:component"] },
+    "testing-utils": { "tags": ["scope:testing"] },
+    "store": { "tags": ["scope:state"] }
   }
 }

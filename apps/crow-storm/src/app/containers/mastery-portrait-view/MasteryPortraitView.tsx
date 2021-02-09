@@ -18,6 +18,7 @@ import {
   selectMasteryEntities,
   selectSelectedChampionId,
   selectSkinPreferenceEntities,
+  selectTagChampionEntities,
   selectVisibleChampionIds,
 } from '@waffle-charm/store'
 import clsx from 'clsx'
@@ -25,6 +26,7 @@ import React, { ReactElement, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import SkinPreferenceMenu from '../skin-preference-menu/SkinPreferenceMenu'
+import TagAutoComplete from '../tag-autocomplete/TagAutocomplete'
 
 /* eslint-disable-next-line */
 export interface MasteryPortraitViewProps {}
@@ -34,7 +36,9 @@ const useStyles = makeStyles((theme: Theme) =>
     root: {},
     champions: {
       display: 'grid',
-      gridTemplateColumns: 'repeat(5, 1fr)',
+      gridTemplateColumns: `repeat(auto-fill, minmax(${theme.spacing(
+        20
+      )}px, 1fr))`,
       gridGap: theme.spacing(2),
     },
     champion: {
@@ -103,6 +107,7 @@ function MasteryPortraitViewContent(props: {
   const classes = useStyles()
   const championDetail = useSelector(selectChampionDetailEntities)[championId]
   const mastery = useSelector(selectMasteryEntities)[championId]
+  const tags = useSelector(selectTagChampionEntities)[championId]
   const bull = <span className={classes.bullet}>•</span>
 
   return (
@@ -111,16 +116,18 @@ function MasteryPortraitViewContent(props: {
         <Typography variant="body1">{championDetail?.name}</Typography>
         <div>
           <Typography variant="caption">
-            {championDetail?.tags?.map((tag, i) => {
-              return i === 0 ? (
-                tag
-              ) : (
-                <>
-                  {bull}
-                  {tag}
-                </>
-              )
-            })}
+            {championDetail?.tags
+              .concat(tags?.map((x) => x.name) ?? [])
+              ?.map((tag, i) => {
+                return i === 0 ? (
+                  tag
+                ) : (
+                  <>
+                    {bull}
+                    {tag}
+                  </>
+                )
+              })}
           </Typography>
         </div>
         <div>
@@ -133,6 +140,7 @@ function MasteryPortraitViewContent(props: {
       </CardContent>
       <CardActions className={classes.floatingActions}>
         <SkinPreferenceMenu championId={championId} />
+        {/* <TagAutoComplete championId={championId} /> */}
       </CardActions>
     </div>
   )

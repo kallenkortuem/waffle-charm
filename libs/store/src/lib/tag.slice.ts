@@ -17,7 +17,7 @@ export interface TagEntity {
   /**
    * The championIds map to the `champion.key` property from `ChampionEntity`
    */
-  championIds: []
+  championIds: string[]
 }
 
 export interface TagState extends EntityState<TagEntity> {
@@ -69,6 +69,7 @@ export const tagSlice = createSlice({
   reducers: {
     add: tagAdapter.addOne,
     remove: tagAdapter.removeOne,
+    upsertOne: tagAdapter.upsertOne,
     // ...
   },
   extraReducers: (builder) => {
@@ -138,15 +139,17 @@ export const selectAllTag = createSelector(getTagState, selectAll)
 
 export const selectTagEntities = createSelector(getTagState, selectEntities)
 
-export const selectTagChampionEntities = createSelector(selectAll, (tags) =>
-  tags?.reduce((tagChampionEntities, tag) => {
-    tag.championIds.forEach((championId) => {
-      if (tagChampionEntities[championId]) {
-        tagChampionEntities[championId].push(tag)
-      } else {
-        tagChampionEntities[championId] = [tag]
-      }
-    })
-    return tagChampionEntities
-  }, {} as Record<string, TagEntity[]>)
+export const selectTagChampionEntities = createSelector(
+  selectTagEntities,
+  (tagEntities) =>
+    Object.values(tagEntities)?.reduce((tagChampionEntities, tag) => {
+      tag.championIds.forEach((championId) => {
+        if (tagChampionEntities[championId]) {
+          tagChampionEntities[championId].push(tag)
+        } else {
+          tagChampionEntities[championId] = [tag]
+        }
+      })
+      return tagChampionEntities
+    }, {} as Record<string, TagEntity[]>)
 )

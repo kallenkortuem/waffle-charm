@@ -40,7 +40,6 @@ export function MasteryViewerSortSelect(
       </InputLabel>
       <Select
         id="mastery-sort-select"
-        variant="standard"
         value={sortBy}
         onChange={handleSetSortBy}
       >

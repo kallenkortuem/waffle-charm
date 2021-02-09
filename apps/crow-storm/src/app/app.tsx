@@ -20,9 +20,6 @@ import PrimarySearchBar, {
 } from './containers/PrimarySearchBar'
 import { SettingsDrawer } from './containers/SettingsDrawer'
 
-const FilterableChampionGrid = React.lazy(
-  () => import('@waffle-charm/filterable-champion-grid')
-)
 const Mastery = lazy(() => import('./containers/Mastery'))
 
 export const DARK_MODE_PREF = 'darkModePref'
@@ -89,9 +86,6 @@ export const App = (): React.ReactElement => {
            * Routes
            */}
           <Switch>
-            <Route path="/filterable-champion-grid">
-              <FilterableChampionGrid summonerName={summonerName} />
-            </Route>
             <Route path="/">
               <Suspense fallback={<LinearProgress />}>
                 <Mastery summonerName={summonerName} />

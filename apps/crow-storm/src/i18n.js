@@ -62,8 +62,7 @@ export const resources = {
       expandIconButton: 'Show More',
       showMore: 'Show {{pageSize}} more',
       clearFilter: 'Clear Filter',
-      previousSkin: 'Previous Skin',
-      nextSkin: 'Next Skin',
+      skinPreferenceSelect: 'Skin Preference',
     },
   },
 }

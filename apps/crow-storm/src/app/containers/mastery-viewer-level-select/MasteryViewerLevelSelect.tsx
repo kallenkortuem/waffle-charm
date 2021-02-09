@@ -30,7 +30,6 @@ export function MasteryViewerLevelSelect(
       </InputLabel>
       <Select
         id="mastery-level-select"
-        variant="standard"
         value={level?.toString() ?? ''}
         onChange={handleOnChange}
       >

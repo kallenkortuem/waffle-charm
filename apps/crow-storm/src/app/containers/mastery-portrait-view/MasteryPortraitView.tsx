@@ -4,14 +4,10 @@ import {
   CardActions,
   CardContent,
   createStyles,
-  IconButton,
   makeStyles,
   Theme,
-  Tooltip,
   Typography,
 } from '@material-ui/core'
-import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore'
-import NavigateNextIcon from '@material-ui/icons/NavigateNext'
 import { getChampionLoadingSplashImageSrc } from '@waffle-charm/champions'
 import {
   fetchChampionDetail,
@@ -23,12 +19,12 @@ import {
   selectSelectedChampionId,
   selectSkinPreferenceEntities,
   selectVisibleChampionIds,
-  skinPreferenceActions,
 } from '@waffle-charm/store'
 import clsx from 'clsx'
 import React, { ReactElement, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
+import SkinPreferenceMenu from '../skin-preference-menu/SkinPreferenceMenu'
 
 /* eslint-disable-next-line */
 export interface MasteryPortraitViewProps {}
@@ -105,40 +101,9 @@ function MasteryPortraitViewContent(props: {
   const { championId } = props
   const { t } = useTranslation()
   const classes = useStyles()
-  const dispatch = useDispatch()
   const championDetail = useSelector(selectChampionDetailEntities)[championId]
-  const skinPreference = useSelector(selectSkinPreferenceEntities)[championId]
   const mastery = useSelector(selectMasteryEntities)[championId]
   const bull = <span className={classes.bullet}>•</span>
-
-  const handlePrevSkin = () => {
-    const skinIndex = championDetail.skins.findIndex(
-      (x) => x.num === skinPreference?.skinNum
-    )
-    const skinNum =
-      skinIndex === 0 || skinIndex === -1
-        ? championDetail.skins[championDetail.skins.length - 1].num
-        : championDetail.skins[skinIndex - 1].num
-    dispatch(skinPreferenceActions.upsertOne({ id: championId, skinNum }))
-  }
-
-  const handleNextSkin = () => {
-    const skinIndex = championDetail.skins.findIndex(
-      (x) => x.num === skinPreference?.skinNum
-    )
-    const skinNum =
-      skinIndex === championDetail.skins.length - 1
-        ? championDetail.skins[0].num
-        : skinIndex === -1
-        ? championDetail.skins[1].num
-        : championDetail.skins[skinIndex + 1].num
-
-    if (skinNum === 0) {
-      dispatch(skinPreferenceActions.remove(championId))
-    } else {
-      dispatch(skinPreferenceActions.upsertOne({ id: championId, skinNum }))
-    }
-  }
 
   return (
     <div className={classes.contentOverlay}>
@@ -167,25 +132,7 @@ function MasteryPortraitViewContent(props: {
         </div>
       </CardContent>
       <CardActions className={classes.floatingActions}>
-        <Tooltip
-          color="inherit"
-          placement="top"
-          title={t('previousSkin')}
-          aria-label={t('previousSkin')}
-        >
-          <IconButton size="small" onClick={handlePrevSkin}>
-            <NavigateBeforeIcon />
-          </IconButton>
-        </Tooltip>
-        <Tooltip
-          placement="top"
-          title={t('nextSkin')}
-          aria-label={t('nextSkin')}
-        >
-          <IconButton color="inherit" size="small" onClick={handleNextSkin}>
-            <NavigateNextIcon />
-          </IconButton>
-        </Tooltip>
+        <SkinPreferenceMenu championId={championId} />
       </CardActions>
     </div>
   )

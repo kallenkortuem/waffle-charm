@@ -8,6 +8,7 @@ import {
   Link,
   makeStyles,
   Theme,
+  Typography,
 } from '@material-ui/core'
 import BanIcon from '@material-ui/icons/Block'
 import FavoriteIcon from '@material-ui/icons/FavoriteBorder'
@@ -42,6 +43,14 @@ const useMasteryGridViewStyles = makeStyles((theme: Theme) =>
       display: 'grid',
       gridGap: theme.spacing(2),
       gridTemplateColumns: `repeat(auto-fill, minmax(300px, 1fr))`,
+    },
+    bullet: {
+      display: 'inline-block',
+      margin: '0 2px',
+      transform: 'scale(0.8)',
+    },
+    masteryProgressContent: {
+      paddingTop: 0,
     },
   })
 )
@@ -80,6 +89,7 @@ export interface MasteryViewerItem {
 
 const MasteryGridViewItem = (props: MasteryViewerItem): React.ReactElement => {
   const { championId } = props
+  const classes = useMasteryGridViewStyles()
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const champion = useSelector(selectChampionEntities)[championId]
@@ -89,6 +99,7 @@ const MasteryGridViewItem = (props: MasteryViewerItem): React.ReactElement => {
   const masteryLoadingStatus = useSelector(selectMasteryLoadingStatus)
   const isFavoriteFeatureEnabled = useSelector(selectFavoriteFeatureEnabled)
   const isBansFeatureEnabled = useSelector(selectBansFeatureEnabled)
+  const bull = <span className={classes.bullet}>•</span>
 
   const selectBansById = createSelectBansById()
   const isBaned = useSelector((state) => selectBansById(state, champion.key))
@@ -115,7 +126,7 @@ const MasteryGridViewItem = (props: MasteryViewerItem): React.ReactElement => {
   }
 
   const actionCTAs = (
-    <>
+    (isFavoriteFeatureEnabled || isBansFeatureEnabled) && <CardActions disableSpacing>
       {isFavoriteFeatureEnabled && (
         <IconButton
           aria-label={t('championFavoriteCTA')}
@@ -129,7 +140,7 @@ const MasteryGridViewItem = (props: MasteryViewerItem): React.ReactElement => {
           <BanIcon color={isBaned ? 'error' : 'disabled'} />
         </IconButton>
       )}
-    </>
+    </CardActions>
   )
 
   return (
@@ -168,15 +179,30 @@ const MasteryGridViewItem = (props: MasteryViewerItem): React.ReactElement => {
             masteryLoadingStatus === 'not loaded' ? (
               <Skeleton />
             ) : (
-              t('totalMasteryPoints') +
-              ' ' +
-              (mastery?.championPoints.toLocaleString() ?? 0)
+              <>
+                <Typography variant="caption" component="p">
+                  {t('masteryLevelNumber', { level: mastery?.championLevel })}
+                  {bull}
+                  {mastery?.championPoints?.toLocaleString()}
+                </Typography>
+                <Typography variant="caption" component="p">
+                  {champion?.tags?.map((tag, i) => {
+                    return i === 0 ? (
+                      tag
+                    ) : (
+                      <>
+                        {bull}
+                        {tag}
+                      </>
+                    )
+                  })}
+                </Typography>
+              </>
             )
           }
         />
-        <CardActions disableSpacing>{actionCTAs}</CardActions>
-
-        <CardContent>
+        {actionCTAs}
+        <CardContent className={classes.masteryProgressContent}>
           {mastery ? <MasteryProgress mastery={mastery} /> : null}
         </CardContent>
       </Card>

@@ -125,8 +125,8 @@ const MasteryGridViewItem = (props: MasteryViewerItem): React.ReactElement => {
     dispatch(a)
   }
 
-  const actionCTAs = (
-    (isFavoriteFeatureEnabled || isBansFeatureEnabled) && <CardActions disableSpacing>
+  const actionCTAs = (isFavoriteFeatureEnabled || isBansFeatureEnabled) && (
+    <CardActions disableSpacing>
       {isFavoriteFeatureEnabled && (
         <IconButton
           aria-label={t('championFavoriteCTA')}

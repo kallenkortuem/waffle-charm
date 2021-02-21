@@ -8,7 +8,7 @@ import {
   Link,
   makeStyles,
   Theme,
-  Typography
+  Typography,
 } from '@material-ui/core'
 import BanIcon from '@material-ui/icons/Block'
 import FavoriteIcon from '@material-ui/icons/FavoriteBorder'
@@ -26,7 +26,7 @@ import {
   selectLolVersion,
   selectMasteryEntities,
   selectMasteryLoadingStatus,
-  selectVisibleChampionIds
+  selectVisibleChampionIds,
 } from '@waffle-charm/store'
 import React from 'react'
 import { useTranslation } from 'react-i18next'

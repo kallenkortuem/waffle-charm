@@ -145,4 +145,3 @@ export const createSelectFavoriteById = () =>
       return bansEntities[id]
     }
   )
-

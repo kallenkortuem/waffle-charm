@@ -6,7 +6,7 @@ import {
   TableBody,
   TableCell,
   TableHead,
-  TableRow
+  TableRow,
 } from '@material-ui/core'
 import TableContainer from '@material-ui/core/TableContainer'
 import BanIcon from '@material-ui/icons/Block'
@@ -22,7 +22,7 @@ import {
   selectChampionEntities,
   selectChampionVendor,
   selectMasteryEntities,
-  selectVisibleChampionIds
+  selectVisibleChampionIds,
 } from '@waffle-charm/store'
 import React from 'react'
 import { useTranslation } from 'react-i18next'

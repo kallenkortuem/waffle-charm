@@ -183,10 +183,10 @@ const MasteryGridViewItem = (props: MasteryViewerItem): React.ReactElement => {
                     return i === 0 ? (
                       tag
                     ) : (
-                      <>
+                      <span key={tag}>
                         {bull}
                         {tag}
-                      </>
+                      </span>
                     )
                   })}
                 </Typography>

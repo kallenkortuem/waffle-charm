@@ -5,7 +5,6 @@ describe('bans reducer', () => {
     const expected = bansAdapter.getInitialState({
       loadingStatus: 'not loaded',
       error: null,
-      featureEnabled: false,
     })
 
     expect(bansReducer(undefined, { type: '' })).toEqual(expected)
@@ -19,7 +18,6 @@ describe('bans reducer', () => {
         loadingStatus: 'loading',
         error: null,
         entities: {},
-        featureEnabled: false,
       })
     )
 
@@ -30,7 +28,6 @@ describe('bans reducer', () => {
         loadingStatus: 'loaded',
         error: null,
         entities: { 1: { id: 1 } },
-        featureEnabled: false,
       })
     )
 
@@ -44,7 +41,6 @@ describe('bans reducer', () => {
         loadingStatus: 'error',
         error: 'Uh oh',
         entities: { 1: { id: 1 } },
-        featureEnabled: false,
       })
     )
   })

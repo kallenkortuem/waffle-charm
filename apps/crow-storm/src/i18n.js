@@ -55,7 +55,7 @@ export const resources = {
       championGridFilterSortByMastery: 'Mastery',
       championGridFilterSortByFavorite: 'Favorite',
       championGridFilterSortByBan: 'Ban',
-      championBanActionCTA: 'Ban',
+      championBanCTA: 'Ban',
       championFavoriteCTA: 'Favorite',
       championSearchFilter: 'Search Champion',
       championInputSearch: 'Clear Input',

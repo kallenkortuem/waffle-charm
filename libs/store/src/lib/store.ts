@@ -48,7 +48,7 @@ const persistConfig: PersistConfig<any> = {
     SKIN_PREFERENCE_FEATURE_KEY,
     TAG_FEATURE_KEY,
   ],
-  version: 1,
+  version: 2,
 }
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

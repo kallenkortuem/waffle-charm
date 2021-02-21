@@ -1,14 +1,15 @@
 name: Node.js CI
 
 on:
-  push:
-    branches: [master]
   pull_request:
     branches: [master]
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      NX_BRANCH: ${{ github.event.number }}
+      NX_RUN_GROUP: ${{ github.run_id }}
 
     strategy:
       matrix:

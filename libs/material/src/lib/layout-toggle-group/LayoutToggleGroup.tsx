@@ -8,9 +8,9 @@ import {
 } from '@material-ui/core'
 import BanIcon from '@material-ui/icons/Block'
 import FavoriteIcon from '@material-ui/icons/FavoriteBorder'
+import ViewColumnIcon from '@material-ui/icons/ViewColumn'
 import ViewComfyIcon from '@material-ui/icons/ViewComfy'
 import ViewListIcon from '@material-ui/icons/ViewList'
-import ViewColumnIcon from '@material-ui/icons/ViewColumn'
 import ViewModuleIcon from '@material-ui/icons/ViewModule'
 import {
   ToggleButton,
@@ -20,8 +20,6 @@ import {
 import {
   masteryViewerActions,
   MasteryViewerSortOptions,
-  selectBansFeatureEnabled,
-  selectFavoriteFeatureEnabled,
   selectLayout,
   selectSortBy,
 } from '@waffle-charm/store'
@@ -72,8 +70,6 @@ export function LayoutToggleGroup(props: LayoutToggleGroupProps) {
   const classes = useStyles()
   const layout = useSelector(selectLayout)
   const sortBy = useSelector(selectSortBy)
-  const isFavoriteFeatureEnabled = useSelector(selectFavoriteFeatureEnabled)
-  const isBansFeatureEnabled = useSelector(selectBansFeatureEnabled)
 
   const handleLayoutChange = (
     event: React.MouseEvent<HTMLElement>,
@@ -92,50 +88,42 @@ export function LayoutToggleGroup(props: LayoutToggleGroupProps) {
   }
   return (
     <>
-      {(isFavoriteFeatureEnabled || isBansFeatureEnabled) && (
-        <StyledToggleButtonGroup
-          size="small"
-          aria-label={t('championGridFilterSortOrder')}
-          exclusive
-          value={sortBy}
-          onChange={handleSortByChange}
+      <StyledToggleButtonGroup
+        size="small"
+        aria-label={t('championGridFilterSortOrder')}
+        exclusive
+        value={sortBy}
+        onChange={handleSortByChange}
+      >
+        <ToggleButton
+          value={MasteryViewerSortOptions.favorite}
+          aria-label={t('module')}
         >
-          {isFavoriteFeatureEnabled && (
-            <ToggleButton
-              value={MasteryViewerSortOptions.favorite}
-              aria-label={t('module')}
-            >
-              <Tooltip title={t('module')}>
-                <FavoriteIcon
-                  color={
-                    sortBy === MasteryViewerSortOptions.favorite
-                      ? 'secondary'
-                      : 'disabled'
-                  }
-                />
-              </Tooltip>
-            </ToggleButton>
-          )}
+          <Tooltip title={t('module')}>
+            <FavoriteIcon
+              color={
+                sortBy === MasteryViewerSortOptions.favorite
+                  ? 'secondary'
+                  : 'disabled'
+              }
+            />
+          </Tooltip>
+        </ToggleButton>
 
-          {isBansFeatureEnabled && (
-            <ToggleButton
-              value={MasteryViewerSortOptions.bans}
-              aria-label={t('compact')}
-              data-cy="layout-selector-compact"
-            >
-              <Tooltip title={t('compact')}>
-                <BanIcon
-                  color={
-                    sortBy === MasteryViewerSortOptions.bans
-                      ? 'error'
-                      : 'disabled'
-                  }
-                />
-              </Tooltip>
-            </ToggleButton>
-          )}
-        </StyledToggleButtonGroup>
-      )}
+        <ToggleButton
+          value={MasteryViewerSortOptions.bans}
+          aria-label={t('compact')}
+          data-cy="layout-selector-compact"
+        >
+          <Tooltip title={t('compact')}>
+            <BanIcon
+              color={
+                sortBy === MasteryViewerSortOptions.bans ? 'error' : 'disabled'
+              }
+            />
+          </Tooltip>
+        </ToggleButton>
+      </StyledToggleButtonGroup>
       <Divider flexItem orientation="vertical" className={classes.divider} />
       <StyledToggleButtonGroup
         size="small"
@@ -162,7 +150,7 @@ export function LayoutToggleGroup(props: LayoutToggleGroupProps) {
             <ViewModuleIcon />
           </Tooltip>
         </ToggleButton>
-        <ToggleButton
+        {/* <ToggleButton
           value={LayoutOption.compact}
           aria-label={t('compact')}
           data-cy="layout-selector-compact"
@@ -170,8 +158,8 @@ export function LayoutToggleGroup(props: LayoutToggleGroupProps) {
           <Tooltip title={t('compact')}>
             <ViewComfyIcon />
           </Tooltip>
-        </ToggleButton>
-        <ToggleButton
+        </ToggleButton> */}
+        {/* <ToggleButton
           value={LayoutOption.portrait}
           aria-label={t('layoutPortrait')}
           data-cy="layout-selector-portrait"
@@ -179,7 +167,7 @@ export function LayoutToggleGroup(props: LayoutToggleGroupProps) {
           <Tooltip title={t('layoutPortrait')}>
             <ViewColumnIcon />
           </Tooltip>
-        </ToggleButton>
+        </ToggleButton> */}
       </StyledToggleButtonGroup>
     </>
   )

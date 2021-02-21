@@ -8,7 +8,7 @@ import {
   Link,
   makeStyles,
   Theme,
-  Typography,
+  Typography
 } from '@material-ui/core'
 import BanIcon from '@material-ui/icons/Block'
 import FavoriteIcon from '@material-ui/icons/FavoriteBorder'
@@ -20,15 +20,13 @@ import {
   createSelectBansById,
   createSelectFavoriteById,
   favoriteActions,
-  selectBansFeatureEnabled,
   selectChampionEntities,
   selectChampionVendor,
-  selectFavoriteFeatureEnabled,
   selectLevel,
   selectLolVersion,
   selectMasteryEntities,
   selectMasteryLoadingStatus,
-  selectVisibleChampionIds,
+  selectVisibleChampionIds
 } from '@waffle-charm/store'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
@@ -97,8 +95,6 @@ const MasteryGridViewItem = (props: MasteryViewerItem): React.ReactElement => {
   const championVendor = useSelector(selectChampionVendor)
   const lolVersion = useSelector(selectLolVersion)
   const masteryLoadingStatus = useSelector(selectMasteryLoadingStatus)
-  const isFavoriteFeatureEnabled = useSelector(selectFavoriteFeatureEnabled)
-  const isBansFeatureEnabled = useSelector(selectBansFeatureEnabled)
   const bull = <span className={classes.bullet}>•</span>
 
   const selectBansById = createSelectBansById()
@@ -125,21 +121,18 @@ const MasteryGridViewItem = (props: MasteryViewerItem): React.ReactElement => {
     dispatch(a)
   }
 
-  const actionCTAs = (isFavoriteFeatureEnabled || isBansFeatureEnabled) && (
+  const actionCTAs = (
     <CardActions disableSpacing>
-      {isFavoriteFeatureEnabled && (
-        <IconButton
-          aria-label={t('championFavoriteCTA')}
-          onClick={handleFavoriteClick}
-        >
-          <FavoriteIcon color={isFavorite ? 'secondary' : 'disabled'} />
-        </IconButton>
-      )}
-      {isBansFeatureEnabled && (
-        <IconButton aria-label={t('championBanCTA')} onClick={handleBanClick}>
-          <BanIcon color={isBaned ? 'error' : 'disabled'} />
-        </IconButton>
-      )}
+      <IconButton
+        aria-label={t('championFavoriteCTA')}
+        onClick={handleFavoriteClick}
+      >
+        <FavoriteIcon color={isFavorite ? 'secondary' : 'disabled'} />
+      </IconButton>
+
+      <IconButton aria-label={t('championBanCTA')} onClick={handleBanClick}>
+        <BanIcon color={isBaned ? 'error' : 'disabled'} />
+      </IconButton>
     </CardActions>
   )
 

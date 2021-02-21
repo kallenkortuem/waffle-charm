@@ -19,7 +19,6 @@ export interface FavoriteEntity {
 export interface FavoriteState extends EntityState<FavoriteEntity> {
   loadingStatus: 'not loaded' | 'loading' | 'loaded' | 'error'
   error: string
-  featureEnabled: false
 }
 
 export const favoriteAdapter = createEntityAdapter<FavoriteEntity>()
@@ -57,7 +56,6 @@ export const initialFavoriteState: FavoriteState = favoriteAdapter.getInitialSta
   {
     loadingStatus: 'not loaded',
     error: null,
-    featureEnabled: false,
   }
 )
 
@@ -148,7 +146,3 @@ export const createSelectFavoriteById = () =>
     }
   )
 
-export const selectFavoriteFeatureEnabled = createSelector(
-  getFavoriteState,
-  (state) => state.featureEnabled
-)

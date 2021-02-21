@@ -1,25 +1,32 @@
 import {
+  IconButton,
   Link,
   Paper,
   Table,
   TableBody,
   TableCell,
   TableHead,
-  TableRow,
+  TableRow
 } from '@material-ui/core'
 import TableContainer from '@material-ui/core/TableContainer'
+import BanIcon from '@material-ui/icons/Block'
+import FavoriteIcon from '@material-ui/icons/FavoriteBorder'
 import { getChampionInfoUrl } from '@waffle-charm/champions'
 import { MasteryProgress } from '@waffle-charm/mastery'
 import {
+  bansActions,
+  createSelectBansById,
+  createSelectFavoriteById,
   createSelectFilteredChampion,
+  favoriteActions,
   selectChampionEntities,
   selectChampionVendor,
   selectMasteryEntities,
-  selectVisibleChampionIds,
+  selectVisibleChampionIds
 } from '@waffle-charm/store'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 export interface MasteryViewerItem {
   championId: string
@@ -27,6 +34,8 @@ export interface MasteryViewerItem {
 
 const MasteryListViewItem = (props: MasteryViewerItem) => {
   const { championId } = props
+  const { t } = useTranslation()
+  const dispatch = useDispatch()
   const champion = useSelector(selectChampionEntities)[championId]
   const mastery = useSelector(selectMasteryEntities)[championId]
   const championVendor = useSelector(selectChampionVendor)
@@ -34,6 +43,30 @@ const MasteryListViewItem = (props: MasteryViewerItem) => {
   const filteredChampion = useSelector((state) =>
     selectFilteredChampion(state, champion)
   )
+
+  const selectBansById = createSelectBansById()
+  const isBaned = useSelector((state) => selectBansById(state, champion.key))
+
+  const selectFavoriteById = createSelectFavoriteById()
+  const isFavorite = useSelector((state) =>
+    selectFavoriteById(state, champion.key)
+  )
+
+  const handleBanClick = () => {
+    const a = isBaned
+      ? bansActions.remove(championId)
+      : bansActions.add({ id: championId })
+
+    dispatch(a)
+  }
+
+  const handleFavoriteClick = () => {
+    const a = isFavorite
+      ? favoriteActions.remove(championId)
+      : favoriteActions.add({ id: championId })
+
+    dispatch(a)
+  }
 
   return (
     <TableRow
@@ -51,6 +84,18 @@ const MasteryListViewItem = (props: MasteryViewerItem) => {
         >
           {champion.name}
         </Link>
+      </TableCell>
+      <TableCell>
+        <IconButton
+          aria-label={t('championFavoriteCTA')}
+          onClick={handleFavoriteClick}
+        >
+          <FavoriteIcon color={isFavorite ? 'secondary' : 'disabled'} />
+        </IconButton>
+
+        <IconButton aria-label={t('championBanCTA')} onClick={handleBanClick}>
+          <BanIcon color={isBaned ? 'error' : 'disabled'} />
+        </IconButton>
       </TableCell>
       <TableCell>{mastery?.championLevel || 0}</TableCell>
       <TableCell>{mastery?.championPoints.toLocaleString() || 0}</TableCell>
@@ -78,6 +123,7 @@ export const MasteryListView = (): React.ReactElement => {
         <TableHead>
           <TableRow>
             <TableCell>{t('champion')}</TableCell>
+            <TableCell></TableCell>
             <TableCell>{t('masteryLevel')}</TableCell>
             <TableCell>{t('totalPoints')}</TableCell>
             <TableCell>{t('progress')}</TableCell>

@@ -45,7 +45,7 @@ export const useStyles = makeStyles((theme: Theme) =>
     summoner: {},
     summonerName: {},
     summoners: {
-      gridArea: 'summoners'
+      gridArea: 'summoners',
     },
     rankImage: {},
     rankLabel: {},

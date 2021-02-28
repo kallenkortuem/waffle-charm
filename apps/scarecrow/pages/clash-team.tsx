@@ -1,7 +1,78 @@
-import { createStyles, makeStyles, Theme } from '@material-ui/core'
+import {
+  Box,
+  createStyles,
+  makeStyles,
+  Paper,
+  Tab,
+  Tabs,
+  Theme,
+  Typography,
+  useTheme,
+} from '@material-ui/core'
 import clsx from 'clsx'
 import React from 'react'
-import { useStyles } from './clash-team-styles'
+import SwipeableViews from 'react-swipeable-views'
+
+export const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    active: {},
+    champion: {},
+    championImage: {},
+    championStats: {},
+    champions: {},
+    clashTeam: {
+      gridArea: 'clashTeam',
+    },
+    clashTier: {},
+    goldShareIcon: {},
+    horizontalDivider: {},
+    kda: {},
+    kdaHigh: {},
+    kdaLow: {},
+    masteryLevelIcon: {},
+    masteryPoints: {},
+    match: {},
+    matchDefeat: {},
+    matchGoldShare: {},
+    matchLoses: {},
+    matchResult: {},
+    matchRole: {},
+    matchTotal: {},
+    matchVictory: {},
+    matchWinLoss: {},
+    matchWins: {},
+    matches: {},
+    summoner: {},
+    summonerName: {},
+    summoners: {
+      gridArea: 'summoners'
+    },
+    rankImage: {},
+    rankLabel: {},
+    roleIcon: {},
+    root: {
+      display: 'grid',
+      gridTemplateAreas: `
+      'clashTeam clashTeam tabs tabs'
+      'summoners summoners summoners summoners'
+      `,
+    },
+    tab: {},
+    tabHistory: {},
+    tabMastery: {},
+    tabRanked: {},
+    tabs: {
+      gridArea: 'tabs',
+    },
+    teamAbbreviatedName: {},
+    teamImage: {},
+    teamName: {},
+    totalMasteryLabel: {},
+    totalMasteryPoints: {},
+    verticalDivider: {},
+    winRate: {},
+  })
+)
 
 interface RankedPlayerStatsChampionsProps {
   championName: string
@@ -368,7 +439,7 @@ export const PlayerStatsHistory = (
             },
             i
           ) => (
-            <div className={classes.match}>
+            <div className={classes.match} key={i}>
               <img
                 className={classes.championImage}
                 src={championImgSrc}
@@ -412,8 +483,54 @@ interface ClashTeamProps {
   players: string[]
 }
 
+interface TabPanelProps {
+  children?: React.ReactNode
+  dir?: string
+  index: any
+  value: any
+}
+
+function TabPanel(props: TabPanelProps) {
+  const { children, value, index, ...other } = props
+  const classes = useStyles()
+
+  return (
+    <div
+      className={classes.summoners}
+      role="tabpanel"
+      hidden={value !== index}
+      id={`full-width-tabpanel-${index}`}
+      aria-labelledby={`full-width-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box p={3}>
+          <Typography>{children}</Typography>
+        </Box>
+      )}
+    </div>
+  )
+}
+
+function a11yProps(index: any) {
+  return {
+    id: `full-width-tab-${index}`,
+    'aria-controls': `full-width-tabpanel-${index}`,
+  }
+}
+
 export const ClashTeam = (): React.ReactElement => {
   const classes = useStyles()
+  const theme = useTheme()
+  const [value, setValue] = React.useState(0)
+
+  const handleChange = (event: React.ChangeEvent<any>, newValue: number) => {
+    setValue(newValue)
+  }
+
+  const handleChangeIndex = (index: number) => {
+    setValue(index)
+  }
   const {
     teamImageSrc,
     teamAbbreviatedName,
@@ -449,41 +566,61 @@ export const ClashTeam = (): React.ReactElement => {
         <p className={classes.teamName}>{teamName}</p>
         <p className={classes.clashTier}>{clashTierLabel}</p>
       </div>
-      <div className={classes.tabs}>
-        <div
-          className={clsx(classes.summoners, classes.tab, classes.tabRanked, {
+
+      <Tabs
+        className={classes.tabs}
+        value={value}
+        onChange={handleChange}
+        indicatorColor="primary"
+        textColor="primary"
+        centered
+      >
+        <Tab
+          className={clsx(classes.tab, classes.tabRanked, {
             [classes.active]: true,
           })}
-          aria-label={rankedTabLabel}
-        >
+          label={rankedTabLabel}
+          {...a11yProps(0)}
+        ></Tab>
+        <Tab
+          className={clsx(classes.tab, classes.tabMastery, {
+            [classes.active]: true,
+          })}
+          label={masteryTabLabel}
+          {...a11yProps(1)}
+        ></Tab>
+        <Tab
+          className={clsx(classes.tab, classes.tabHistory, {
+            [classes.active]: true,
+          })}
+          label={historyTabLabel}
+          {...a11yProps(2)}
+        ></Tab>
+      </Tabs>
+      <SwipeableViews
+        axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+        index={value}
+        onChangeIndex={handleChangeIndex}
+      >
+        <TabPanel value={value} index={0} dir={theme.direction}>
           {players &&
             players.map((summonerId, i) => (
               <PlayerStatsRankedResolver key={i} summonerName={summonerId} />
             ))}
-        </div>
-        <div
-          className={clsx(classes.summoners, classes.tab, classes.tabMastery, {
-            [classes.active]: true,
-          })}
-          aria-label={masteryTabLabel}
-        >
+        </TabPanel>
+        <TabPanel value={value} index={1} dir={theme.direction}>
           {players &&
             players.map((summonerId, i) => (
               <PlayerStatsMasteryResolver key={i} summonerName={summonerId} />
             ))}
-        </div>
-        <div
-          className={clsx(classes.summoners, classes.tab, classes.tabHistory, {
-            [classes.active]: true,
-          })}
-          aria-label={historyTabLabel}
-        >
+        </TabPanel>
+        <TabPanel value={value} index={2} dir={theme.direction}>
           {players &&
             players.map((summonerId, i) => (
               <PlayerStatsHistoryResolver key={i} summonerName={summonerId} />
             ))}
-        </div>
-      </div>
+        </TabPanel>
+      </SwipeableViews>
     </div>
   )
 }

@@ -25,23 +25,15 @@ import {
   selectTag,
   selectVisibleChampionIds,
 } from '@waffle-charm/store'
-import React, { lazy, Suspense, useState } from 'react'
+import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
+import MasteryListViewV2 from './mastery-list-view/MasteryListViewV2'
+import MasteryModuleView from './mastery-module-view/MasteryModuleView'
 // import { MasteryPortraitView } from './mastery-portrait-view/MasteryPortraitView'
 import MasteryViewerLevelSelect from './mastery-viewer-level-select/MasteryViewerLevelSelect'
 import MasteryViewerSortSelect from './mastery-viewer-sort-select/MasteryViewerSortSelect'
 import MasteryViewerTagSelect from './mastery-viewer-tag-select/MasteryViewerTagSelect'
-
-// const MasteryCompactView = lazy(
-//   () => import('./mastery-compact-view/MasteryCompactView')
-// )
-const MasteryModuleView = lazy(
-  () => import('./mastery-module-view/MasteryModuleView')
-)
-const MasteryListView = lazy(
-  () => import('./mastery-list-view/MasteryListView')
-)
 
 export const MASTERY_LEVEL = 'masteryLevel'
 export const MASTERY_LAYOUT = 'masteryLayout'
@@ -172,17 +164,17 @@ export const MasteryViewer = (
         </Typography>
       </div>
 
-      <Suspense fallback={<Paper style={{ minHeight: '500px' }} />}>
-        {layout === 'module' && <MasteryModuleView />}
-        {layout === 'list' && <MasteryListView />}
-        {/* {layout === 'compact' && <MasteryCompactView />} */}
-        {/* {layout === 'portrait' && <MasteryPortraitView />} */}
-        {visibleChampionIds.length < filteredChampionIds.length ? (
-          <Button onClick={() => dispatch(masteryViewerActions.nextPage())}>
-            {t('showMore', { pageSize })}
-          </Button>
-        ) : null}
-      </Suspense>
+      {layout === 'module' && <MasteryModuleView />}
+      {/* {layout === 'list' && <MasteryListView />} */}
+      {layout === 'list' && <MasteryListViewV2 />}
+      {/* {layout === 'compact' && <MasteryCompactView />} */}
+      {/* {layout === 'portrait' && <MasteryPortraitView />} */}
+      {visibleChampionIds.length < filteredChampionIds.length &&
+      layout !== 'list' ? (
+        <Button onClick={() => dispatch(masteryViewerActions.nextPage())}>
+          {t('showMore', { pageSize })}
+        </Button>
+      ) : null}
     </div>
   )
 }

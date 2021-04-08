@@ -63,6 +63,7 @@ export const resources = {
       showMore: 'Show {{pageSize}} more',
       clearFilter: 'Clear Filter',
       skinPreferenceSelect: 'Skin Preference',
+      lastPlayTime: 'Last Played',
     },
   },
 }

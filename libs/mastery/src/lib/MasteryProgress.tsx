@@ -80,7 +80,12 @@ export const MasteryProgress = (
   switch (props.mastery.championLevel) {
     case 7:
       return (
-        <Box display="flex" flexDirection="column" justifyContent="flex-end">
+        <Box
+          display="flex"
+          flexDirection="column"
+          justifyContent="flex-end"
+          width="100%"
+        >
           <MasteryLinearProgress
             color="secondary"
             current={uncappedPointsSinceLastLevel}
@@ -101,7 +106,7 @@ export const MasteryProgress = (
             total: 3,
           })}
         >
-          <Box display="flex" justifyContent="flex-end">
+          <Box display="flex" justifyContent="flex-end" width="100%">
             <MasteryToken mastery={mastery} threshold={1} />
             <MasteryToken mastery={mastery} threshold={2} />
             <MasteryToken mastery={mastery} threshold={3} />
@@ -116,7 +121,7 @@ export const MasteryProgress = (
             total: 2,
           })}
         >
-          <Box display="flex" justifyContent="flex-end">
+          <Box display="flex" justifyContent="flex-end" width="100%">
             <MasteryToken mastery={mastery} threshold={1} />
             <MasteryToken mastery={mastery} threshold={2} />
           </Box>
@@ -124,18 +129,25 @@ export const MasteryProgress = (
       )
     default:
       return (
-        <MasteryLinearProgress
-          current={mastery.championPointsSinceLastLevel}
-          total={
-            mastery.championPointsUntilNextLevel +
-            mastery.championPointsSinceLastLevel
-          }
-          label={t('percentMasteryProgress', {
-            percent: progress ?? 0,
-            level: mastery.championLevel + 1,
-          })}
-          progress={progress}
-        />
+        <Box
+          display="flex"
+          flexDirection="column"
+          justifyContent="flex-end"
+          width="100%"
+        >
+          <MasteryLinearProgress
+            current={mastery.championPointsSinceLastLevel}
+            total={
+              mastery.championPointsUntilNextLevel +
+              mastery.championPointsSinceLastLevel
+            }
+            label={t('percentMasteryProgress', {
+              percent: progress ?? 0,
+              level: mastery.championLevel + 1,
+            })}
+            progress={progress}
+          />
+        </Box>
       )
   }
 }

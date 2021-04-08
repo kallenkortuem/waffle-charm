@@ -28,7 +28,7 @@ import {
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import MasteryListViewV2 from './mastery-list-view/MasteryListViewV2'
+import MasteryListView from './mastery-list-view/MasteryListView'
 import MasteryModuleView from './mastery-module-view/MasteryModuleView'
 // import { MasteryPortraitView } from './mastery-portrait-view/MasteryPortraitView'
 import MasteryViewerLevelSelect from './mastery-viewer-level-select/MasteryViewerLevelSelect'
@@ -165,8 +165,7 @@ export const MasteryViewer = (
       </div>
 
       {layout === 'module' && <MasteryModuleView />}
-      {/* {layout === 'list' && <MasteryListView />} */}
-      {layout === 'list' && <MasteryListViewV2 />}
+      {layout === 'list' && <MasteryListView />}
       {/* {layout === 'compact' && <MasteryCompactView />} */}
       {/* {layout === 'portrait' && <MasteryPortraitView />} */}
       {visibleChampionIds.length < filteredChampionIds.length &&

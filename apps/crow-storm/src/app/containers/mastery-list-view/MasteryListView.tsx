@@ -1,55 +1,56 @@
+import { IconButton, Link, Paper } from '@material-ui/core'
 import {
-  IconButton,
-  Link,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-} from '@material-ui/core'
-import TableContainer from '@material-ui/core/TableContainer'
+  DataGrid,
+  GridColDef,
+  GridValueFormatterParams,
+} from '@material-ui/data-grid'
 import BanIcon from '@material-ui/icons/Block'
 import FavoriteIcon from '@material-ui/icons/FavoriteBorder'
+import { createSelector } from '@reduxjs/toolkit'
 import { getChampionInfoUrl } from '@waffle-charm/champions'
 import { MasteryProgress } from '@waffle-charm/mastery'
 import {
   bansActions,
+  ChampionEntity,
   createSelectBansById,
   createSelectFavoriteById,
-  createSelectFilteredChampion,
   favoriteActions,
+  MasteryEntity,
   selectChampionEntities,
   selectChampionVendor,
+  selectFilteredChampionIds,
   selectMasteryEntities,
-  selectVisibleChampionIds,
 } from '@waffle-charm/store'
-import React from 'react'
+import { formatDistanceToNowStrict } from 'date-fns'
+import * as React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 
-export interface MasteryViewerItem {
-  championId: string
+type NarrowedGridColDef = GridColDef & {
+  field: keyof ChampionEntity | keyof MasteryEntity | string
 }
 
-const MasteryListViewItem = (props: MasteryViewerItem) => {
+const selectRows = createSelector(
+  selectFilteredChampionIds,
+  selectChampionEntities,
+  selectMasteryEntities,
+  (championIds, champions, masteries) => {
+    return championIds.map((id) => {
+      return { championId: id, ...champions[id], ...masteries[id] }
+    })
+  }
+)
+
+const PickBan = (props: { championId: string }): React.ReactElement => {
   const { championId } = props
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const champion = useSelector(selectChampionEntities)[championId]
-  const mastery = useSelector(selectMasteryEntities)[championId]
-  const championVendor = useSelector(selectChampionVendor)
-  const selectFilteredChampion = createSelectFilteredChampion()
-  const filteredChampion = useSelector((state) =>
-    selectFilteredChampion(state, champion)
-  )
-
   const selectBansById = createSelectBansById()
-  const isBaned = useSelector((state) => selectBansById(state, champion.key))
-
+  const isBaned = useSelector((state) => selectBansById(state, champion?.key))
   const selectFavoriteById = createSelectFavoriteById()
   const isFavorite = useSelector((state) =>
-    selectFavoriteById(state, champion.key)
+    selectFavoriteById(state, champion?.key)
   )
 
   const handleBanClick = () => {
@@ -69,70 +70,89 @@ const MasteryListViewItem = (props: MasteryViewerItem) => {
   }
 
   return (
-    <TableRow
-      key={championId}
-      style={{
-        display: filteredChampion ? 'table-row' : 'none',
-      }}
-    >
-      <TableCell>
+    <>
+      <IconButton
+        aria-label={t('championFavoriteCTA')}
+        onClick={handleFavoriteClick}
+      >
+        <FavoriteIcon color={isFavorite ? 'secondary' : 'disabled'} />
+      </IconButton>
+
+      <IconButton aria-label={t('championBanCTA')} onClick={handleBanClick}>
+        <BanIcon color={isBaned ? 'error' : 'disabled'} />
+      </IconButton>
+    </>
+  )
+}
+
+export default function MasteryListViewV2(): React.ReactElement {
+  const { t } = useTranslation()
+  const rows = useSelector(selectRows)
+  const championVendor = useSelector(selectChampionVendor)
+
+  const columns: NarrowedGridColDef[] = [
+    {
+      field: 'name',
+      headerName: t('champion'),
+      width: 169,
+      renderCell: ({ row }) => (
         <Link
           variant="body2"
-          href={getChampionInfoUrl(champion, championVendor)}
+          href={getChampionInfoUrl(row as any, championVendor)}
           underline="hover"
           color="textPrimary"
         >
-          {champion.name}
+          {row?.name}
         </Link>
-      </TableCell>
-      <TableCell>
-        <IconButton
-          aria-label={t('championFavoriteCTA')}
-          onClick={handleFavoriteClick}
-        >
-          <FavoriteIcon color={isFavorite ? 'secondary' : 'disabled'} />
-        </IconButton>
-
-        <IconButton aria-label={t('championBanCTA')} onClick={handleBanClick}>
-          <BanIcon color={isBaned ? 'error' : 'disabled'} />
-        </IconButton>
-      </TableCell>
-      <TableCell>{mastery?.championLevel || 0}</TableCell>
-      <TableCell>{mastery?.championPoints.toLocaleString() || 0}</TableCell>
-      <TableCell>
-        {mastery ? <MasteryProgress mastery={mastery} /> : null}
-      </TableCell>
-    </TableRow>
-  )
-}
-
-export const MasteryListView = (): React.ReactElement => {
-  const { t } = useTranslation()
-
-  const visibleChampionIds = useSelector(selectVisibleChampionIds)
-
-  const items = React.useMemo(() => {
-    return visibleChampionIds?.map((championId) => (
-      <MasteryListViewItem key={championId} championId={championId} />
-    ))
-  }, [visibleChampionIds])
+      ),
+    },
+    {
+      field: ' ',
+      headerName: ' ',
+      disableColumnMenu: true,
+      hideSortIcons: true,
+      sortable: false,
+      width: 130,
+      renderCell: ({ row }) => {
+        return <PickBan championId={row?.championId || row?.id} />
+      },
+    },
+    { field: 'championLevel', headerName: t('masteryLevel'), width: 100 },
+    {
+      field: 'championPoints',
+      headerName: t('totalPoints'),
+      width: 120,
+      valueFormatter: ({ value }: GridValueFormatterParams) =>
+        value?.toLocaleString(),
+    },
+    {
+      field: 'lastPlayTime',
+      headerName: t('lastPlayTime'),
+      width: 100,
+      valueFormatter: ({ value }: GridValueFormatterParams) =>
+        value ? formatDistanceToNowStrict((value as number) || 0) : '',
+    },
+    {
+      field: 'championPointsUntilNextLevel',
+      headerName: t('progress'),
+      flex: 1,
+      renderCell: ({ row }) =>
+        row?.championLevel ? (
+          <MasteryProgress mastery={row as any} />
+        ) : (
+          <div></div>
+        ),
+    },
+  ]
 
   return (
-    <TableContainer component={Paper} data-cy="mastery-list">
-      <Table aria-label={t('masteryTable')}>
-        <TableHead>
-          <TableRow>
-            <TableCell>{t('champion')}</TableCell>
-            <TableCell></TableCell>
-            <TableCell>{t('masteryLevel')}</TableCell>
-            <TableCell>{t('totalPoints')}</TableCell>
-            <TableCell>{t('progress')}</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>{items}</TableBody>
-      </Table>
-    </TableContainer>
+    <Paper style={{ height: 650, width: '100%' }}>
+      <DataGrid
+        rows={rows}
+        columns={columns}
+        pageSize={10}
+        disableSelectionOnClick
+      />
+    </Paper>
   )
 }
-
-export default MasteryListView

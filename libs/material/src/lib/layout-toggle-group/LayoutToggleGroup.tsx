@@ -97,9 +97,9 @@ export function LayoutToggleGroup(props: LayoutToggleGroupProps) {
       >
         <ToggleButton
           value={MasteryViewerSortOptions.favorite}
-          aria-label={t('module')}
+          aria-label={t('championFavoriteCTA')}
         >
-          <Tooltip title={t('module')}>
+          <Tooltip title={t('championFavoriteCTA')}>
             <FavoriteIcon
               color={
                 sortBy === MasteryViewerSortOptions.favorite
@@ -112,10 +112,9 @@ export function LayoutToggleGroup(props: LayoutToggleGroupProps) {
 
         <ToggleButton
           value={MasteryViewerSortOptions.bans}
-          aria-label={t('compact')}
-          data-cy="layout-selector-compact"
+          aria-label={t('championBanCTA')}
         >
-          <Tooltip title={t('compact')}>
+          <Tooltip title={t('championBanCTA')}>
             <BanIcon
               color={
                 sortBy === MasteryViewerSortOptions.bans ? 'error' : 'disabled'

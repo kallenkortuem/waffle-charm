@@ -146,7 +146,7 @@ export default function MasteryListViewV2(): React.ReactElement {
   ]
 
   return (
-    <Paper style={{ height: 650, width: '100%' }}>
+    <Paper style={{ height: 650, width: '100%' }} data-cy="mastery-list">
       <DataGrid
         rows={rows}
         columns={columns}

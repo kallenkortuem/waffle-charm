@@ -1,6 +1,6 @@
 # WaffleCharm
 
-View the live site at https://fiddlestats.com
+View the live site at https://fiddlestats.com/?summonerName=Tactical
 
 ## Install dependencies
 

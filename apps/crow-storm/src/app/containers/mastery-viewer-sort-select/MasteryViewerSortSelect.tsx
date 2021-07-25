@@ -44,10 +44,6 @@ export function MasteryViewerSortSelect(
         <MenuItem value="mastery">
           {t('championGridFilterSortByMastery')}
         </MenuItem>
-        <MenuItem value="favorite">
-          {t('championGridFilterSortByFavorite')}
-        </MenuItem>
-        <MenuItem value="bans">{t('championGridFilterSortByBan')}</MenuItem>
       </Select>
     </FormControl>
   )

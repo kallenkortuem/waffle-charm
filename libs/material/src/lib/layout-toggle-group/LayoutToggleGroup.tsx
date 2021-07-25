@@ -6,10 +6,6 @@ import {
   Tooltip,
   withStyles,
 } from '@material-ui/core'
-import BanIcon from '@material-ui/icons/Block'
-import FavoriteIcon from '@material-ui/icons/FavoriteBorder'
-import ViewColumnIcon from '@material-ui/icons/ViewColumn'
-import ViewComfyIcon from '@material-ui/icons/ViewComfy'
 import ViewListIcon from '@material-ui/icons/ViewList'
 import ViewModuleIcon from '@material-ui/icons/ViewModule'
 import {
@@ -88,41 +84,6 @@ export function LayoutToggleGroup(props: LayoutToggleGroupProps) {
   }
   return (
     <>
-      <StyledToggleButtonGroup
-        size="small"
-        aria-label={t('championGridFilterSortOrder')}
-        exclusive
-        value={sortBy}
-        onChange={handleSortByChange}
-      >
-        <ToggleButton
-          value={MasteryViewerSortOptions.favorite}
-          aria-label={t('championFavoriteCTA')}
-        >
-          <Tooltip title={t('championFavoriteCTA')}>
-            <FavoriteIcon
-              color={
-                sortBy === MasteryViewerSortOptions.favorite
-                  ? 'secondary'
-                  : 'disabled'
-              }
-            />
-          </Tooltip>
-        </ToggleButton>
-
-        <ToggleButton
-          value={MasteryViewerSortOptions.bans}
-          aria-label={t('championBanCTA')}
-        >
-          <Tooltip title={t('championBanCTA')}>
-            <BanIcon
-              color={
-                sortBy === MasteryViewerSortOptions.bans ? 'error' : 'disabled'
-              }
-            />
-          </Tooltip>
-        </ToggleButton>
-      </StyledToggleButtonGroup>
       <Divider flexItem orientation="vertical" className={classes.divider} />
       <StyledToggleButtonGroup
         size="small"

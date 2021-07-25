@@ -85,13 +85,14 @@ export default function MasteryListViewV2(): React.ReactElement {
   ]
 
   return (
-    <Paper style={{ height: 650, width: '100%' }} data-cy="mastery-list">
+    <div style={{ width: '100%' }} data-cy="mastery-list">
       <DataGrid
         rows={rows}
         columns={columns}
-        pageSize={10}
-        disableSelectionOnClick
+        hideFooterSelectedRowCount
+        autoHeight
+        hideFooterPagination
       />
-    </Paper>
+    </div>
   )
 }

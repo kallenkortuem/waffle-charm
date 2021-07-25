@@ -1,11 +1,9 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { BansEntity, selectBansEntities } from './bans.slice'
 import {
   ChampionEntity,
   selectAllChampion,
   selectChampionLoadingStatus,
 } from './champion.slice'
-import { FavoriteEntity, selectFavoriteEntities } from './favorite.slice'
 import {
   defaultMastery,
   MasteryEntity,
@@ -21,13 +19,11 @@ const MASTERY_LAYOUT = 'masteryLayout'
 
 export type MasteryViewerSortOptions =
   | 'mastery'
-  | 'bans'
   | 'favorite'
   | 'alphabetical'
 
 export const MasteryViewerSortOptions = {
   mastery: 'mastery' as MasteryViewerSortOptions,
-  bans: 'bans' as MasteryViewerSortOptions,
   favorite: 'favorite' as MasteryViewerSortOptions,
   alphabetical: 'alphabetical' as MasteryViewerSortOptions,
 }
@@ -250,32 +246,6 @@ const sortByMastery = (masteryEntities: Record<string, MasteryEntity>) => (
   return championB.championLevel - championA.championLevel
 }
 
-const sortByFavorite = (favoriteEntities: Record<string, FavoriteEntity>) => (
-  championAKey: string,
-  championBKey: string
-) => {
-  const favoriteA = !!favoriteEntities[championAKey]
-  const favoriteB = !!favoriteEntities[championBKey]
-
-  if (favoriteA === favoriteB) {
-    return 0
-  }
-  return favoriteA ? -1 : 1
-}
-
-const sortByBans = (bansEntities: Record<string, BansEntity>) => (
-  championAKey: string,
-  championBKey: string
-) => {
-  const banA = !!bansEntities[championAKey]
-  const banB = !!bansEntities[championBKey]
-
-  if (banA === banB) {
-    return 0
-  }
-  return banA ? -1 : 1
-}
-
 /**
  * Select all filtered `champion.key`.
  */
@@ -283,8 +253,6 @@ export const selectFilteredChampionIds = createSelector(
   selectAllChampion,
   selectMasteryEntities,
   selectSortBy,
-  selectBansEntities,
-  selectFavoriteEntities,
   selectLevel,
   selectSearchQuery,
   selectTag,
@@ -292,8 +260,6 @@ export const selectFilteredChampionIds = createSelector(
     allChampions: ChampionEntity[],
     masteryEntities: Record<string, MasteryEntity>,
     sortBy: MasteryViewerSortOptions,
-    bansEntities: Record<string, BansEntity>,
-    favoriteEntities: Record<string, FavoriteEntity>,
     level?: number,
     searchQuery?: string,
     tag?: string
@@ -316,12 +282,6 @@ export const selectFilteredChampionIds = createSelector(
 
     let sortByFn: (a, b) => 0 | -1 | 1 | number
     switch (sortBy) {
-      case 'bans':
-        sortByFn = sortByBans(bansEntities)
-        break
-      case 'favorite':
-        sortByFn = sortByFavorite(favoriteEntities)
-        break
       case 'mastery':
         sortByFn = sortByMastery(masteryEntities)
         break

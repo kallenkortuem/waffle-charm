@@ -5,7 +5,7 @@ import {
   createSelector,
   createSlice,
   EntityState,
-  PayloadAction
+  PayloadAction,
 } from '@reduxjs/toolkit'
 import { useSelector } from 'react-redux'
 

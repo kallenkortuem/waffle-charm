@@ -27,7 +27,7 @@ export const ProfileAvatar = (props: ProfileAvatarProps) => {
       imgProps={{ width: '80px', height: '80px' }}
       src={
         props.summoner
-          ? `/cdn/10.23.1/img/profileicon/${props.summoner?.profileIconId}.png`
+          ? `/cdn/${lolVersion}/img/profileicon/${props.summoner?.profileIconId}.png`
           : ''
       }
       alt=""

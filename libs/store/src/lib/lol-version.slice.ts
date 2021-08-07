@@ -5,8 +5,9 @@ import {
   createSelector,
   createSlice,
   EntityState,
-  PayloadAction,
+  PayloadAction
 } from '@reduxjs/toolkit'
+import { useSelector } from 'react-redux'
 
 export const LOL_VERSION_FEATURE_KEY = 'lolVersion'
 
@@ -159,3 +160,10 @@ export const selectLolVersionLoadingStatus = createSelector(
   getLolVersionState,
   (state) => state.loadingStatus
 )
+
+export const useLolVersion = () => {
+  const lolVersion = useSelector(selectLolVersion)
+  return {
+    lolVersion,
+  }
+}

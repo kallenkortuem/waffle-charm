@@ -1,6 +1,7 @@
 import { createStyles, makeStyles, Theme } from '@material-ui/core'
 import Avatar, { AvatarProps } from '@material-ui/core/Avatar'
 import { SummonerDTO } from '@waffle-charm/api-interfaces'
+import { useLolVersion } from '@waffle-charm/store'
 import React from 'react'
 
 export interface ProfileAvatarProps extends AvatarProps {
@@ -18,6 +19,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export const ProfileAvatar = (props: ProfileAvatarProps) => {
   const classes = useStyles()
+  const { lolVersion } = useLolVersion()
 
   return (
     <Avatar

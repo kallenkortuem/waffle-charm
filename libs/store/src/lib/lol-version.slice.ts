@@ -161,7 +161,7 @@ export const selectLolVersionLoadingStatus = createSelector(
   (state) => state.loadingStatus
 )
 
-export const useLolVersion = () => {
+export function useLolVersion() {
   const lolVersion = useSelector(selectLolVersion)
   return {
     lolVersion,

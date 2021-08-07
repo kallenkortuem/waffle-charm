@@ -85,7 +85,7 @@ export default function MasteryListViewV2(): React.ReactElement {
   ]
 
   return (
-    <Paper style={{ width: '100%' }} data-cy="mastery-list">
+    <div style={{ width: '100%' }} data-cy="mastery-list">
       <DataGrid
         rows={rows}
         columns={columns}
@@ -93,6 +93,6 @@ export default function MasteryListViewV2(): React.ReactElement {
         autoHeight
         hideFooterPagination
       />
-    </Paper>
+    </div>
   )
 }

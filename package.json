@@ -40,7 +40,7 @@
     "@material-ui/lab": "^4.0.0-alpha.56",
     "@nestjs/common": "^7.6.7",
     "@nestjs/config": "^0.5.0",
-    "@nestjs/core": "^7.5.1",
+    "@nestjs/core": "^9.0.5",
     "@nestjs/platform-express": "^7.5.1",
     "@reduxjs/toolkit": "^1.6.1",
     "core-js": "^3.6.5",
